@@ -1,39 +1,34 @@
 <template>
-  <base-layout pageTitle="Home">
+  <base-layout>
     <v-container>
-      <v-row>
-        <v-col cols="12">
-          <v-card elevation="24" class="mt-4 mx-auto" max-width="600">
-            <v-sheet
-              class="v-sheet--offset mx-auto"
-              color="cyan"
-              elevation="5"
-              max-width="calc(100% - 32px)"
-            >
-              <v-sparkline
-                :labels="labels"
-                :value="value"
-                color="white"
-                line-width="1"
-                padding="16"
-              ></v-sparkline>
-            </v-sheet>
-            <v-card-text class="pt-0">
-              <div class="text-h6 font-weight-light mb-2">
-                User Registrations
-              </div>
-              <div class="subheading font-weight-light grey--text">
-                Last Campaign Performance
-              </div>
-              <v-divider class="my-2"></v-divider>
-              <v-icon class="mr-2" small>
-                mdi-clock
-              </v-icon>
-              <span class="text-caption grey--text font-weight-light"
-                >last registration 26 minutes ago</span
-              >
-            </v-card-text>
-          </v-card>
+      <div class="text-center">
+        <h1>Covid-19 Chart</h1>
+      </div>
+      <v-row v-if="arrConfirmed.length > 0">
+        <v-col>
+          <div class="small">
+            <h2>Confirmed</h2>
+            <line-chart
+              :chartData="arrConfirmed"
+              :options="chartOptions"
+              :chartColor="confirmedChartColor"
+              label="Confirmed"
+            ></line-chart>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="arrDeaths.length > 0">
+        <v-col>
+          <div class="small">
+            <h2>Deaths</h2>
+            <line-chart
+              :chartData="arrDeaths"
+              :options="chartOptions"
+              :chartColor="deathsChartColor"
+              label="Deaths"
+            ></line-chart>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -41,23 +36,64 @@
 </template>
 
 <script>
+import LineChart from '../components/LineChart.vue'
+import axios from 'axios'
+import moment from 'moment'
+
 export default {
   name: 'Home',
+  components: { LineChart },
   data() {
     return {
-      labels: [
-        '01-Apr-21',
-        '02-Apr-21',
-        '03-Apr-21',
-        '04-Apr-21',
-        '05-Apr-21',
-        '06-Apr-21',
-        '07-Apr-21',
-      ],
-      value: [32, 45, 50, 60, 48, 50, 59],
+      datacollection: null,
+      // arrPositive: [],
+      arrConfirmed: [],
+      arrHospitalized: [],
+      arrRecovered: [],
+      arrDeaths: [],
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+      confirmedChartColor: {
+        backgroundColor: 'rgba(54,73,93,.5)',
+        borderColor: '#36495d',
+        borderWidth: 3,
+      },
+      deathsChartColor: {
+        backgroundColor: '',
+        borderColor: 'red',
+        borderWidth: 3,
+      },
     }
   },
+  async mounted() {
+    try {
+      // const { data } = await axios.get('/data.json/')
+      const { data } = await axios.get(
+        'https://covid19.th-stat.com/json/covid19v2/getTimeline.json'
+      )
+      data.Data.forEach((d) => {
+        const date = moment(d.Date, 'L').format('MM/DD')
+
+        const { Confirmed, Deaths, Hospitalized, Recovered } = d
+
+        this.arrConfirmed.push({ date, total: Confirmed })
+        this.arrDeaths.push({ date, total: Deaths })
+        this.arrHospitalized.push({ date, total: Hospitalized })
+        this.arrRecovered.push({ date, total: Recovered })
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
+  methods: {},
 }
 </script>
-
-<style lang="scss"></style>
+<style>
+.small {
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+</style>
