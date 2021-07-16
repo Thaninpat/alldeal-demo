@@ -6,9 +6,6 @@ import OrderDetail from '../pages/OrderDetail.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
 
-import Bubble from '../pages/Bubble.vue'
-import VueChartJS from '../pages/VueChart.vue'
-
 const routes = [
   {
     path: '/',
@@ -39,16 +36,6 @@ const routes = [
     path: '/invoice-statement-tax',
     name: 'invoiceStatementTax',
     component: InvoiceStatementTax,
-  },
-  {
-    path: '/chartjs',
-    name: 'VueChartJS',
-    component: VueChartJS,
-  },
-  {
-    path: '/bubble',
-    name: 'bubble',
-    component: Bubble,
   },
 ]
 
