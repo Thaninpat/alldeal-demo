@@ -8,6 +8,9 @@
           :chart-labels="labels"
           :options="chartOptions"
         />
+        <div class="text-center" v-else>
+          <p>Loading...</p>
+        </div>
       </v-col>
     </v-row>
   </v-container>
