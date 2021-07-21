@@ -17,15 +17,15 @@
                 </v-card-subtitle>
                 <div>
                   <v-btn class="pa-0" text>
-                    <v-icon small>mdi-cart-check</v-icon>
+                    <v-icon small v-text="'$mdiCart'"></v-icon>
                     <div class="grey--text">{{ item.value1 }}</div>
                   </v-btn>
                   <v-btn class="pa-0" text>
-                    <v-icon small>mdi-certificate-outline</v-icon>
+                    <v-icon small v-text="'$mdiCashCheck'"></v-icon>
                     <div class="grey--text">{{ item.value2 }}</div>
                   </v-btn>
                   <v-btn class="pa-0" text>
-                    <v-icon small>mdi-ticket-percent-outline</v-icon>
+                    <v-icon small v-text="'$mdiTicket'"></v-icon>
                     <div class="grey--text">{{ item.value3 }}</div>
                   </v-btn>
                 </div>
@@ -46,17 +46,6 @@
 export default {
   data() {
     return {
-      icons: [
-        {
-          name: 'mdi-cart-check',
-        },
-        {
-          name: 'mdi-certificate-outline',
-        },
-        {
-          name: 'mdi-ticket-percent-outline',
-        },
-      ],
       items: [
         {
           src: '/images/thumbnail.jpg/',

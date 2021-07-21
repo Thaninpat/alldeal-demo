@@ -1,9 +1,5 @@
 <template>
-  <base-layout pageTitle="Coupon Redemption">
-    <h1>
-      Coupon Redemption
-    </h1>
-  </base-layout>
+  <base-layout pageTitle="Coupon Redemption"> </base-layout>
 </template>
 
 <script>

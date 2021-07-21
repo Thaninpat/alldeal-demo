@@ -1,6 +1,29 @@
 <template>
   <v-container>
     <v-row>
+      <v-col cols="12" md="12" class="d-flex justify-center">
+        <div class="text-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn text color="black" v-bind="attrs" v-on="on">
+                {{ list }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item>
+                <v-list-item-title @click="Daily">
+                  <a>Daily Summary</a>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title @click="Monthly">
+                  <a>Monthly Summary</a>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-col>
       <v-col class="small">
         <line-chart
           v-if="loaded"
@@ -25,12 +48,14 @@ export default {
   name: 'VueChart',
   components: { LineChart },
   data: () => ({
-    JsonFile: 'dashboard.json',
+    JsonFile: '',
+    list: '',
     loaded: false,
-    items1: [],
-    items2: [],
-    items3: [],
-    labels: [],
+    items1: null,
+    items2: null,
+    items3: null,
+    items4: null,
+    labels: null,
     chartOptions: {
       responsive: true,
       maintainAspectRatio: false,
@@ -60,60 +85,135 @@ export default {
     },
     datacollection: [],
   }),
-  async created() {
-    this.loaded = false
-    try {
-      const { data } = await axios.get(`/data/${this.JsonFile}`)
-      this.loaded = true
-      //   console.log('data:', data)
-      this.items1 = data.map((item1) => item1.item1)
-      this.items2 = data.map((item2) => item2.item2)
-      this.items3 = data.map((item3) => item3.item3)
+  created() {
+    this.Daily()
+  },
+  methods: {
+    async Daily() {
+      this.loaded = false
+      this.JsonFile = 'dashboardDaily.json'
+      this.list = 'Daily Summary'
+      try {
+        const { data } = await axios.get(`/data/${this.JsonFile}`)
+        this.loaded = true
+        //   console.log('data:', data)
+        this.items1 = data.map((item1) => item1.item1)
+        this.items2 = data.map((item2) => item2.item2)
+        this.items3 = data.map((item3) => item3.item3)
 
-      this.labels = data.map((label) =>
-        moment(label.day, 'DD/MM/YYYY').format('DD-MMM-YY')
-      )
-      //   this.labels = moment(label.day, 'DD/MM/YYYY').format('D-MM-YY')
+        this.labels = data.map((label) =>
+          moment(label.day, 'DD/MM/YYYY').format('DD-MMM-YY')
+        )
 
-      //   console.log('dealItem1:', this.items1)
-      //   console.log('dealItem2:', this.items2)
-      //   console.log('dealItem3:', this.items3)
+        console.log('dealItem1:', this.items1)
+        console.log('dealItem2:', this.items2)
+        console.log('dealItem3:', this.items3)
 
-      //   console.log('labels:', this.labels)
+        console.log('labels:', this.labels)
 
-      this.datacollection = {
-        labels: this.labels,
-        datasets: [
-          {
-            label: 'Deal Item 1',
-            // backgroundColor: 'rgba(255,255,255,.5)',
-            borderColor: '#6666ff',
-            pointBorderColor: '#6666ff',
-            data: this.items1,
-            tension: 0.1,
-          },
-          {
-            label: 'Deal Item 2',
-            // backgroundColor: 'rgba(255,255,255,.5)',
-            borderColor: '#ff6666',
-            pointBorderColor: '#ff6666',
-            data: this.items2,
-            tension: 0.1,
-          },
-          {
-            label: 'Deal Item 3',
-            // backgroundColor: 'rgba(255,255,255,.5)',
-            borderColor: '#a3a3c2',
-            pointBorderColor: '#a3a3c2',
-            data: this.items3,
-            tension: 0.1,
-          },
-        ],
+        this.datacollection = {
+          labels: this.labels,
+          datasets: [
+            {
+              label: 'Deal Item 1',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#6666ff',
+              pointBorderColor: '#6666ff',
+              data: this.items1,
+              tension: 0.1,
+            },
+            {
+              label: 'Deal Item 2',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#ff6666',
+              pointBorderColor: '#ff6666',
+              data: this.items2,
+              tension: 0.1,
+            },
+            {
+              label: 'Deal Item 3',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#a3a3c2',
+              pointBorderColor: '#a3a3c2',
+              data: this.items3,
+              tension: 0.1,
+            },
+          ],
+        }
+        console.log('datacollection', this.datacollection)
+      } catch (error) {
+        console.error(error)
       }
-      //   console.log('datacollection', this.datacollection)
-    } catch (error) {
-      console.error(error)
-    }
+    },
+    async Monthly() {
+      this.loaded = false
+      this.JsonFile = 'dashboardMonthly.json'
+      this.list = 'Monthly Summary'
+
+      try {
+        const { data } = await axios.get(`/data/${this.JsonFile}`)
+        this.loaded = true
+        //   console.log('data:', data)
+        this.items1 = data.map((item1) => item1.item1)
+        this.items2 = data.map((item2) => item2.item2)
+        this.items3 = data.map((item3) => item3.item3)
+        this.items4 = data.map((item4) => item4.item4)
+
+        this.labels = data.map(
+          (label) =>
+            // moment(label.day, 'DD/MM/YYYY').format('DD-MMM-YY')
+            label.day
+        )
+
+        console.log('dealItem1:', this.items1)
+        console.log('dealItem2:', this.items2)
+        console.log('dealItem3:', this.items3)
+        console.log('dealItem4:', this.items4)
+
+        console.log('labels:', this.labels)
+
+        this.datacollection = {
+          labels: this.labels,
+          datasets: [
+            {
+              label: 'Deal Item 1',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#6666ff',
+              pointBorderColor: '#6666ff',
+              data: this.items1,
+              tension: 0.1,
+            },
+            {
+              label: 'Deal Item 2',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#ff6666',
+              pointBorderColor: '#ff6666',
+              data: this.items2,
+              tension: 0.1,
+            },
+            {
+              label: 'Deal Item 3',
+              // backgroundColor: 'rgba(255,255,255,.5)',
+              borderColor: '#a3a3c2',
+              pointBorderColor: '#a3a3c2',
+              data: this.items3,
+              tension: 0.1,
+            },
+            {
+              label: 'Deal Item 4',
+              // backgroundColor: 'rgba(255, 214, 51,.5)',
+              borderColor: '#e6b800',
+              pointBorderColor: '#e6b800',
+              data: this.items4,
+              tension: 0.1,
+            },
+          ],
+        }
+        console.log('datacollection', this.datacollection)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   },
 }
 </script>
