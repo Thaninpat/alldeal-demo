@@ -1,0 +1,44 @@
+[
+    {
+        "day": "Dec-20",
+        "item1": 0,
+        "item2": 73,
+        "item3": 178,
+        "item4": 0
+    },
+    {
+        "day": "Jan-21",
+        "item1": 0,
+        "item2": 80,
+        "item3": 139,
+        "item4": 0
+    },
+    {
+        "day": "Feb-21",
+        "item1": 0,
+        "item2": 98,
+        "item3": 101,
+        "item4": 189
+    },
+    {
+        "day": "Mar-21",
+        "item1": 0,
+        "item2": 112,
+        "item3": 84,
+        "item4": 122
+    },
+    {
+        "day": "Apr-21",
+        "item1": 27,
+        "item2": 124,
+        "item3": 45,
+        "item4": 0
+    },
+    {
+        "day": "May-21",
+        "item1": 34,
+        "item2": 82,
+        "item3": 0,
+        "item4": 0
+    }
+]

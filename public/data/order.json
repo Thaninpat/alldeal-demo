@@ -1,0 +1,67 @@
+[
+    {
+        "orderNo": 9120001,
+        "itemId": "0001",
+        "name": "Deal Item 01",
+        "amount": 1,
+        "netPrice": 100,
+        "customer": "khomsan@gmail.com",
+        "status": "Order",
+        "chanel": "web",
+        "orderDate": "4/1/2021 12:45",
+        "paidDate": "",
+        "payment": ""
+    },
+    {
+        "orderNo": 9120001,
+        "itemId": "0002",
+        "name": "Deal Item 01",
+        "amount": 2,
+        "netPrice": 240,
+        "customer": "khomsan@gmail.com",
+        "status": "Order",
+        "chanel": "web",
+        "orderDate": "4/1/2021 12:45",
+        "paidDate": "",
+        "payment": ""
+    },
+    {
+        "orderNo": 9120002,
+        "itemId": "0001",
+        "name": "Deal Item 01",
+        "amount": 2,
+        "netPrice": 200,
+        "customer": "khomsan@gmail.com",
+        "status": "Paid",
+        "chanel": "web",
+        "orderDate": "11/1/2020 0:00",
+        "paidDate": "11/1/2020 0:00",
+        "payment": "Credit"
+    },
+    {
+        "orderNo": 9120003,
+        "itemId": "0002",
+        "name": "Deal Item 03",
+        "amount": 1,
+        "netPrice": 120,
+        "customer": "712324342342",
+        "status": "Refund",
+        "chanel": "7App",
+        "orderDate": "11/1/2020 0:00",
+        "paidDate": "11/1/2020 0:00",
+        "payment": "Cash"
+    },
+    {
+        "orderNo": 9120004,
+        "itemId": "0003",
+        "name": "Deal Item 04",
+        "amount": 1,
+        "netPrice": 89,
+        "customer": "0982222234",
+        "status": "Paid",
+        "chanel": "7Eleven",
+        "orderDate": "2/1/2021 0:00",
+        "paidDate": "2/1/2021 0:00",
+        "payment": "TMW"
+    }
+]

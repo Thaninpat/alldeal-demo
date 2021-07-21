@@ -105,12 +105,6 @@ export default {
           moment(label.day, 'DD/MM/YYYY').format('DD-MMM-YY')
         )
 
-        console.log('dealItem1:', this.items1)
-        console.log('dealItem2:', this.items2)
-        console.log('dealItem3:', this.items3)
-
-        console.log('labels:', this.labels)
-
         this.datacollection = {
           labels: this.labels,
           datasets: [
@@ -140,7 +134,6 @@ export default {
             },
           ],
         }
-        console.log('datacollection', this.datacollection)
       } catch (error) {
         console.error(error)
       }
@@ -159,18 +152,7 @@ export default {
         this.items3 = data.map((item3) => item3.item3)
         this.items4 = data.map((item4) => item4.item4)
 
-        this.labels = data.map(
-          (label) =>
-            // moment(label.day, 'DD/MM/YYYY').format('DD-MMM-YY')
-            label.day
-        )
-
-        console.log('dealItem1:', this.items1)
-        console.log('dealItem2:', this.items2)
-        console.log('dealItem3:', this.items3)
-        console.log('dealItem4:', this.items4)
-
-        console.log('labels:', this.labels)
+        this.labels = data.map((label) => label.day)
 
         this.datacollection = {
           labels: this.labels,
@@ -209,7 +191,6 @@ export default {
             },
           ],
         }
-        console.log('datacollection', this.datacollection)
       } catch (error) {
         console.error(error)
       }
