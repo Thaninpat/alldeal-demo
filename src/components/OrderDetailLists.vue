@@ -7,42 +7,42 @@
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
-            {{ lists.order[idx] }}
+            {{ list.orderNo }}
           </v-col>
           <v-col
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
-            {{ lists.paidDate[idx] }}
+            {{ list.paidDate }}
+          </v-col>
+          <v-col
+            class="item-list d-flex justify-sm-center align-center"
+            cols="2.4"
+          >
+            {{ amounts[idx] }}฿
           </v-col>
           <v-col
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
-            {{ lists.amount[idx] }}฿
-          </v-col>
-          <v-col
-            class="item-list d-flex justify-center align-center"
-            cols="2.4"
-          >
-            {{ lists.customer[idx] }}
+            {{ customers[idx] }}
           </v-col>
           <v-col
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
             <v-icon
-              v-if="lists.status[idx] === 'Order'"
+              v-if="list.status === 'Order'"
               dense
               v-text="'$mdiCashCheck'"
             ></v-icon>
             <v-icon
-              v-if="lists.status[idx] === 'Paid'"
+              v-if="list.status === 'Paid'"
               dense
               v-text="'$mdiCart'"
             ></v-icon>
             <v-icon
-              v-if="lists.status[idx] === 'Refund'"
+              v-if="list.status === 'Refund'"
               dense
               v-text="'$mdiCashRefund'"
             ></v-icon>
@@ -51,32 +51,33 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <!-- <v-divider /> -->
         <v-row>
-          <v-col class="item-list-detail d-flex justify-start" cols="5">
-            Chanel: {{ lists.chanel[idx] }}
+          <v-col class="item-list-detail d-flex justify-start" cols="6">
+            Chanel: {{ list.chanel }}
           </v-col>
-          <v-col class="item-list-detail d-flex justify-start" cols="5">
-            Payment: {{ lists.payment[idx] }}
+          <v-col class="item-list-detail d-flex justify-start" cols="6">
+            Payment: {{ list.payment }}
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-for="(order, index) in list.items" :key="index">
           <v-col class="item-list d-flex justify-start pt-0" cols="1">
             <v-avatar size="25" tile>
-              <!-- tile = เหลี่ยม -->
               <v-img src="/images/thumbnail.jpg/"></v-img>
             </v-avatar>
           </v-col>
           <v-col class="item-list d-flex justify-start pt-0" cols="5">
-            <span>
-              0001 - Deal Item 1
-            </span>
+            <span> {{ order.itemId }} - {{ order.name }} </span>
           </v-col>
           <v-col class="item-list d-flex justify-start pt-0" cols="3">
-            100฿
+            {{ order.netPrice }}฿
           </v-col>
           <v-col class="item-list d-flex justify-end pt-0" cols="3">
-            <v-icon dense v-text="'$mdiTicket'"></v-icon>
+            <v-icon
+              v-if="order.coupon.length > 0"
+              dense
+              v-text="'$mdiTicket'"
+            ></v-icon>
+            <v-icon v-else dense></v-icon>
           </v-col>
         </v-row>
       </v-expansion-panel-content>
@@ -86,14 +87,13 @@
 
 <script>
 export default {
-  props: ['lists', 'idx'],
+  props: ['list', 'amounts', 'customers', 'idx'],
 }
 </script>
 
 <style lang="scss" scoped>
 .item-list {
   font-size: 13px;
-  /* padding: 18px 0 0 0; */
 }
 .item-list-detail {
   font-size: 10px;

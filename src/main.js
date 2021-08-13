@@ -6,9 +6,12 @@ import router from './routes'
 import store from './store'
 // import axios from 'axios'
 import BaseLayout from './components/base/BaseLayout'
+import VueQrcodeReader from 'vue-qrcode-reader'
 
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)
+Vue.use(VueQrcodeReader)
+
 // Vue.use(axios)
 new Vue({
   vuetify,

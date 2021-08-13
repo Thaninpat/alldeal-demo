@@ -13,6 +13,7 @@ export default new Vuetify({
       mdiTicket: 'mdi-ticket-percent-outline',
       mdiCashCheck: 'mdi-cash-check',
       mdiCashRefund: 'mdi-cash-refund',
+      QrcodeScan: 'mdi-qrcode-scan',
     },
   },
 })

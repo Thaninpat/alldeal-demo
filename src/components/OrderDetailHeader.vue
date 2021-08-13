@@ -1,6 +1,6 @@
 <template>
-  <v-col class="d-flex justify-center" cols="2.4">
-    <strong>{{ item.name }}</strong>
+  <v-col class="d-flex justify-sm-center" cols="2.4">
+    <span class="title_header">{{ item.name }}</span>
   </v-col>
 </template>
 
@@ -9,3 +9,9 @@ export default {
   props: ['item'],
 }
 </script>
+<style lang="scss" scoped>
+.title_header {
+  font-size: 14px;
+  font-weight: 600;
+}
+</style>

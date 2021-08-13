@@ -1,13 +1,15 @@
 <template>
   <base-layout pageTitle="Order Detail">
-    <v-row class="pa-6" no-gutters>
+    <v-row class="pa-3" no-gutters>
       <order-detail-header v-for="(item, i) in items" :key="i" :item="item" />
     </v-row>
     <order-detail-lists
-      v-for="(list, idx) in lists.order.length"
+      v-for="(list, idx) in lists"
       :key="idx"
-      :lists="lists"
       :idx="idx"
+      :list="list"
+      :amounts="amounts"
+      :customers="customers"
     />
   </base-layout>
 </template>
@@ -27,15 +29,10 @@ export default {
       { name: 'Customer' },
       { name: 'Status' },
     ],
-    lists: {
-      order: [],
-      paidDate: [],
-      amount: [],
-      customer: [],
-      status: [],
-      chanel: [],
-      payment: [],
-    },
+    lists: [],
+    netPrices: [],
+    amounts: [],
+    customers: [],
   }),
   mounted() {
     this.Fetch()
@@ -44,14 +41,12 @@ export default {
     async Fetch() {
       try {
         const { data } = await axios.get('/data/order.json/')
-
-        this.lists.order = data.map((item) => item.orderNo)
-        this.lists.paidDate = data.map((item) => item.paidDate)
-        this.lists.amount = data.map((item) => item.netPrice)
-        this.lists.customer = data.map((cus) => this.CuttingWord(cus.customer))
-        this.lists.status = data.map((item) => item.status)
-        this.lists.chanel = data.map((item) => item.chanel)
-        this.lists.payment = data.map((item) => item.payment)
+        this.lists = data
+        this.netPrices = this.lists.map((i) => i.items.map((j) => j.netPrice))
+        this.amounts = this.netPrices.map((i) =>
+          i.reduce((acc, curr) => acc + curr)
+        )
+        this.customers = data.map((i) => this.CuttingWord(i.customer))
       } catch (error) {
         console.log(error)
       }
