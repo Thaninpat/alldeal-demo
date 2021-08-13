@@ -19,7 +19,7 @@
             transition="dialog-bottom-transition"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn text v-bind="attrs" v-on="on">
+              <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon v-html="'$QrcodeScan'"></v-icon>
               </v-btn>
             </template>
@@ -29,9 +29,11 @@
                 @decode="onDecode"
                 @init="onInit"
               >
-                <v-btn class="pt-8 pl-5" icon dark @click="openCamera">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+                <div class="pt-4 pl-3">
+                  <v-btn icon dark @click="openCamera">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </div>
               </qrcode-stream>
             </div>
           </v-dialog>
