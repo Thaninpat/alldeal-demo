@@ -86,4 +86,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.col.col-6 {
+  padding: 1px 0;
+  font-size: 12px;
+  font-weight: bold;
+}
+</style>

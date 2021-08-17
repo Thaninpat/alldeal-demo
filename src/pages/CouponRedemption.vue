@@ -40,9 +40,10 @@
                   Loading...
                 </div>
               </qrcode-stream>
-            </div>
-            <div class="d-flex justify-center pt-5">
-              <qrcode-capture @decode="onDecode" />
+
+              <div class="camera_fram2 d-flex justify-center pt-5">
+                <qrcode-capture @decode="onDecode" />
+              </div>
             </div>
           </v-dialog>
         </v-col>
@@ -50,22 +51,33 @@
       <v-divider></v-divider>
 
       <!-- Main -->
-      <!-- <div v-if="dataMatched === false" class="text-center pt-5">
-        <v-snackbar v-model="dataMatched" :timeout="1500">
-          Not found
-          <template v-slot:action="{ attrs }">
-            <v-btn color="red" text v-bind="attrs" @click="dataMatched = false">
-              Close
-            </v-btn>
-          </template>
+      <div class="pt-5">
+        <v-snackbar
+          v-model="snackbar"
+          text
+          outlined
+          color="error"
+          :timeout="2000"
+        >
+          <div class="text-center">
+            Not found
+          </div>
         </v-snackbar>
-      </div> -->
-      <div v-if="dataMatched === false" class="text-center pt-5">
-        Not found !
+        <!-- <v-alert
+          dense
+          outlined
+          dismissible
+          bottom
+          type="error"
+          :value="snackbar"
+          :timeout="1000"
+        >
+          Not found
+        </v-alert> -->
       </div>
 
       <coupon-detail-list
-        v-else-if="dataMatched === true"
+        v-if="dataMatched === true"
         @isUsed="isUsed"
         :values="values"
       />
@@ -90,6 +102,7 @@ export default {
       loading: false,
       used: true,
       avaliable: true,
+      snackbar: false,
     }
   },
   mounted() {},
@@ -112,10 +125,15 @@ export default {
       console.log('length', valueLength)
 
       if (valueLength > 0) {
+        this.snackbar = false
         this.dataMatched = true
         console.log(this.dataMatched)
         return value
       } else {
+        // setTimeout(() => {
+        //   this.snackbar = false
+        // }, 1500)
+        this.snackbar = true
         this.dataMatched = false
         console.log(this.dataMatched)
       }
@@ -152,6 +170,10 @@ export default {
             console.log('values new', this.values)
           }
         } else {
+          // setTimeout(() => {
+          //   this.snackbar = true
+          // }, 500)
+          this.snackbar = true
           this.dataMatched = false
           console.log('No data!')
         }
@@ -183,6 +205,7 @@ export default {
           console.log('update:', this.lists)
           alert('The redemption code has been successfully canceled.')
           this.result = ''
+          this.dataMatched = false
         }
 
         // Avaliable Coupon
@@ -203,11 +226,13 @@ export default {
           console.log('update:', this.lists)
           alert('The redemption code has been used successfully.')
           this.result = ''
+          this.dataMatched = false
         }
       } catch (error) {
         console.log(error)
       }
     },
+
     Error(error) {
       if (error.name === 'NotAllowedError') {
         this.error = 'ERROR: you need to grant camera access permission'
@@ -239,17 +264,16 @@ export default {
 }
 .camera_fram {
   height: 70vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0, 0, 0, 0.5);
+}
+.camera_fram2 {
+  height: 30vh;
+  background: rgba(255, 255, 255);
 }
 .loading-indicator {
   text-align: center;
   font-weight: 600;
   font-size: 16px;
   color: #f1f1f1;
-}
-.col.col-6 {
-  padding: 1px 0;
-  font-size: 12px;
-  font-weight: bold;
 }
 </style>
