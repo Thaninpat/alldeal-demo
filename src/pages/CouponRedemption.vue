@@ -42,7 +42,7 @@
               </qrcode-stream>
 
               <div class="camera_fram2 d-flex justify-center pt-5">
-                <qrcode-capture @decode="onDecode" />
+                <qrcode-capture @onDetect="onDecode" />
               </div>
             </div>
           </v-dialog>
@@ -93,7 +93,7 @@ export default {
   components: { CouponDetailList },
   data() {
     return {
-      result: '',
+      result: null,
       error: '',
       lists: null,
       values: null,
@@ -113,8 +113,27 @@ export default {
     onDecode(result) {
       this.result = result
       this.FilterData(this.result)
-
       this.isShowCamera = false
+    },
+    async onDetect(promise) {
+      try {
+        const {
+          // source, // 'file', 'url' or 'stream'
+          // imageData, // raw image data of image/frame
+          content, // decoded String or null
+          // location, // QR code coordinates or null
+        } = await promise
+
+        if (content === null) {
+          this.error = 'ERROR: decoded nothing.'
+          // decoded nothing
+        } else {
+          this.result = content
+        }
+      } catch (error) {
+        this.Error(error)
+        // ...
+      }
     },
     MatchRedemtion(result) {
       const value = this.lists.filter((i) =>
@@ -130,9 +149,6 @@ export default {
         console.log(this.dataMatched)
         return value
       } else {
-        // setTimeout(() => {
-        //   this.snackbar = false
-        // }, 1500)
         this.snackbar = true
         this.dataMatched = false
         console.log(this.dataMatched)
