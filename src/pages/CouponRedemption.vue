@@ -42,7 +42,7 @@
               </qrcode-stream>
 
               <div class="camera_fram2 d-flex justify-center pt-5">
-                <qrcode-capture @onDetect="onDecode" />
+                <qrcode-capture @detect="onDetect" />
               </div>
             </div>
           </v-dialog>
@@ -63,17 +63,18 @@
             Not found
           </div>
         </v-snackbar>
-        <!-- <v-alert
-          dense
+
+        <v-snackbar
+          v-model="errors"
+          text
           outlined
-          dismissible
-          bottom
-          type="error"
-          :value="snackbar"
-          :timeout="1000"
+          color="error"
+          :timeout="2000"
         >
-          Not found
-        </v-alert> -->
+          <div class="text-center">
+            {{ error }}
+          </div>
+        </v-snackbar>
       </div>
 
       <coupon-detail-list
@@ -103,6 +104,7 @@ export default {
       used: true,
       avaliable: true,
       snackbar: false,
+      errors: false,
     }
   },
   mounted() {},
@@ -126,9 +128,13 @@ export default {
 
         if (content === null) {
           this.error = 'ERROR: decoded nothing.'
+          this.errors = true
+          console.log(this.error)
           // decoded nothing
         } else {
           this.result = content
+          this.FilterData(this.result)
+          this.isShowCamera = false
         }
       } catch (error) {
         this.Error(error)
