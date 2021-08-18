@@ -1,6 +1,7 @@
 <template>
   <base-layout pageTitle="Coupon Redemption">
     <v-container>
+      <!-- Input data and camera scanner -->
       <v-row>
         <v-col cols="9">
           <v-text-field
@@ -27,33 +28,41 @@
             </template>
             <div class="camera_fram">
               <qrcode-stream
+                class=""
                 v-if="isShowCamera"
                 @decode="onDecode"
                 @init="onInit"
+                :track="paintOutline"
               >
-                <div class="pt-4 pl-3">
-                  <v-btn icon dark @click="closeCamera">
-                    <v-icon v-text="'mdi-close'"></v-icon>
-                  </v-btn>
-                </div>
-                <div class="loading-indicator" v-if="loading">
-                  Loading...
+                <div class="camera">
+                  <div class=" pt-4 pl-3">
+                    <v-btn icon dark @click="closeCamera">
+                      <v-icon v-text="'mdi-close'"></v-icon>
+                    </v-btn>
+                  </div>
+                  <div v-if="loading" class="loading-indicator">
+                    Loading...
+                  </div>
+                  <div v-else class="backdrop_fram">
+                    <div class="crop_fram"></div>
+                  </div>
                 </div>
               </qrcode-stream>
 
-              <div class="camera_fram2 d-flex justify-center pt-5">
+              <!-- <div class="camera_fram2 d-flex justify-center pt-5">
                 <qrcode-capture @detect="onDetect" />
-              </div>
+              </div> -->
             </div>
           </v-dialog>
         </v-col>
       </v-row>
+
       <v-divider></v-divider>
 
-      <!-- Main -->
+      <!-- Notification -->
       <div class="pt-5">
         <v-snackbar
-          v-model="snackbar"
+          v-model="isData"
           text
           outlined
           color="error"
@@ -76,7 +85,7 @@
           </div>
         </v-snackbar>
       </div>
-
+      <!-- Main -->
       <coupon-detail-list
         v-if="dataMatched === true"
         @isUsed="isUsed"
@@ -94,7 +103,7 @@ export default {
   components: { CouponDetailList },
   data() {
     return {
-      result: null,
+      result: '',
       error: '',
       lists: null,
       values: null,
@@ -103,7 +112,7 @@ export default {
       loading: false,
       used: true,
       avaliable: true,
-      snackbar: false,
+      isData: false,
       errors: false,
     }
   },
@@ -114,59 +123,54 @@ export default {
     },
     onDecode(result) {
       this.result = result
-      this.FilterData(this.result)
+      this.filterData(this.result)
       this.isShowCamera = false
     },
-    async onDetect(promise) {
-      try {
-        const {
-          // source, // 'file', 'url' or 'stream'
-          // imageData, // raw image data of image/frame
-          content, // decoded String or null
-          // location, // QR code coordinates or null
-        } = await promise
-
-        if (content === null) {
-          this.error = 'ERROR: decoded nothing.'
-          this.errors = true
-          console.log(this.error)
-          // decoded nothing
-        } else {
-          this.result = content
-          this.FilterData(this.result)
-          this.isShowCamera = false
-        }
-      } catch (error) {
-        this.Error(error)
-        // ...
-      }
-    },
-    MatchRedemtion(result) {
+    matchRedemtion(result) {
       const value = this.lists.filter((i) =>
         i.redemtionCode.toLowerCase().match(result.toLowerCase())
       )
       const valueLength = value.length
-      console.log('value', value)
-      console.log('length', valueLength)
 
       if (valueLength > 0) {
-        this.snackbar = false
+        this.isData = false
         this.dataMatched = true
-        console.log(this.dataMatched)
         return value
       } else {
-        this.snackbar = true
+        this.isData = true
         this.dataMatched = false
-        console.log(this.dataMatched)
       }
     },
+    // async onDetect(promise) {
+    //   try {
+    //     const {
+    //       // source, // 'file', 'url' or 'stream'
+    //       // imageData, // raw image data of image/frame
+    //       content, // decoded String or null
+    //       // location, // QR code coordinates or null
+    //     } = await promise
+
+    //     if (content === null) {
+    //       this.error = 'ERROR: decoded nothing.'
+    //       this.errors = true
+    //       // decoded nothing
+    //     } else {
+    //       this.result = content
+    //       this.filterData(this.result)
+    //       this.isShowCamera = false
+    //     }
+    //   } catch (error) {
+    //     this.Error(error)
+    //     // ...
+    //   }
+    // },
     async onInit(promise) {
       try {
         this.loading = true
         try {
           await promise
         } catch (error) {
-          console.error(error)
+          // console.error(error)
         } finally {
           this.loading = false
         }
@@ -175,29 +179,19 @@ export default {
       }
     },
 
-    async FilterData(result) {
+    async filterData(result) {
       try {
         if (result) {
-          console.log({ result })
           if (this.lists) {
-            console.log('Lists old', this.lists)
-            this.values = this.MatchRedemtion(result)
-
-            console.log('values old', this.values)
+            this.values = this.matchRedemtion(result)
           } else {
             const { data } = await axios.get('/data/couponDetail.json/')
             this.lists = data
-            console.log('Lists new', this.lists)
-            this.values = this.MatchRedemtion(result)
-            console.log('values new', this.values)
+            this.values = this.matchRedemtion(result)
           }
         } else {
-          // setTimeout(() => {
-          //   this.snackbar = true
-          // }, 500)
-          this.snackbar = true
+          this.isData = true
           this.dataMatched = false
-          console.log('No data!')
         }
       } catch (error) {
         this.Error(error)
@@ -205,8 +199,6 @@ export default {
     },
     async isUsed(redemCode, markUsed) {
       this.avaliable = !this.avaliable
-      console.log(redemCode)
-      console.log(markUsed)
       try {
         let updatedAt = moment(Date.now()).format('DD/M/YYYY hh:mm')
         // Used Coupon
@@ -224,12 +216,10 @@ export default {
             }
           })
           this.lists = update
-          console.log('update:', this.lists)
           alert('The redemption code has been successfully canceled.')
           this.result = ''
           this.dataMatched = false
         }
-
         // Avaliable Coupon
         else {
           let update = await this.lists.map((item) => {
@@ -245,7 +235,6 @@ export default {
             }
           })
           this.lists = update
-          console.log('update:', this.lists)
           alert('The redemption code has been used successfully.')
           this.result = ''
           this.dataMatched = false
@@ -254,7 +243,22 @@ export default {
         console.log(error)
       }
     },
+    paintOutline(detectedCodes, ctx) {
+      for (const detectedCode of detectedCodes) {
+        const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
 
+        ctx.strokeStyle = 'red'
+
+        ctx.beginPath()
+        ctx.moveTo(firstPoint.x, firstPoint.y)
+        for (const { x, y } of otherPoints) {
+          ctx.lineTo(x, y)
+        }
+        ctx.lineTo(firstPoint.x, firstPoint.y)
+        ctx.closePath()
+        ctx.stroke()
+      }
+    },
     Error(error) {
       if (error.name === 'NotAllowedError') {
         this.error = 'ERROR: you need to grant camera access permission'
@@ -274,6 +278,7 @@ export default {
       } else {
         this.error = `ERROR: Camera error (${error.name})`
       }
+      this.errors = true
     },
   },
 }
@@ -285,17 +290,44 @@ export default {
   color: red;
 }
 .camera_fram {
-  height: 70vh;
-  background: rgb(0, 0, 0, 0.5);
+  height: 100vh;
+  background: rgb(255, 255, 255);
+}
+.camera {
+  height: 100vh;
+  /* background: rgb(0, 0, 0, 0.5); */
 }
 .camera_fram2 {
   height: 30vh;
-  background: rgba(255, 255, 255);
+  /* background: rgba(255, 255, 255); */
+}
+.backdrop_fram {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10%;
+  /* height: 92%; */
+  /* background: rgba(0, 0, 0, 0.5); */
+}
+.crop_fram {
+  font-weight: 600;
+  height: 300px;
+  width: 300px;
+  border: rgb(255, 255, 255) solid 3px;
+  border-radius: 10px;
+  animation: blink 800ms infinite;
+  /* animation-iteration-count: 10; */
+  /* animation: blink .5s step-end infinite alternate; */
+}
+@keyframes blink {
+  50% {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 }
 .loading-indicator {
   text-align: center;
   font-weight: 600;
   font-size: 16px;
-  color: #f1f1f1;
+  color: #262626;
 }
 </style>

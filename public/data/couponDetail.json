@@ -10,7 +10,8 @@
         "paidDate": "11/1/2020 0:00",
         "expireDate": "11/1/2020 0:00",
         "usedDate": "",
-        "markUsed": false
+        "markUsed": false,
+        "src": "images/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171202",
@@ -23,7 +24,8 @@
         "paidDate": "11/1/2020 0:00",
         "expireDate": "11/1/2020 0:00",
         "usedDate": "",
-        "markUsed": false
+        "markUsed": false,
+        "src": "images/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171203",
@@ -36,7 +38,8 @@
         "paidDate": "11/1/2020 0:00",
         "expireDate": "11/1/2020 0:00",
         "usedDate": "11/1/2020 0:00",
-        "markUsed": null
+        "markUsed": null,
+        "src": "images/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171204",
@@ -49,6 +52,7 @@
         "paidDate": "2/1/2021 0:00",
         "expireDate": "2/1/2021 0:00",
         "usedDate": "2/1/2021 0:00",
-        "markUsed": null
+        "markUsed": null,
+        "src": "images/thumbnail.jpg"
     }
 ]

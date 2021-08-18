@@ -1,10 +1,10 @@
 <template>
-  <v-row class="mt-3">
+  <v-row>
     <v-col v-for="(value, index) in values" :key="index" cols="12" sm="6">
       <v-card class="pa-2">
         <div class="d-flex justify-start">
           <v-avatar class="ma-3" size="110" tile>
-            <v-img src="/images/thumbnail.jpg/"></v-img>
+            <v-img :src="value.src"></v-img>
           </v-avatar>
           <div class="py-4 ml-2">
             <v-row>
@@ -38,35 +38,32 @@
             <div class="d-flex justify-center mt-6">
               <v-btn
                 v-if="value.status === 'Avaliable'"
+                class="px-7"
                 dark
-                class="px-8"
                 x-small
                 rounded
-                v-text="value.status === 'Avaliable' ? 'used' : 'cancel'"
+                v-text="value.status === 'Avaliable' ? 'use' : 'cancel'"
                 :color="value.status === 'Avaliable' ? 'success' : 'error'"
                 @click="isUsed(value.redemtionCode, value.markUsed)"
-              >
-              </v-btn>
+              />
               <v-btn
-                v-if="value.status === 'Used'"
+                v-else-if="value.status === 'Used'"
+                class="px-7"
                 dark
-                class="px-8"
                 x-small
                 rounded
-                v-text="value.status === 'Used' ? 'cancel' : 'used'"
+                v-text="value.status === 'Used' ? 'cancel' : 'use'"
                 :color="value.status === 'Used' ? 'error' : 'success'"
                 @click="isUsed(value.redemtionCode, value.markUsed)"
-              >
-              </v-btn>
+              />
               <v-btn
-                v-if="value.status === 'Refund'"
-                class="px-5"
+                v-else-if="value.status === 'Refund'"
+                class="px-7"
                 x-small
                 rounded
                 disabled
                 v-text="'Refund'"
-              >
-              </v-btn>
+              />
             </div>
           </div>
         </div>
