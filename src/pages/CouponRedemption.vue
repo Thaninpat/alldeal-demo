@@ -32,7 +32,7 @@
                 @decode="onDecode"
                 @init="onInit"
                 :track="paintOutline"
-                :torch="torchActive"
+                :torch="true"
               >
                 <div>
                   <div class="pt-4 pl-3">
@@ -173,6 +173,9 @@ export default {
           const { capabilities } = await promise
           console.log(capabilities)
           this.torchNotSupported = !capabilities.torch
+          const TORCH_IS_SUPPORTED = !!capabilities.torch
+          console.log('TORCH_IS_NOT_SUPPORTED', this.torchNotSupported)
+          console.log('TORCH_IS_SUPPORTED', TORCH_IS_SUPPORTED)
         } catch (error) {
           console.error(error)
         } finally {

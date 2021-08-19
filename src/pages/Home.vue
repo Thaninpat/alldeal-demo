@@ -1,5 +1,5 @@
 <template>
-  <base-layout pageTitle="v3.0.4">
+  <base-layout pageTitle="v3.0.4.1">
     <v-container>
       <vue-chart />
     </v-container>
