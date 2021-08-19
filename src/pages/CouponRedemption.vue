@@ -50,18 +50,14 @@
               </qrcode-stream>
               <div v-if="!loading" class="backdrop_bot pt-5">
                 <div class="d-flex justify-center ">
-                  <v-btn
-                    icon
-                    @click="onTorchActive"
-                    :disabled="torchNotSupported"
-                  >
+                  <v-btn icon @click="onTorchActive">
                     <v-icon
                       v-text="torchActive ? '$FlashlightOff' : '$Flashlight'"
                       size="25"
                     ></v-icon>
                   </v-btn>
                 </div>
-                <div class="pt-9 px-2 mt-9 mt-2">
+                <div class="pt-10 px-2">
                   <v-alert
                     v-model="torchNotSupported"
                     colored-border
@@ -69,7 +65,7 @@
                     type="error"
                     elevation="2"
                   >
-                    {{ error }}
+                    Flashlight not supported.
                   </v-alert>
                 </div>
                 <!-- <qrcode-capture @detect="onDetect" /> -->
@@ -177,9 +173,6 @@ export default {
           const { capabilities } = await promise
           console.log(capabilities)
           this.torchNotSupported = !capabilities.torch
-          console.log(('flash', this.torchNotSupported))
-          if (this.torchNotSupported === true)
-            this.error = 'Flashlight not supported.'
         } catch (error) {
           console.error(error)
         } finally {
