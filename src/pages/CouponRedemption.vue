@@ -32,7 +32,7 @@
                 @decode="onDecode"
                 @init="onInit"
                 :track="paintOutline"
-                :torch="true"
+                :torch="torchActive"
               >
                 <div>
                   <div class="pt-4 pl-3">
@@ -50,7 +50,11 @@
               </qrcode-stream>
               <div v-if="!loading" class="backdrop_bot pt-5">
                 <div class="d-flex justify-center ">
-                  <v-btn icon @click="onTorchActive">
+                  <v-btn
+                    icon
+                    @click="onTorchActive"
+                    :disabled="torchNotSupported"
+                  >
                     <v-icon
                       v-text="torchActive ? '$FlashlightOff' : '$Flashlight'"
                       size="25"
@@ -174,7 +178,7 @@ export default {
           console.log(capabilities)
           this.torchNotSupported = !capabilities.torch
           const TORCH_IS_SUPPORTED = !!capabilities.torch
-          console.log('TORCH_IS_NOT_SUPPORTED', this.torchNotSupported)
+          // console.log('TORCH_IS_NOT_SUPPORTED', this.torchNotSupported)
           console.log('TORCH_IS_SUPPORTED', TORCH_IS_SUPPORTED)
         } catch (error) {
           console.error(error)
