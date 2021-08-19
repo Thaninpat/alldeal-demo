@@ -14,6 +14,8 @@ export default new Vuetify({
       mdiCashCheck: 'mdi-cash-check',
       mdiCashRefund: 'mdi-cash-refund',
       QrcodeScan: 'mdi-qrcode-scan',
+      Flashlight: 'mdi-flashlight',
+      FlashlightOff: 'mdi-flashlight-off',
     },
   },
 })

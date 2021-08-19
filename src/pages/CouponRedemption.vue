@@ -26,18 +26,18 @@
                 <v-icon v-html="'$QrcodeScan'"></v-icon>
               </v-btn>
             </template>
-            <div class="camera_fram">
+            <div class="backdrop_top">
               <qrcode-stream
-                class=""
                 v-if="isShowCamera"
                 @decode="onDecode"
                 @init="onInit"
                 :track="paintOutline"
+                :torch="torchActive"
               >
-                <div class="camera">
-                  <div class=" pt-4 pl-3">
+                <div>
+                  <div class="pt-4 pl-3">
                     <v-btn icon dark @click="closeCamera">
-                      <v-icon v-text="'mdi-close'"></v-icon>
+                      <v-icon v-text="loading ? '' : 'mdi-close'"></v-icon>
                     </v-btn>
                   </div>
                   <div v-if="loading" class="loading-indicator">
@@ -48,10 +48,32 @@
                   </div>
                 </div>
               </qrcode-stream>
-
-              <!-- <div class="camera_fram2 d-flex justify-center pt-5">
-                <qrcode-capture @detect="onDetect" />
-              </div> -->
+              <div v-if="!loading" class="backdrop_bot pt-5">
+                <div class="d-flex justify-center ">
+                  <v-btn
+                    icon
+                    @click="onTorchActive"
+                    :disabled="torchNotSupported"
+                  >
+                    <v-icon
+                      v-text="torchActive ? '$FlashlightOff' : '$Flashlight'"
+                      size="25"
+                    ></v-icon>
+                  </v-btn>
+                </div>
+                <div class="pt-9 px-2 mt-9 mt-2">
+                  <v-alert
+                    v-model="torchNotSupported"
+                    colored-border
+                    border="left"
+                    type="error"
+                    elevation="2"
+                  >
+                    {{ error }}
+                  </v-alert>
+                </div>
+                <!-- <qrcode-capture @detect="onDetect" /> -->
+              </div>
             </div>
           </v-dialog>
         </v-col>
@@ -69,7 +91,7 @@
           :timeout="2000"
         >
           <div class="text-center">
-            Not found
+            {{ error }}
           </div>
         </v-snackbar>
 
@@ -114,10 +136,16 @@ export default {
       avaliable: true,
       isData: false,
       errors: false,
+      torchActive: false,
+      torchNotSupported: false,
     }
   },
   mounted() {},
   methods: {
+    onTorchActive() {
+      this.torchActive = !this.torchActive
+      console.log(this.torchActive)
+    },
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
     },
@@ -138,44 +166,27 @@ export default {
         return value
       } else {
         this.isData = true
+        this.error = 'Not found'
         this.dataMatched = false
       }
     },
-    // async onDetect(promise) {
-    //   try {
-    //     const {
-    //       // source, // 'file', 'url' or 'stream'
-    //       // imageData, // raw image data of image/frame
-    //       content, // decoded String or null
-    //       // location, // QR code coordinates or null
-    //     } = await promise
-
-    //     if (content === null) {
-    //       this.error = 'ERROR: decoded nothing.'
-    //       this.errors = true
-    //       // decoded nothing
-    //     } else {
-    //       this.result = content
-    //       this.filterData(this.result)
-    //       this.isShowCamera = false
-    //     }
-    //   } catch (error) {
-    //     this.Error(error)
-    //     // ...
-    //   }
-    // },
     async onInit(promise) {
       try {
         this.loading = true
         try {
-          await promise
+          const { capabilities } = await promise
+          console.log(capabilities)
+          this.torchNotSupported = !capabilities.torch
+          console.log(('flash', this.torchNotSupported))
+          if (this.torchNotSupported === true)
+            this.error = 'Flashlight not supported.'
         } catch (error) {
-          // console.error(error)
+          console.error(error)
         } finally {
           this.loading = false
         }
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
 
@@ -286,38 +297,41 @@ export default {
 
 <style>
 .error {
-  font-weight: bold;
   color: red;
+  font-weight: bold;
 }
-.camera_fram {
+.backdrop_top {
+  /* background: rgba(0, 0, 0, 0.8); */
+  height: 70vh;
+}
+.backdrop_bot {
+  background: rgb(255, 255, 255);
+  height: 30vh;
+}
+/* .camera_fram {
   height: 100vh;
   background: rgb(255, 255, 255);
-}
-.camera {
-  height: 100vh;
-  /* background: rgb(0, 0, 0, 0.5); */
-}
-.camera_fram2 {
-  height: 30vh;
-  /* background: rgba(255, 255, 255); */
-}
+} */
+/* .camera {
+  height: 70vh;
+  background: rgb(0, 0, 0, 0.5);
+} */
+/* .camera_fram2 {
+  background: rgba(255, 255, 255);
+} */
 .backdrop_fram {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding-top: 10%;
-  /* height: 92%; */
-  /* background: rgba(0, 0, 0, 0.5); */
 }
 .crop_fram {
   font-weight: 600;
-  height: 300px;
-  width: 300px;
+  height: 260px;
+  width: 260px;
   border: rgb(255, 255, 255) solid 3px;
   border-radius: 10px;
   animation: blink 800ms infinite;
-  /* animation-iteration-count: 10; */
-  /* animation: blink .5s step-end infinite alternate; */
 }
 @keyframes blink {
   50% {
@@ -325,9 +339,13 @@ export default {
   }
 }
 .loading-indicator {
-  text-align: center;
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 600;
   font-size: 16px;
   color: #262626;
+  padding-top: 75px;
 }
 </style>
