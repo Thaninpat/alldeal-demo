@@ -7,6 +7,7 @@ import store from './store'
 // import axios from 'axios'
 import BaseLayout from './components/base/BaseLayout'
 import VueQrcodeReader from 'vue-qrcode-reader'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)

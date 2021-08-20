@@ -1,5 +1,5 @@
 <template>
-  <base-layout pageTitle="v3.0.4.1">
+  <base-layout pageTitle="(PWA)v3.0.4.2">
     <v-container>
       <vue-chart />
     </v-container>
