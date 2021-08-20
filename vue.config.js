@@ -1,17 +1,13 @@
 module.exports = {
   transpileDependencies: ['vuetify'],
   pwa: {
-    name: 'AllDeal',
-    themeColor: '#4DBA87',
-    msTileColor: '#000000',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-
+    manifestPath: 'manifest.json',
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       // swSrc is required in InjectManifest mode.
       swSrc: 'src/sw.js',
+      swDest: 'service-worker.js',
       // ...other Workbox options...
     },
   },

@@ -35,7 +35,24 @@
                 :torch="torchActive"
               >
                 <div>
-                  <div class="pt-4 pl-3">
+                  <div
+                    v-if="torchNotSupported"
+                    class="error text-center white--text"
+                  >
+                    <!-- <v-alert
+                    class="pa-2 pl-3"
+                    v-model="torchNotSupported"
+                    colored-border
+                    border="left"
+                    type="error"
+                    elevation="2"
+                  >
+                    Flashlight not supported.
+                  </v-alert> -->
+
+                    Torch not supported for active camera
+                  </div>
+                  <div class="pl-3">
                     <v-btn icon dark @click="closeCamera">
                       <v-icon v-text="loading ? '' : 'mdi-close'"></v-icon>
                     </v-btn>
@@ -61,17 +78,7 @@
                     ></v-icon>
                   </v-btn>
                 </div>
-                <div class="pt-10 px-2">
-                  <v-alert
-                    v-model="torchNotSupported"
-                    colored-border
-                    border="left"
-                    type="error"
-                    elevation="2"
-                  >
-                    Flashlight not supported.
-                  </v-alert>
-                </div>
+
                 <!-- <qrcode-capture @detect="onDetect" /> -->
               </div>
             </div>
@@ -298,12 +305,11 @@ export default {
 </script>
 
 <style>
-.error {
+/* .error {
   color: red;
   font-weight: bold;
-}
+} */
 .backdrop_top {
-  /* background: rgba(0, 0, 0, 0.8); */
   height: 70vh;
 }
 .backdrop_bot {
@@ -341,7 +347,6 @@ export default {
   }
 }
 .loading-indicator {
-  /* text-align: center; */
   display: flex;
   justify-content: center;
   align-items: center;
