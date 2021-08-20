@@ -149,11 +149,16 @@ export default {
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
     },
-    onDecode(result) {
-      this.result = result
-      this.filterData(this.result)
-      this.isShowCamera = false
+    async onDecode(result) {
+      try {
+        this.result = await result
+        this.filterData(this.result)
+        this.isShowCamera = false
+      } catch (error) {
+        console.error(error)
+      }
     },
+
     matchRedemtion(result) {
       const value = this.lists.filter((i) =>
         i.redemtionCode.toLowerCase().match(result.toLowerCase())

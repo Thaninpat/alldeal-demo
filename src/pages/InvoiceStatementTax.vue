@@ -5,7 +5,12 @@
         Torch not supported for active camera
       </p>
 
-      <qrcode-stream :torch="torchActive" @init="onInit">
+      <qrcode-stream
+        @decode="onDecode"
+        :track="paintOutline"
+        :torch="torchActive"
+        @init="onInit"
+      >
         <v-btn
           dark
           @click="torchActive = !torchActive"
@@ -13,6 +18,8 @@
           v-text="torchActive ? 'On' : 'Off'"
         ></v-btn>
       </qrcode-stream>
+      <qrcode-capture @detect="onDetect" />
+      <p>Result: {{ result }}</p>
     </div>
   </base-layout>
 </template>
@@ -24,13 +31,55 @@ export default {
       torchActive: false,
       torchNotSupported: false,
       error: '',
+      result: '',
     }
   },
 
   methods: {
-    // onDecode(decodedString) {
-    //   // ...
-    // },
+    onDecode(decodedString) {
+      this.result = decodedString
+      // alert(this.result)
+    },
+    async onDetect(promise) {
+      try {
+        const {
+          imageData, // raw image data of image/frame
+          content, // decoded String or null
+          location, // QR code coordinates or null
+        } = await promise
+        console.log({ imageData })
+        console.log({ content })
+        console.log({ location })
+
+        if (content === null) {
+          this.result = 'Decode nothing'
+          alert('Decode nothing')
+          // decoded nothing
+        } else {
+          if (imageData) this.result = imageData
+          else if (content) this.result = content
+          else this.result = location
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    paintOutline(detectedCodes, ctx) {
+      for (const detectedCode of detectedCodes) {
+        const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
+
+        ctx.strokeStyle = 'red'
+
+        ctx.beginPath()
+        ctx.moveTo(firstPoint.x, firstPoint.y)
+        for (const { x, y } of otherPoints) {
+          ctx.lineTo(x, y)
+        }
+        ctx.lineTo(firstPoint.x, firstPoint.y)
+        ctx.closePath()
+        ctx.stroke()
+      }
+    },
 
     async onInit(promise) {
       try {
