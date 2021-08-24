@@ -16,6 +16,7 @@ export default new Vuetify({
       QrcodeScan: 'mdi-qrcode-scan',
       Flashlight: 'mdi-flashlight',
       FlashlightOff: 'mdi-flashlight-off',
+      Close: 'mdi-close',
     },
   },
 })

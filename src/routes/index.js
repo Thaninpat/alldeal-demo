@@ -5,7 +5,6 @@ import OrderSummary from '../pages/OrderSummary.vue'
 import OrderDetail from '../pages/OrderDetail.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
-// import QRCodeScan from '../components/QRCodeScan.vue'
 
 const routes = [
   {

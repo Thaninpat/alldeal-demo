@@ -25,13 +25,15 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
-        <v-list-item class="pb-4 pt-4">
+        <div class="text-right">
+          <v-btn icon @click.stop="drawer = !drawer">
+            <v-icon v-text="'$Close'" />
+          </v-btn>
+        </div>
+        <v-list-item class="pb-4">
           <v-img src="/images/alldeal_logo.png"></v-img>
         </v-list-item>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
+        <v-list-item-group v-model="group">
           <div v-for="(item, index) in items" :key="index">
             <v-list-item :to="item.to">
               <v-list-item-title>

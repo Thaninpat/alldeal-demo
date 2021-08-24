@@ -199,7 +199,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .small {
   max-width: 1024px;
   margin: 0 auto 50px;
