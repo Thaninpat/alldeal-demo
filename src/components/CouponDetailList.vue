@@ -36,33 +36,9 @@
               <v-col cols="6">{{ value.usedDate }}</v-col>
             </v-row>
             <div class="d-flex justify-center mt-6">
-              <v-btn
-                v-if="value.status === 'Avaliable'"
-                class="px-7"
-                dark
-                x-small
-                rounded
-                v-text="value.status === 'Avaliable' ? 'use' : 'cancel'"
-                :color="value.status === 'Avaliable' ? 'success' : 'error'"
-                @click="isUsed(value.redemtionCode, value.markUsed)"
-              />
-              <v-btn
-                v-else-if="value.status === 'Used'"
-                class="px-7"
-                dark
-                x-small
-                rounded
-                v-text="value.status === 'Used' ? 'cancel' : 'use'"
-                :color="value.status === 'Used' ? 'error' : 'success'"
-                @click="isUsed(value.redemtionCode, value.markUsed)"
-              />
-              <v-btn
-                v-else-if="value.status === 'Refund'"
-                class="px-7"
-                x-small
-                rounded
-                disabled
-                v-text="'Refund'"
+              <dialog-btn
+                :status="value.status"
+                @isUsed="isUsed(value.redemtionCode, value.markUsed)"
               />
             </div>
           </div>
@@ -73,7 +49,9 @@
 </template>
 
 <script>
+import DialogBtn from './DialogBtn.vue'
 export default {
+  components: { DialogBtn },
   props: ['values'],
   methods: {
     isUsed(redemCode, markUsed) {

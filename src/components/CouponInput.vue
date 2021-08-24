@@ -12,7 +12,6 @@
           clearable
         >
         </v-text-field>
-        <!-- <v-btn small @click="onDecode(result)">search</v-btn> -->
       </v-col>
       <v-col class="d-flex justify-start align-start pt-5" cols="2">
         <v-dialog
@@ -96,6 +95,7 @@
       @isUsed="isUsed"
       :values="values"
     />
+    <!-- dialog -->
   </v-container>
 </template>
 
@@ -208,7 +208,7 @@ export default {
             }
           })
           this.lists = update
-          alert('The redemption code has been successfully canceled.')
+          // alert('The redemption code has been successfully canceled.')
           this.result = ''
           this.dataMatched = false
         }
@@ -227,7 +227,7 @@ export default {
             }
           })
           this.lists = update
-          alert('The redemption code has been used successfully.')
+          // alert('The redemption code has been used successfully.')
           this.result = ''
           this.dataMatched = false
         }
