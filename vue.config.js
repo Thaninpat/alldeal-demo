@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: ['vuetify'],
   pwa: {
     name: 'AllDeal',
-    manifestPath: 'img/icons2/manifest.json',
+    manifestPath: 'manifest.json',
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
