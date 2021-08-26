@@ -1,7 +1,10 @@
 {
     "name": "AllDeal",
     "short_name": "AllDeal",
+    "start_url": "/",
+    "display": "standalone",
     "theme_color": "#ffffff",
+    "background_color": "rgb(0,70,140)",
     "icons": [
         {
             "src": "./img/icons/android-chrome-192x192.png",
@@ -19,8 +22,5 @@
             "type": "image/png",
             "purpose": "any maskable"
         }
-    ],
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#000000"
+    ]
 }
