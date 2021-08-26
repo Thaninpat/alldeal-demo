@@ -31,8 +31,15 @@
               @decode="onDecode"
               @init="onInit"
               :track="paintOutline"
+              :torch="torchActive"
             >
               <div>
+                <div
+                  v-if="torchNotSupported"
+                  class="error text-center white--text"
+                >
+                  Torch not supported for active camera
+                </div>
                 <div class="pl-3">
                   <v-btn icon dark @click="closeCamera">
                     <v-icon v-text="loading ? '' : 'mdi-close'"></v-icon>
@@ -46,9 +53,21 @@
                 </div>
               </div>
             </qrcode-stream>
-            <!-- <div v-if="!loading" class="backdrop_bot pt-5">
-              <qrcode-capture @detect="onDetect" />
-            </div> -->
+            <div v-if="!loading" class="backdrop_bot pt-5">
+              <div class="d-flex justify-center ">
+                <v-btn
+                  icon
+                  @click="onTorchActive"
+                  :disabled="torchNotSupported"
+                >
+                  <v-icon
+                    v-text="torchActive ? '$FlashlightOff' : '$Flashlight'"
+                    size="25"
+                  ></v-icon>
+                </v-btn>
+              </div>
+              <!-- <qrcode-capture @detect="onDetect" /> -->
+            </div>
           </div>
         </v-dialog>
       </v-col>
@@ -99,10 +118,16 @@ export default {
       avaliable: true,
       isData: false,
       errors: false,
+      torchActive: false,
+      torchNotSupported: false,
     }
   },
   mounted() {},
   methods: {
+    onTorchActive() {
+      this.torchActive = !this.torchActive
+      console.log(this.torchActive)
+    },
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
     },
@@ -135,6 +160,7 @@ export default {
         try {
           const { capabilities } = await promise
           console.log(capabilities)
+          this.torchNotSupported = !capabilities.torch
         } catch (error) {
           console.error(error)
         } finally {
