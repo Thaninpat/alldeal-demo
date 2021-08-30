@@ -1,6 +1,6 @@
 <template>
-  <base-layout pageTitle="(PWA)v3.0.5.2">
-    <v-snackbar bottom right :value="updateExists" :timeout="0" color="primary">
+  <base-layout pageTitle="(PWA)v3.0.5.3">
+    <v-snackbar bottom text :value="updateExists" :timeout="0" color="primary">
       An update is available
       <v-btn text @click="refreshApp">
         Update
