@@ -1,5 +1,5 @@
 <template>
-  <base-layout pageTitle="(PWA)v3.0.5.5">
+  <base-layout pageTitle="(PWA)v3.0.6">
     <div class="text-center ma-2">
       <v-snackbar
         rounded="pill"
