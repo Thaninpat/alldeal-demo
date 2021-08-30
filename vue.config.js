@@ -10,7 +10,6 @@ module.exports = {
       swSrc: 'src/sw.js',
       swDest: 'service-worker.js',
       // ...other Workbox options...
-      skipWaiting: true,
     },
   },
 }
