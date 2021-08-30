@@ -60,12 +60,12 @@ tr {
   background-color: hsl(0, 0%, 98%);
 }
 tr:nth-child(odd) {
-  background-color: hsl(110, 100%, 95%);
+  background-color: hsl(108, 100%, 95%);
 }
 th {
   padding: 0px 4px;
   font-weight: bold;
-  background-color: hsl(0, 0, 90%);
+  background-color: hsl(0, 0%, 90%);
 }
 td {
   text-align: center;
