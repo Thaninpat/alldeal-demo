@@ -4,18 +4,14 @@ import vuetify from './plugins/vuetify'
 
 import router from './routes'
 import store from './store'
-// import axios from 'axios'
 import BaseLayout from './components/base/BaseLayout'
 import VueQrcodeReader from 'vue-qrcode-reader'
-// import VueQrReader from 'vue-qr-reader'
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)
 Vue.use(VueQrcodeReader)
-// Vue.use(VueQrReader)
 
-// Vue.use(axios)
 new Vue({
   vuetify,
   router,

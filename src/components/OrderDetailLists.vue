@@ -62,7 +62,7 @@
         <v-row v-for="(order, index) in list.items" :key="index">
           <v-col class="item-list d-flex justify-start pt-0" cols="1">
             <v-avatar size="25" tile>
-              <v-img src="/images/thumbnail.jpg/"></v-img>
+              <v-img src="/img/thumbnail.jpg/"></v-img>
             </v-avatar>
           </v-col>
           <v-col class="item-list d-flex justify-start pt-0" cols="5">

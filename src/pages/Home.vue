@@ -6,7 +6,7 @@
         outlined
         color="warning"
         :value="updateExists"
-        :timeout="0"
+        :timeout="-1"
       >
         An update is available
         <template v-slot:action="{ attrs }">

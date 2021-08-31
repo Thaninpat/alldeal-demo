@@ -31,7 +31,7 @@
           </v-btn>
         </div>
         <v-list-item class="pb-4">
-          <v-img src="/images/alldeal_logo.png"></v-img>
+          <v-img src="/img/alldeal_logo.png"></v-img>
         </v-list-item>
         <v-list-item-group v-model="group">
           <div v-for="(item, index) in items" :key="index">

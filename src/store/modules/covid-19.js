@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const covid = {
-  // namespaced: true,
   state: {
     covidData: [],
   },

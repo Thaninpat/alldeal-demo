@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+import { mapState } from 'vuex'
 import OrderDetailLists from '../components/OrderDetailLists.vue'
 import OrderDetailHeader from '../components/OrderDetailHeader.vue'
 export default {
@@ -34,19 +35,29 @@ export default {
     amounts: [],
     customers: [],
   }),
+
+  computed: {
+    ...mapState('orders', ['orders']),
+    // orders() {
+    //   return this.$store.state.orders
+    // },
+  },
+  created() {
+    this.$store.dispatch('orders/getOrders')
+  },
   mounted() {
     this.Fetch()
   },
   methods: {
     async Fetch() {
       try {
-        const { data } = await axios.get('/data/order.json/')
-        this.lists = data
+        // const { data } = await axios.get('/data/order.json/')
+        this.lists = this.orders
         this.netPrices = this.lists.map((i) => i.items.map((j) => j.netPrice))
         this.amounts = this.netPrices.map((i) =>
           i.reduce((acc, curr) => acc + curr)
         )
-        this.customers = data.map((i) => this.CuttingWord(i.customer))
+        this.customers = this.lists.map((i) => this.CuttingWord(i.customer))
       } catch (error) {
         console.log(error)
       }

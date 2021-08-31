@@ -48,7 +48,7 @@ export default {
     return {
       items: [
         {
-          src: '/images/thumbnail.jpg/',
+          src: '/img/thumbnail.jpg/',
           title: '0001 - Deal Item 1',
           statusDate: '1 Apr 21 - 30 Jun 21',
           status: 'Active',
@@ -58,7 +58,7 @@ export default {
           review: '2',
         },
         {
-          src: '/images/thumbnail.jpg/',
+          src: '/img/thumbnail.jpg/',
           title: '0002 - Deal Item 2',
           statusDate: '1 Nov 21 - 21 May 21',
           status: 'Active',
@@ -68,7 +68,7 @@ export default {
           review: '89',
         },
         {
-          src: '/images/thumbnail.jpg/',
+          src: '/img/thumbnail.jpg/',
           title: '0003 - Deal Item 3',
           statusDate: '1 Nov 21 - 21 Apr 21',
           status: 'End',
@@ -78,7 +78,7 @@ export default {
           review: '24',
         },
         {
-          src: '/images/thumbnail.jpg/',
+          src: '/img/thumbnail.jpg/',
           title: '0004 - Deal Item 4',
           statusDate: '1 Nov - 30 Apr 21',
           status: 'End',
