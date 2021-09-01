@@ -160,30 +160,38 @@ export default {
     async onDetect(promise) {
       try {
         const {
-          // imageData, // raw image data of image/frame
+          imageData, // raw image data of image/frame
           content, // decoded String or null
-          // location, // QR code coordinates or null
+          location, // QR code coordinates or null
         } = await promise
 
-        // if (imageData === null) {
-        //   alert('null')
-        //   // decoded nothing
-        // } else {
-        //   alert(imageData)
-        // }
-        if (content === null) {
-          alert(`null,${content}`)
+        if (imageData === null) {
+          console.log({ imageData })
+          alert(imageData)
           // decoded nothing
         } else {
+          console.log({ imageData })
+          alert(imageData)
+        }
+        if (content === null) {
+          console.log({ content })
+          alert(content)
+          // decoded nothing
+        } else {
+          console.log({ content })
           alert(content)
           this.result = content
         }
-        // if (location === null) {
-        //   alert('null')
-        //   // decoded nothing
-        // } else {
-        //   alert({ location })
-        // }
+        if (location === null) {
+          console.log({ location })
+          alert(location)
+          // decoded nothing
+        } else {
+          const x = location.bottomLeftCorner.x
+          // const bottomLeftCorner = x.map((i) => i.bottomLeftCorner)
+          console.log({ x })
+          alert(x)
+        }
       } catch (error) {
         alert(error)
         // ...
