@@ -49,7 +49,9 @@
                   Loading...
                 </div>
                 <div v-else class="backdrop_fram">
-                  <div class="crop_fram"></div>
+                  <div class="crop_fram">
+                    <!-- <v-img src="img/qrcode.png" /> -->
+                  </div>
                 </div>
               </div>
             </qrcode-stream>
@@ -65,6 +67,13 @@
                     size="25"
                   ></v-icon>
                 </v-btn>
+              </div>
+              <div class="d-flex justify-end">
+                <v-file-input
+                  small-chips
+                  accept="image/*"
+                  label="File input"
+                ></v-file-input>
               </div>
               <!-- <qrcode-capture @detect="onDetect" /> -->
             </div>
