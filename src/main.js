@@ -5,12 +5,10 @@ import vuetify from './plugins/vuetify'
 import router from './routes'
 import store from './store'
 import BaseLayout from './components/base/BaseLayout'
-import VueQrcodeReader from 'vue-qrcode-reader'
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)
-Vue.use(VueQrcodeReader)
 
 new Vue({
   vuetify,

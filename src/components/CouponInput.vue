@@ -6,10 +6,10 @@
         <v-text-field
           label="Coupon"
           placeholder="Input Coupon number"
-          outlined
           v-model="result"
           @keydown.enter="onDecode(result)"
           clearable
+          outlined
         >
         </v-text-field>
       </v-col>
@@ -25,62 +25,36 @@
               <v-icon v-html="'$QrcodeScan'"></v-icon>
             </v-btn>
           </template>
-          <div class="backdrop_top">
-            <qrcode-stream
-              v-if="isShowCamera"
-              @decode="onDecode"
-              @init="onInit"
-              :track="paintOutline"
-              :torch="torchActive"
-            >
-              <div>
-                <div
-                  v-if="torchNotSupported"
-                  class="error text-center white--text"
-                >
-                  Torch not supported for active camera
-                </div>
-                <div class="pl-3">
-                  <v-btn icon dark @click="closeCamera">
-                    <v-icon v-text="loading ? '' : 'mdi-close'"></v-icon>
-                  </v-btn>
-                </div>
-                <div v-if="loading" class="loading-indicator">
-                  Loading...
-                </div>
-                <div v-else class="backdrop_fram">
-                  <div class="crop_fram">
-                    <!-- <v-img src="img/qrcode.png" /> -->
-                  </div>
-                </div>
+          <div class="backdrop_scanner">
+            <div v-if="loading">Loading...</div>
+            <div>
+              <v-btn class="btn_close" icon>
+                <v-icon
+                  @click="closeCamera"
+                  v-text="loading ? '' : 'mdi-close'"
+                ></v-icon>
+              </v-btn>
+              <div class="scanner">
+                <StreamBarcodeReader
+                  @decode="onDecode"
+                  @loaded="onLoaded"
+                ></StreamBarcodeReader>
               </div>
-            </qrcode-stream>
-            <div v-if="!loading" class="backdrop_bot pt-5">
-              <div class="d-flex justify-center ">
-                <v-btn
-                  icon
-                  @click="onTorchActive"
-                  :disabled="torchNotSupported"
-                >
-                  <v-icon
-                    v-text="torchActive ? '$FlashlightOff' : '$Flashlight'"
-                    size="25"
-                  ></v-icon>
+              <div v-if="!loading" class="text-right ma-5">
+                <v-btn icon x-large>
+                  <label for="btn_scanner">
+                    <v-icon size="35" v-text="'$Image'" />
+                  </label>
                 </v-btn>
-              </div>
-              <div class="d-flex justify-end">
-                <input
-                  type="file"
-                  accept="image/*"
-                  @change="onChangeInput"
+                <ImageBarcodeReader
+                  class="btn_choose_file"
+                  id="btn_scanner"
+                  @decode="onDecode"
+                  @error="onError"
                   :capture="false"
                 />
               </div>
-              <qrcode-capture
-                @detect="onDetect"
-                :capture="false"
-                :multiple="false"
-              />
+              <!-- <div v-if="!loading">Input Value: {{ result || 'Nothing' }}</div> -->
             </div>
           </div>
         </v-dialog>
@@ -116,9 +90,11 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import { StreamBarcodeReader, ImageBarcodeReader } from 'vue-barcode-reader'
+
 import CouponDetailList from './CouponDetailList.vue'
 export default {
-  components: { CouponDetailList },
+  components: { CouponDetailList, StreamBarcodeReader, ImageBarcodeReader },
   data() {
     return {
       result: '',
@@ -127,75 +103,38 @@ export default {
       values: null,
       dataMatched: true,
       isShowCamera: false,
-      loading: false,
+      id: null,
+      loading: true,
       used: true,
       avaliable: true,
       isData: false,
       errors: false,
-      torchActive: false,
-      torchNotSupported: false,
     }
   },
-  mounted() {},
   methods: {
-    onChangeInput(event) {
-      const files = [...event.target.files]
-      console.log({ files })
-      // const resultPromises = files.map(processFile)
-      // resultPromises.forEach(this.onDetect)
-    },
-    onTorchActive() {
-      this.torchActive = !this.torchActive
-      console.log(this.torchActive)
-    },
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
     },
-    onDecode(result) {
-      alert(result)
-      this.result = result
+    onDecode(res) {
+      // console.log({ res })
+      this.result = res
       this.filterData(this.result)
       this.isShowCamera = false
+      if (this.id) clearTimeout(this.id)
+      this.id = setTimeout(() => {
+        if (this.result === res) {
+          console.log(`id: ${this.id}`)
+          this.result = ''
+        }
+      }, 5000)
     },
-    async onDetect(promise) {
-      try {
-        const {
-          imageData, // raw image data of image/frame
-          content, // decoded String or null
-          location, // QR code coordinates or null
-        } = await promise
-
-        if (imageData === null) {
-          console.log({ imageData })
-          alert(imageData)
-          // decoded nothing
-        } else {
-          console.log({ imageData })
-          alert(imageData)
-        }
-        if (content === null) {
-          console.log({ content })
-          alert(content)
-          // decoded nothing
-        } else {
-          console.log({ content })
-          alert(content)
-          this.result = content
-        }
-        if (location === null) {
-          console.log({ location })
-          alert(location)
-          // decoded nothing
-        } else {
-          const x = location.bottomLeftCorner.x
-          // const bottomLeftCorner = x.map((i) => i.bottomLeftCorner)
-          console.log({ x })
-          alert(x)
-        }
-      } catch (error) {
-        alert(error)
-        // ...
-      }
+    onLoaded() {
+      this.loading = false
+    },
+    onError(error) {
+      this.errors = true
+      this.error = error.message
+      console.warn(error.message)
     },
 
     matchRedemtion(result) {
@@ -203,34 +142,15 @@ export default {
         i.redemtionCode.toLowerCase().match(result.toLowerCase())
       )
       const valueLength = value.length
-
       if (valueLength > 0) {
         this.isData = false
         this.dataMatched = true
         return value
       } else {
         this.isData = true
-
         this.dataMatched = false
       }
     },
-    async onInit(promise) {
-      try {
-        this.loading = true
-        try {
-          const { capabilities } = await promise
-          console.log(capabilities)
-          this.torchNotSupported = !capabilities.torch
-        } catch (error) {
-          console.error(error)
-        } finally {
-          this.loading = false
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    },
-
     async filterData(result) {
       try {
         if (result) {
@@ -295,82 +215,45 @@ export default {
         console.log(error)
       }
     },
-    paintOutline(detectedCodes, ctx) {
-      for (const detectedCode of detectedCodes) {
-        const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
-
-        ctx.strokeStyle = 'red'
-
-        ctx.beginPath()
-        ctx.moveTo(firstPoint.x, firstPoint.y)
-        for (const { x, y } of otherPoints) {
-          ctx.lineTo(x, y)
-        }
-        ctx.lineTo(firstPoint.x, firstPoint.y)
-        ctx.closePath()
-        ctx.stroke()
-      }
-    },
-    Error(error) {
-      if (error.name === 'NotAllowedError') {
-        this.error = 'ERROR: you need to grant camera access permission'
-      } else if (error.name === 'NotFoundError') {
-        this.error = 'ERROR: no camera on this device'
-      } else if (error.name === 'NotSupportedError') {
-        this.error = 'ERROR: secure context required (HTTPS, localhost)'
-      } else if (error.name === 'NotReadableError') {
-        this.error = 'ERROR: is the camera already in use?'
-      } else if (error.name === 'OverconstrainedError') {
-        this.error = 'ERROR: installed cameras are not suitable'
-      } else if (error.name === 'StreamApiNotSupportedError') {
-        this.error = 'ERROR: Stream API is not supported in this browser'
-      } else if (error.name === 'InsecureContextError') {
-        this.error =
-          'ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.'
-      } else {
-        this.error = `ERROR: Camera error (${error.name})`
-      }
-      this.errors = true
-    },
+    // Error(error) {
+    //   if (error.name === 'NotAllowedError') {
+    //     this.error = 'ERROR: you need to grant camera access permission'
+    //   } else if (error.name === 'NotFoundError') {
+    //     this.error = 'ERROR: no camera on this device'
+    //   } else if (error.name === 'NotSupportedError') {
+    //     this.error = 'ERROR: secure context required (HTTPS, localhost)'
+    //   } else if (error.name === 'NotReadableError') {
+    //     this.error = 'ERROR: is the camera already in use?'
+    //   } else if (error.name === 'OverconstrainedError') {
+    //     this.error = 'ERROR: installed cameras are not suitable'
+    //   } else if (error.name === 'StreamApiNotSupportedError') {
+    //     this.error = 'ERROR: Stream API is not supported in this browser'
+    //   } else if (error.name === 'InsecureContextError') {
+    //     this.error =
+    //       'ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.'
+    //   } else {
+    //     this.error = `ERROR: Camera error (${error.name})`
+    //   }
+    //   this.errors = true
+    // },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.backdrop_top {
-  height: 70vh;
+.backdrop_scanner {
+  z-index: -1;
+  background: #fff;
+  height: 100vh;
 }
-.backdrop_bot {
-  background: rgb(255, 255, 255);
-  height: 30vh;
+.scanner {
+  text-align: center;
 }
-
-.backdrop_fram {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 10%;
+.btn_choose_file {
+  display: none;
+  visibility: none;
 }
-.crop_fram {
-  font-weight: 600;
-  height: 260px;
-  width: 260px;
-  border: rgb(255, 255, 255) solid 3px;
-  border-radius: 10px;
-  animation: blink 800ms infinite;
-}
-@keyframes blink {
-  50% {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-}
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  font-size: 16px;
-  color: #262626;
-  padding-top: 75px;
-}
+/* .btn_close {
+  z-index: 99;
+} */
 </style>

@@ -5,7 +5,6 @@ import OrderSummary from '../pages/OrderSummary.vue'
 import OrderDetail from '../pages/OrderDetail.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
-import qrcodeScanner from '../pages/qrcodeScanner.vue'
 
 const routes = [
   {
@@ -38,21 +37,6 @@ const routes = [
     name: 'invoiceStatementTax',
     component: InvoiceStatementTax,
   },
-  {
-    path: '/qrcode-scanner',
-    name: 'QRcode Scanner',
-    component: qrcodeScanner,
-  },
-  // {
-  //   path: '/qrcode-scan',
-  //   name: 'qrcodeScan',
-  //   component: QRCodeScan,
-  // },
-  // {
-  //   path: '/qrcode-scan/',
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ '../components/QRCodeScan.vue'),
-  // },
 ]
 
 const router = new VueRouter({

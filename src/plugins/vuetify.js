@@ -17,6 +17,7 @@ export default new Vuetify({
       Flashlight: 'mdi-flashlight',
       FlashlightOff: 'mdi-flashlight-off',
       Close: 'mdi-close',
+      Image: 'mdi-image',
     },
   },
 })

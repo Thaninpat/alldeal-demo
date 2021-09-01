@@ -22,10 +22,6 @@ const menus = {
         name: 'Invoice Statement Tax',
         to: '/invoice-statement-tax',
       },
-      {
-        name: 'QRcode Scanner',
-        to: '/qrcode-scanner',
-      },
     ],
   },
 
