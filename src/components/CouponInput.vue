@@ -69,11 +69,7 @@
                 </v-btn>
               </div>
               <div class="d-flex justify-end">
-                <v-file-input
-                  small-chips
-                  accept="image/*"
-                  label="File input"
-                ></v-file-input>
+                <input type="file" accept="image/*" @change="onChangeInput" />
               </div>
               <qrcode-capture @decode="onDecode" />
             </div>
@@ -133,6 +129,12 @@ export default {
   },
   mounted() {},
   methods: {
+    onChangeInput(event) {
+      const files = [...event.target.files]
+      console.log({ files })
+      // const resultPromises = files.map(processFile)
+      // resultPromises.forEach(this.onDetect)
+    },
     onTorchActive() {
       this.torchActive = !this.torchActive
       console.log(this.torchActive)
