@@ -69,7 +69,12 @@
                 </v-btn>
               </div>
               <div class="d-flex justify-end">
-                <input type="file" accept="image/*" @change="onChangeInput" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="onChangeInput"
+                  capture="environment"
+                />
               </div>
               <qrcode-capture @decode="onDecode" />
             </div>
