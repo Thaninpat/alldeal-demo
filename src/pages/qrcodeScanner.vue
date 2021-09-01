@@ -13,6 +13,7 @@
         <ImageBarcodeReader
           @decode="onDecode"
           @error="onError"
+          :capture="false"
         ></ImageBarcodeReader>
       </div>
     </div>
