@@ -1,20 +1,25 @@
 <template>
   <base-layout>
-    <div id="scanner">
-      <div class="hello">
-        <StreamBarcodeReader
-          @decode="(a) => onDecode(a)"
-          @loaded="() => onLoaded()"
-        ></StreamBarcodeReader>
+    <div class="scanner">
+      <StreamBarcodeReader
+        @decode="onDecode"
+        @loaded="onLoaded"
+      ></StreamBarcodeReader>
 
-        Input Value: {{ text || 'Nothing' }}
-      </div>
-      <div>
+      Input Value: {{ text || 'Nothing' }}
+      <div class="text-right mr-6 my-10">
+        <v-btn icon x-large>
+          <label for="btn_scanner">
+            <v-icon size="35">mdi-image</v-icon>
+          </label>
+        </v-btn>
         <ImageBarcodeReader
+          class="btn_choose_file"
+          id="btn_scanner"
           @decode="onDecode"
           @error="onError"
           :capture="false"
-        ></ImageBarcodeReader>
+        />
       </div>
     </div>
   </base-layout>
@@ -24,7 +29,6 @@
 import { StreamBarcodeReader, ImageBarcodeReader } from 'vue-barcode-reader'
 
 export default {
-  name: 'HelloWorld',
   components: {
     StreamBarcodeReader,
     ImageBarcodeReader,
@@ -42,12 +46,12 @@ export default {
     onDecode2(result) {
       console.log(result)
     },
-    onDecode(a) {
-      console.log(a)
-      this.text = a
+    onDecode(result) {
+      console.log(result)
+      this.text = result
       if (this.id) clearTimeout(this.id)
       this.id = setTimeout(() => {
-        if (this.text === a) {
+        if (this.text === result) {
           this.text = ''
         }
       }, 5000)
@@ -61,8 +65,12 @@ export default {
   },
 }
 </script>
-<style scoped>
-#scanner {
+<style>
+.scanner {
   text-align: center;
+}
+.btn_choose_file {
+  display: none;
+  visibility: none;
 }
 </style>
