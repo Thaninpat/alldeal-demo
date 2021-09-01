@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <router-view></router-view>
   </v-app>
 </template>
@@ -14,3 +14,10 @@ export default {
   },
 }
 </script>
+<style>
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+</style>
