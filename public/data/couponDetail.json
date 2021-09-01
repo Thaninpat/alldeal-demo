@@ -11,7 +11,7 @@
         "expireDate": "11/1/2020 0:00",
         "usedDate": "",
         "markUsed": false,
-        "src": "images/thumbnail.jpg"
+        "src": "img/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171202",
@@ -25,7 +25,7 @@
         "expireDate": "11/1/2020 0:00",
         "usedDate": "",
         "markUsed": false,
-        "src": "images/thumbnail.jpg"
+        "src": "img/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171203",
@@ -39,7 +39,7 @@
         "expireDate": "11/1/2020 0:00",
         "usedDate": "11/1/2020 0:00",
         "markUsed": null,
-        "src": "images/thumbnail.jpg"
+        "src": "img/thumbnail.jpg"
     },
     {
         "redemtionCode": "9171204",
@@ -53,6 +53,6 @@
         "expireDate": "2/1/2021 0:00",
         "usedDate": "2/1/2021 0:00",
         "markUsed": null,
-        "src": "images/thumbnail.jpg"
+        "src": "img/thumbnail.jpg"
     }
 ]

@@ -75,7 +75,7 @@
                   label="File input"
                 ></v-file-input>
               </div>
-              <!-- <qrcode-capture @detect="onDetect" /> -->
+              <qrcode-capture @decode="onDecode" />
             </div>
           </div>
         </v-dialog>
