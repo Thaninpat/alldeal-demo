@@ -73,10 +73,10 @@
                   type="file"
                   accept="image/*"
                   @change="onChangeInput"
-                  capture="environment"
+                  :capture="false"
                 />
               </div>
-              <qrcode-capture @decode="onDecode" />
+              <qrcode-capture @decode="onDecode" :capture="false" />
             </div>
           </div>
         </v-dialog>
