@@ -76,7 +76,11 @@
                   :capture="false"
                 />
               </div>
-              <qrcode-capture @decode="onDecode" :capture="false" />
+              <qrcode-capture
+                @detect="onDetect"
+                :capture="false"
+                :multiple="false"
+              />
             </div>
           </div>
         </v-dialog>
@@ -148,10 +152,42 @@ export default {
       this.isShowCamera = !this.isShowCamera
     },
     onDecode(result) {
-      console.log({ result })
+      alert(result)
       this.result = result
       this.filterData(this.result)
       this.isShowCamera = false
+    },
+    async onDetect(promise) {
+      try {
+        const {
+          // imageData, // raw image data of image/frame
+          content, // decoded String or null
+          // location, // QR code coordinates or null
+        } = await promise
+
+        // if (imageData === null) {
+        //   alert('null')
+        //   // decoded nothing
+        // } else {
+        //   alert(imageData)
+        // }
+        if (content === null) {
+          alert(`null,${content}`)
+          // decoded nothing
+        } else {
+          alert(content)
+          this.result = content
+        }
+        // if (location === null) {
+        //   alert('null')
+        //   // decoded nothing
+        // } else {
+        //   alert({ location })
+        // }
+      } catch (error) {
+        alert(error)
+        // ...
+      }
     },
 
     matchRedemtion(result) {
