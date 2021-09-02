@@ -54,7 +54,6 @@
                   :capture="false"
                 />
               </div>
-              <!-- <div v-if="!loading">Input Value: {{ result || 'Nothing' }}</div> -->
             </div>
           </div>
         </v-dialog>
@@ -65,17 +64,20 @@
 
     <!-- Error Notification -->
     <div class="pt-5">
-      <v-snackbar v-model="isData" text outlined color="error" :timeout="2000">
-        <div class="text-center">
-          Not found
-        </div>
-      </v-snackbar>
-
-      <v-snackbar v-model="errors" text outlined color="error" :timeout="2000">
-        <div class="text-center">
-          {{ error }}
-        </div>
-      </v-snackbar>
+      <dialog-error
+        v-if="haveData"
+        @isError="isData"
+        :errors="haveData"
+        :title="title"
+        :text="error"
+      />
+      <dialog-error
+        v-if="errors"
+        @isError="isError"
+        :errors="errors"
+        :title="title"
+        :text="error"
+      />
     </div>
     <!-- Main detail -->
     <coupon-detail-list
@@ -83,7 +85,6 @@
       @isUsed="isUsed"
       :values="values"
     />
-    <!-- dialog -->
   </v-container>
 </template>
 
@@ -93,12 +94,19 @@ import moment from 'moment'
 import { StreamBarcodeReader, ImageBarcodeReader } from 'vue-barcode-reader'
 
 import CouponDetailList from './CouponDetailList.vue'
+import DialogError from './DialogError.vue'
 export default {
-  components: { CouponDetailList, StreamBarcodeReader, ImageBarcodeReader },
+  components: {
+    CouponDetailList,
+    StreamBarcodeReader,
+    ImageBarcodeReader,
+    DialogError,
+  },
   data() {
     return {
       result: '',
       error: '',
+      title: '',
       lists: null,
       values: null,
       dataMatched: true,
@@ -107,7 +115,7 @@ export default {
       loading: true,
       used: true,
       avaliable: true,
-      isData: false,
+      haveData: false,
       errors: false,
     }
   },
@@ -116,25 +124,24 @@ export default {
       this.isShowCamera = !this.isShowCamera
     },
     onDecode(res) {
-      // console.log({ res })
       this.result = res
       this.filterData(this.result)
       this.isShowCamera = false
       if (this.id) clearTimeout(this.id)
-      this.id = setTimeout(() => {
-        if (this.result === res) {
-          console.log(`id: ${this.id}`)
-          this.result = ''
-        }
-      }, 5000)
+      // this.id = setTimeout(() => {
+      //   if (this.result === res) {
+      //     console.log(`id: ${this.id}`)
+      //     this.result = ''
+      //   }
+      // }, 5000)
     },
     onLoaded() {
       this.loading = false
     },
     onError(error) {
-      this.errors = true
-      this.error = error.message
-      console.warn(error.message)
+      this.Error(error)
+      // this.error = error.message
+      console.warn(error.name, error.message)
     },
 
     matchRedemtion(result) {
@@ -143,11 +150,13 @@ export default {
       )
       const valueLength = value.length
       if (valueLength > 0) {
-        this.isData = false
+        this.isData(false)
+        // this.haveData = false
         this.dataMatched = true
         return value
       } else {
-        this.isData = true
+        this.isData(true)
+        // this.haveData = true
         this.dataMatched = false
       }
     },
@@ -162,7 +171,8 @@ export default {
             this.values = this.matchRedemtion(result)
           }
         } else {
-          this.isData = true
+          this.isData(true)
+          // this.haveData = true
           this.dataMatched = false
         }
       } catch (error) {
@@ -188,7 +198,6 @@ export default {
             }
           })
           this.lists = update
-          // alert('The redemption code has been successfully canceled.')
           this.result = ''
           this.dataMatched = false
         }
@@ -207,7 +216,6 @@ export default {
             }
           })
           this.lists = update
-          // alert('The redemption code has been used successfully.')
           this.result = ''
           this.dataMatched = false
         }
@@ -215,27 +223,38 @@ export default {
         console.log(error)
       }
     },
-    // Error(error) {
-    //   if (error.name === 'NotAllowedError') {
-    //     this.error = 'ERROR: you need to grant camera access permission'
-    //   } else if (error.name === 'NotFoundError') {
-    //     this.error = 'ERROR: no camera on this device'
-    //   } else if (error.name === 'NotSupportedError') {
-    //     this.error = 'ERROR: secure context required (HTTPS, localhost)'
-    //   } else if (error.name === 'NotReadableError') {
-    //     this.error = 'ERROR: is the camera already in use?'
-    //   } else if (error.name === 'OverconstrainedError') {
-    //     this.error = 'ERROR: installed cameras are not suitable'
-    //   } else if (error.name === 'StreamApiNotSupportedError') {
-    //     this.error = 'ERROR: Stream API is not supported in this browser'
-    //   } else if (error.name === 'InsecureContextError') {
-    //     this.error =
-    //       'ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.'
-    //   } else {
-    //     this.error = `ERROR: Camera error (${error.name})`
-    //   }
-    //   this.errors = true
-    // },
+    isData(haveData) {
+      this.haveData = haveData
+      this.error = 'No information found'
+      this.title = 'Not found'
+      this.result = ''
+    },
+    isError(errors) {
+      this.errors = errors
+      this.title = 'Error'
+      this.result = ''
+    },
+    Error(error) {
+      if (error.name === 'NotAllowedError') {
+        this.error = 'you need to grant camera access permission'
+      } else if (error.name === 'NotFoundError') {
+        this.error = 'no camera on this device'
+      } else if (error.name === 'NotSupportedError') {
+        this.error = 'secure context required (HTTPS, localhost)'
+      } else if (error.name === 'NotReadableError') {
+        this.error = 'is the camera already in use?'
+      } else if (error.name === 'OverconstrainedError') {
+        this.error = 'installed cameras are not suitable'
+      } else if (error.name === 'StreamApiNotSupportedError') {
+        this.error = 'Stream API is not supported in this browser'
+      } else if (error.name === 'InsecureContextError') {
+        this.error =
+          'Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.'
+      } else {
+        this.error = `${error.message}`
+      }
+      this.isError(true)
+    },
   },
 }
 </script>

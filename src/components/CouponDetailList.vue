@@ -35,8 +35,9 @@
               <v-col cols="6">Used Date</v-col>
               <v-col cols="6">{{ value.usedDate }}</v-col>
             </v-row>
-            <div class="d-flex justify-center mt-6">
+            <div class="mt-6">
               <dialog-btn
+                class="justify-center"
                 :status="value.status"
                 @isUsed="isUsed(value.redemtionCode, value.markUsed)"
               />

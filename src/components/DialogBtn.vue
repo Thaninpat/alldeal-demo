@@ -34,16 +34,19 @@
         />
       </template>
       <v-card>
-        <v-card-title class="text-text-h6">
-          Are you sure to proceed?
+        <v-card-title class="justify-center">
+          <strong>Confirm</strong>
         </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="dialog = false">
-            No
+        <v-card-text class="text-center text--primary">
+          Are you sure?
+        </v-card-text>
+        <v-divider />
+        <v-card-actions class="justify-space-around">
+          <v-btn class="px-9" color="primary" text @click="onDialog">
+            cancel
           </v-btn>
-          <v-btn color="green darken-1" text @click="isUsed">
-            Yes
+          <v-btn class="px-9" color="primary" text @click="isUsed">
+            confirm
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -60,6 +63,9 @@ export default {
     }
   },
   methods: {
+    onDialog() {
+      this.dialog = false
+    },
     isUsed() {
       this.dialog = false
       this.$emit('isUsed')
