@@ -6,7 +6,9 @@ import router from './routes'
 import store from './store'
 import BaseLayout from './components/base/BaseLayout'
 import './registerServiceWorker'
+// import VueQrcodeReader from 'vue-qrcode-reader'
 
+// Vue.use(VueQrcodeReader)
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)
 

@@ -42,7 +42,7 @@
         </v-card-text>
         <v-divider />
         <v-card-actions class="justify-space-around">
-          <v-btn class="px-9" color="primary" text @click="onDialog">
+          <v-btn class="px-9" color="error" text @click="onDialog">
             cancel
           </v-btn>
           <v-btn class="px-9" color="primary" text @click="isUsed">

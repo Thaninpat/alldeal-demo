@@ -36,11 +36,12 @@
               </v-btn>
               <div class="scanner">
                 <StreamBarcodeReader
+                  v-if="isShowCamera"
                   @decode="onDecode"
                   @loaded="onLoaded"
-                ></StreamBarcodeReader>
+                />
               </div>
-              <div v-if="!loading" class="text-right ma-5">
+              <div v-if="!loading && isShowCamera" class="text-right ma-5">
                 <v-btn icon x-large>
                   <label for="btn_scanner">
                     <v-icon size="35" v-text="'$Image'" />
@@ -91,7 +92,7 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
-import { StreamBarcodeReader, ImageBarcodeReader } from 'vue-barcode-reader'
+import { ImageBarcodeReader, StreamBarcodeReader } from 'vue-barcode-reader'
 
 import CouponDetailList from './CouponDetailList.vue'
 import DialogError from './DialogError.vue'
@@ -104,7 +105,7 @@ export default {
   },
   data() {
     return {
-      result: '',
+      result: null,
       error: '',
       title: '',
       lists: null,
@@ -117,30 +118,26 @@ export default {
       avaliable: true,
       haveData: false,
       errors: false,
+      showScanConfirmation: false,
+      camera: 'auto',
     }
   },
   methods: {
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
+      this.loading = true
     },
-    onDecode(res) {
-      this.result = res
-      this.filterData(this.result)
-      this.isShowCamera = false
-      if (this.id) clearTimeout(this.id)
-      // this.id = setTimeout(() => {
-      //   if (this.result === res) {
-      //     console.log(`id: ${this.id}`)
-      //     this.result = ''
-      //   }
-      // }, 5000)
+
+    onDecode(content) {
+      this.filterData(content)
+      this.result = content
+      console.log('Result:', content)
     },
     onLoaded() {
       this.loading = false
     },
     onError(error) {
       this.Error(error)
-      // this.error = error.message
       console.warn(error.name, error.message)
     },
 
@@ -151,12 +148,11 @@ export default {
       const valueLength = value.length
       if (valueLength > 0) {
         this.isData(false)
-        // this.haveData = false
         this.dataMatched = true
+        this.isShowCamera = false
         return value
       } else {
         this.isData(true)
-        // this.haveData = true
         this.dataMatched = false
       }
     },
@@ -172,7 +168,6 @@ export default {
           }
         } else {
           this.isData(true)
-          // this.haveData = true
           this.dataMatched = false
         }
       } catch (error) {
@@ -227,12 +222,12 @@ export default {
       this.haveData = haveData
       this.error = 'No information found'
       this.title = 'Not found'
-      this.result = ''
+      // this.result = ''
     },
     isError(errors) {
       this.errors = errors
       this.title = 'Error'
-      this.result = ''
+      // this.result = ''
     },
     Error(error) {
       if (error.name === 'NotAllowedError') {
@@ -275,4 +270,20 @@ export default {
 /* .btn_close {
   z-index: 99;
 } */
+.scan-confirmation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(255, 255, 255, 0.8);
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+.loading-indicator {
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+}
 </style>
