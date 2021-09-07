@@ -28,6 +28,10 @@
 
 <script>
 export default {
-  props: ['items'],
+  props: {
+    items: {
+      type: Array,
+    },
+  },
 }
 </script>

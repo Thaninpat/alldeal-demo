@@ -13,7 +13,7 @@ export default new Vuetify({
       mdiTicket: 'mdi-ticket-percent-outline',
       mdiCashCheck: 'mdi-cash-check',
       mdiCashRefund: 'mdi-cash-refund',
-      QrcodeScan: 'mdi-qrcode-scan',
+      Qrcode: 'mdi-qrcode-scan',
       Flashlight: 'mdi-flashlight',
       FlashlightOff: 'mdi-flashlight-off',
       Close: 'mdi-close',

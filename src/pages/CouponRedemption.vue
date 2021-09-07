@@ -10,5 +10,3 @@ export default {
   components: { CouponInput },
 }
 </script>
-
-<style></style>

@@ -53,7 +53,11 @@
 import DialogBtn from './DialogBtn.vue'
 export default {
   components: { DialogBtn },
-  props: ['values'],
+  props: {
+    values: {
+      type: Array,
+    },
+  },
   methods: {
     isUsed(redemCode, markUsed) {
       this.$emit('isUsed', redemCode, markUsed)

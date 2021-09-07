@@ -88,6 +88,20 @@
 <script>
 export default {
   props: ['list', 'amounts', 'customers', 'idx'],
+  // props: {
+  //   list: {
+  //     type: Object,
+  //   },
+  //   amounts: {
+  //     typr: Object,
+  //   },
+  //   customers: {
+  //     typr: Object,
+  //   },
+  //   idx: {
+  //     type: Number,
+  //   },
+  // },
 }
 </script>
 

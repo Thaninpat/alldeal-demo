@@ -26,7 +26,11 @@
 
 <script>
 export default {
-  props: ['isShowCamera'],
+  props: {
+    isShowCamera: {
+      type: Boolean,
+    },
+  },
 }
 </script>
 

@@ -19,7 +19,20 @@
 
 <script>
 export default {
-  props: ['errors', 'title', 'text'],
+  props: {
+    errors: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    text: {
+      type: String,
+      default: '',
+    },
+  },
 
   methods: {
     isError(errors) {

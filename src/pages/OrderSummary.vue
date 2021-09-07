@@ -44,53 +44,49 @@
 
 <script>
 export default {
-  data() {
-    return {
-      items: [
-        {
-          src: '/img/thumbnail.jpg/',
-          title: '0001 - Deal Item 1',
-          statusDate: '1 Apr 21 - 30 Jun 21',
-          status: 'Active',
-          value1: '68',
-          value2: '71',
-          value3: '23',
-          review: '2',
-        },
-        {
-          src: '/img/thumbnail.jpg/',
-          title: '0002 - Deal Item 2',
-          statusDate: '1 Nov 21 - 21 May 21',
-          status: 'Active',
-          value1: '578',
-          value2: '569',
-          value3: '235',
-          review: '89',
-        },
-        {
-          src: '/img/thumbnail.jpg/',
-          title: '0003 - Deal Item 3',
-          statusDate: '1 Nov 21 - 21 Apr 21',
-          status: 'End',
-          value1: '558',
-          value2: '547',
-          value3: '302',
-          review: '24',
-        },
-        {
-          src: '/img/thumbnail.jpg/',
-          title: '0004 - Deal Item 4',
-          statusDate: '1 Nov - 30 Apr 21',
-          status: 'End',
-          value1: '',
-          value2: '',
-          value3: '',
-          review: '',
-        },
-      ],
-    }
-  },
+  data: () => ({
+    items: [
+      {
+        src: '/img/thumbnail.jpg/',
+        title: '0001 - Deal Item 1',
+        statusDate: '1 Apr 21 - 30 Jun 21',
+        status: 'Active',
+        value1: '68',
+        value2: '71',
+        value3: '23',
+        review: '2',
+      },
+      {
+        src: '/img/thumbnail.jpg/',
+        title: '0002 - Deal Item 2',
+        statusDate: '1 Nov 21 - 21 May 21',
+        status: 'Active',
+        value1: '578',
+        value2: '569',
+        value3: '235',
+        review: '89',
+      },
+      {
+        src: '/img/thumbnail.jpg/',
+        title: '0003 - Deal Item 3',
+        statusDate: '1 Nov 21 - 21 Apr 21',
+        status: 'End',
+        value1: '558',
+        value2: '547',
+        value3: '302',
+        review: '24',
+      },
+      {
+        src: '/img/thumbnail.jpg/',
+        title: '0004 - Deal Item 4',
+        statusDate: '1 Nov - 30 Apr 21',
+        status: 'End',
+        value1: '',
+        value2: '',
+        value3: '',
+        review: '',
+      },
+    ],
+  }),
 }
 </script>
-
-<style></style>

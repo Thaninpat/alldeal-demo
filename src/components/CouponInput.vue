@@ -22,7 +22,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon v-html="'$QrcodeScan'"></v-icon>
+              <v-icon v-text="'$Qrcode'"></v-icon>
             </v-btn>
           </template>
           <div class="backdrop_scanner">
@@ -31,7 +31,7 @@
               <v-btn class="btn_close" icon>
                 <v-icon
                   @click="closeCamera"
-                  v-text="loading ? '' : 'mdi-close'"
+                  v-text="loading ? '' : '$Close'"
                 ></v-icon>
               </v-btn>
               <div class="scanner">
@@ -103,25 +103,22 @@ export default {
     ImageBarcodeReader,
     DialogError,
   },
-  data() {
-    return {
-      result: null,
-      error: '',
-      title: '',
-      lists: null,
-      values: null,
-      dataMatched: true,
-      isShowCamera: false,
-      id: null,
-      loading: true,
-      used: true,
-      avaliable: true,
-      haveData: false,
-      errors: false,
-      showScanConfirmation: false,
-      camera: 'auto',
-    }
-  },
+  data: () => ({
+    error: '',
+    title: '',
+    result: null,
+    lists: null,
+    values: null,
+    dataMatched: true,
+    isShowCamera: false,
+    id: null,
+    used: true,
+    avaliable: true,
+    haveData: false,
+    loading: true,
+    errors: false,
+  }),
+
   methods: {
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
@@ -131,7 +128,7 @@ export default {
     onDecode(content) {
       this.filterData(content)
       this.result = content
-      console.log('Result:', content)
+      // console.log('Result:', content)
     },
     onLoaded() {
       this.loading = false
@@ -142,8 +139,8 @@ export default {
     },
 
     matchRedemtion(result) {
-      const value = this.lists.filter((i) =>
-        i.redemtionCode.toLowerCase().match(result.toLowerCase())
+      const value = this.lists.filter((item) =>
+        item.redemtionCode.toLowerCase().match(result.toLowerCase())
       )
       const valueLength = value.length
       if (valueLength > 0) {
@@ -177,7 +174,7 @@ export default {
     async isUsed(redemCode, markUsed) {
       this.avaliable = !this.avaliable
       try {
-        let updatedAt = moment(Date.now()).format('DD/M/YYYY hh:mm')
+        let updatedAt = moment(Date.now()).format('DD/M/YYYY HH:mm')
         // Used Coupon
         if (markUsed === true || markUsed === null) {
           let update = await this.lists.map((item) => {
@@ -267,9 +264,6 @@ export default {
   display: none;
   visibility: none;
 }
-/* .btn_close {
-  z-index: 99;
-} */
 .scan-confirmation {
   position: absolute;
   width: 100%;

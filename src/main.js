@@ -6,6 +6,7 @@ import router from './routes'
 import store from './store'
 import BaseLayout from './components/base/BaseLayout'
 import './registerServiceWorker'
+import './vee-validate'
 // import VueQrcodeReader from 'vue-qrcode-reader'
 
 // Vue.use(VueQrcodeReader)

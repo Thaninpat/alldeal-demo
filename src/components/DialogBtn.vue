@@ -42,7 +42,7 @@
         </v-card-text>
         <v-divider />
         <v-card-actions class="justify-space-around">
-          <v-btn class="px-9" color="error" text @click="onDialog">
+          <v-btn class="px-9" color="error" text @click="closeDialog">
             cancel
           </v-btn>
           <v-btn class="px-9" color="primary" text @click="isUsed">
@@ -53,17 +53,20 @@
     </v-dialog>
   </v-row>
 </template>
-
 <script>
 export default {
-  props: ['status', 'color'],
-  data() {
-    return {
-      dialog: false,
-    }
+  props: {
+    status: {
+      type: String,
+      default: '',
+    },
   },
+  data: () => ({
+    dialog: false,
+  }),
+
   methods: {
-    onDialog() {
+    closeDialog() {
       this.dialog = false
     },
     isUsed() {
@@ -73,5 +76,3 @@ export default {
   },
 }
 </script>
-
-<style></style>
