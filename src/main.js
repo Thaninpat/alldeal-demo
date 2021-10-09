@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import axios from 'axios'
+
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 
@@ -12,6 +14,10 @@ import './vee-validate'
 // Vue.use(VueQrcodeReader)
 Vue.config.productionTip = false
 Vue.component('base-layout', BaseLayout)
+const base = axios.create({
+  baseURL: 'https://alldeal-login.herokuapp.com/api/v1', // replace on production env
+})
+Vue.prototype.$http = base
 
 new Vue({
   vuetify,

@@ -12,9 +12,10 @@
             <form @submit.prevent="submit">
               <v-card-text>
                 <VTextFieldWithValidation
-                  rules="required|min:3"
-                  v-model="username"
-                  label="username"
+                  rules="required|min:4"
+                  v-model="login.username"
+                  label="Username"
+                  placeholder="Input username"
                   :iconsInput="'mdi-account-outline'"
                 />
 
@@ -24,18 +25,19 @@
                   label="E-mail"
                 /> -->
                 <VTextFieldWithValidation
-                  rules="required|min:3"
-                  v-model="password"
-                  label="password"
+                  rules="required|min:6"
+                  v-model="login.password"
+                  label="Password"
+                  placeholder="Input password"
                   :typeInput="'password'"
                   :iconsInput="'mdi-form-textbox-password'"
                 />
 
                 <!-- Do this one yourself! -->
                 <div class="text-right">
-                  <v-btn to="forgot-password" text small plain
-                    >FORGOT PASSWORD</v-btn
-                  >
+                  <v-btn to="forgot-password" text small plain>
+                    FORGOT PASSWORD
+                  </v-btn>
                 </div>
               </v-card-text>
               <v-card-actions>
@@ -47,11 +49,15 @@
                   :disabled="invalid || !validated"
                 >
                   login
-                  <v-icon right dark>
-                    mdi-login
-                  </v-icon>
+                  <v-icon right dark> mdi-login </v-icon>
                 </v-btn>
               </v-card-actions>
+              <div class=" text-center">
+                <label
+                  class="red--text"
+                  v-text="Error.errMessage === '' ? '' : Error.errMessage"
+                ></label>
+              </div>
               <!-- <v-card-actions>
                 <v-btn text color="error" @click="clear">Clear</v-btn>
                 <v-btn text color="warning" @click="validate">Validate</v-btn>
@@ -67,28 +73,66 @@
 <script>
 import { ValidationObserver } from 'vee-validate'
 import VTextFieldWithValidation from '../components/InputLogin/VTextFieldWithValidation.vue'
-
+import VueJwtDecode from 'vue-jwt-decode'
 export default {
   data: () => ({
-    username: '',
-    password: '',
+    login: {
+      username: '',
+      password: '',
+    },
+    returnUrl: '',
+    role: [],
+    Error: {
+      errUser: false,
+      errPass: false,
+      errMessage: '',
+    },
   }),
   components: {
     ValidationObserver,
     VTextFieldWithValidation,
   },
+
   methods: {
-    async clear() {
-      this.username = this.password = ''
-      requestAnimationFrame(() => {
-        this.$refs.obs.reset()
-      })
-    },
     async submit() {
-      console.log('Submitting!')
-      console.log(`Username : ${this.username}\nPassword: ${this.password}`)
-      this.clear()
+      try {
+        let response = await this.$http.post('/auth/login', this.login)
+        let token = response.data.data.token
+        localStorage.setItem('user', token)
+        let decoded = VueJwtDecode.decode(token)
+        if (
+          decoded.data.roles[0] == 'ROLE_ADMIN' ||
+          decoded.data.roles[0] == 'ROLE_ACCOUNT' ||
+          decoded.data.roles[0] == 'ROLE_SALE'
+        ) {
+          this.$router.push('/')
+        }
+        if (decoded.data.roles[0] == 'ROLE_AGENT') {
+          this.$router.push('/order-summary')
+        }
+      } catch (error) {
+        if (error.response.data.err === 'username') {
+          this.Error.errUser = true
+          this.Error.errMessage = error.response.data.message
+          console.log(this.Error.errMessage)
+        }
+        if (error.response.data.err === 'password') {
+          this.Error.errPass = true
+          this.Error.errMessage = error.response.data.message
+        }
+        console.log(error.response.data)
+      }
     },
+  },
+
+  async created() {
+    try {
+      if (localStorage.getItem('user')) {
+        return this.$router.push('/')
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
   },
 }
 </script>

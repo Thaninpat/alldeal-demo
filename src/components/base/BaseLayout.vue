@@ -33,15 +33,26 @@
         <v-list-item class="pb-4">
           <v-img src="/img/alldeal_logo.png"></v-img>
         </v-list-item>
+        <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
         <v-list-item-group v-model="group">
           <div v-for="(item, index) in items" :key="index">
-            <v-list-item :to="item.to">
-              <v-list-item-title>
-                {{ item.name }}
-              </v-list-item-title>
+            <v-list-item
+              v-if="
+                user.data === null
+                  ? ''
+                  : result === item.role[0] ||
+                    result === item.role[1] ||
+                    result === item.role[2]
+              "
+              :to="item.to"
+            >
+              <v-list-item-title> {{ item.name }} </v-list-item-title>
             </v-list-item>
-            <v-divider></v-divider>
           </div>
+          <v-divider />
+          <v-list-item class="mt-4" @click="logOut">
+            <v-list-item-title class="btn_logout">Logout</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -52,22 +63,40 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   props: ['pageTitle', 'pageDefaultBackLink'],
   data: () => ({
     drawer: false,
     group: null,
     notify: 52,
+    result: '',
   }),
-  computed: {
-    items() {
-      return this.$store.getters.menus
+  methods: {
+    ...mapActions({
+      getUser: 'user/getUser',
+    }),
+    logOut() {
+      localStorage.removeItem('user')
+      this.$router.push('/login')
     },
+  },
+  computed: {
+    ...mapGetters({
+      items: 'menus',
+      user: 'user/user',
+    }),
   },
   watch: {
     group() {
       this.drawer = false
     },
+  },
+  created() {
+    this.getUser()
+  },
+  updated() {
+    this.result = this.user.data.roles[0]
   },
 }
 </script>
@@ -75,5 +104,8 @@ export default {
 <style lang="scss" scoped>
 .v-application {
   font-family: 'Kanit';
+}
+.btn_logout {
+  color: hsl(0, 100%, 50%);
 }
 </style>
