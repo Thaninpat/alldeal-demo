@@ -10,7 +10,7 @@
     <table>
       <tr class="item-list">
         <th>No</th>
-        <th>Statement</th>
+        <th>Statement Date</th>
         <th>File Name</th>
         <th>Download</th>
       </tr>

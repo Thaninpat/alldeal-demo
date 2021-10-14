@@ -1,5 +1,5 @@
 <template>
-  <v-col class="d-flex justify-sm-center" cols="2.4">
+  <v-col class="d-flex justify-center" cols="2.4">
     <span class="title_header">{{ item.name }}</span>
   </v-col>
 </template>

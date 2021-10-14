@@ -3,31 +3,22 @@
     <v-expansion-panel>
       <v-expansion-panel-header>
         <v-row no-gutters>
-          <v-col
-            class="item-list d-flex justify-center align-center"
-            cols="2.4"
-          >
-            {{ list.orderNo }}
+          <v-col class="item-list d-flex justify-center align-center" cols="2">
+            {{ list.id }}
           </v-col>
-          <v-col
-            class="item-list d-flex justify-center align-center"
-            cols="2.4"
-          >
-            {{ list.paidDate }}
+          <v-col class="item-list d-flex justify-center align-center" cols="3">
+            {{ list.name }}
           </v-col>
           <v-col
             class="item-list d-flex justify-sm-center align-center"
-            cols="2.4"
+            cols="3"
           >
-            {{ amounts[idx] }}฿
+            {{ list.email }}
           </v-col>
-          <v-col
-            class="item-list d-flex justify-center align-center"
-            cols="2.4"
-          >
-            {{ customers[idx] }}
+          <v-col class="item-list d-flex justify-center align-center" cols="3">
+            {{ list.phone }}
           </v-col>
-          <v-col
+          <!-- <v-col
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
@@ -47,16 +38,16 @@
               v-text="'$mdiCashRefund'"
             ></v-icon>
             <v-icon v-else dense></v-icon>
-          </v-col>
+          </v-col> -->
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            Chanel: {{ list.chanel }}
+            City: {{ list.city }}
           </v-col>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            Payment: {{ list.payment }}
+            Street: {{ list.street }}
           </v-col>
         </v-row>
         <v-row v-for="(order, index) in list.items" :key="index">

@@ -11,70 +11,92 @@
       :amounts="amounts"
       :customers="customers"
     />
+    <div class="text-center mt-4">
+      <v-pagination
+        v-model="currentPage"
+        :length="totalPages"
+        total-visible="7"
+        @input="handlePageChange"
+      ></v-pagination>
+    </div>
   </base-layout>
 </template>
 
 <script>
-import axios from 'axios'
-// import { mapState } from 'vuex'
 import OrderDetailLists from '../components/OrderDetailLists.vue'
 import OrderDetailHeader from '../components/OrderDetailHeader.vue'
+import userDataService from '../service/userDataService'
+
 export default {
-  components: { OrderDetailLists, OrderDetailHeader },
+  components: {
+    OrderDetailLists,
+    OrderDetailHeader,
+  },
   data: () => ({
     date: null,
     items: [
-      { name: 'Order No' },
-      { name: 'Paid Date' },
-      { name: 'Amount' },
-      { name: 'Customer' },
-      { name: 'Status' },
+      { name: 'Id' },
+      { name: 'Name' },
+      { name: 'Email' },
+      { name: 'Phone' },
+      { name: '' },
     ],
     lists: [],
     netPrices: [],
     amounts: [],
     customers: [],
+    currentPage: 1,
+    totalPages: 0,
+    pageSize: 4,
   }),
   mounted() {
     this.Fetch()
   },
   methods: {
+    getRequestParams(currentPage, pageSize) {
+      let params = {}
+      if (currentPage) {
+        params['_page'] = currentPage
+      }
+      if (pageSize) {
+        params['_limit'] = pageSize
+      }
+      return params
+    },
     async Fetch() {
-      try {
-        const { data } = await axios.get('/data/order.json/')
-        this.lists = data
-        this.netPrices = this.lists.map((i) => i.items.map((j) => j.netPrice))
-        this.amounts = this.netPrices.map((i) =>
-          i.reduce((acc, curr) => acc + curr)
-        )
-        this.customers = data.map((i) => this.CuttingWord(i.customer))
-      } catch (error) {
-        console.log(error)
+      const params = await this.getRequestParams(
+        this.currentPage,
+        this.pageSize
+      )
+      await userDataService
+        .getAll(params)
+        .then((res) => {
+          const order = res.data
+          this.lists = order.map(this.getDisplay)
+          const totalItems = parseInt(res.headers['x-total-count'])
+          this.totalPages = Math.ceil(totalItems / this.pageSize)
+        })
+        .then((lists) => lists)
+        .catch((e) => {
+          console.error(e)
+        })
+    },
+    getDisplay(list) {
+      return {
+        id: list.id,
+        name: list.name.substr(0, 9) + '...',
+        email: list.email.substr(0, 10),
+        phone: list.phone,
+        city: list.address.city,
+        street: list.address.street,
+        // status: list.published ? 'Published' : 'Pending',
       }
     },
-    CuttingWord(src) {
-      try {
-        if (src) {
-          let idx = src.length
-          if (idx > 9) {
-            return (src = src.slice(0, 9) + '...')
-          } else {
-            return (src = src.slice(0, 9))
-          }
-        }
-      } catch (error) {
-        console.log(error)
-      }
+
+    handlePageChange(value) {
+      this.currentPage = value
+      this.Fetch()
     },
   },
-  // computed: {
-  //   ...mapState('orders', ['orders']),
-  // orders() {
-  //   return this.$store.state.orders
-  // },
-  // },
-  // created() {
-  //   this.$store.dispatch('orders/getOrders')
-  // },
 }
 </script>

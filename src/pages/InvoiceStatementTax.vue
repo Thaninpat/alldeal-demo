@@ -1,9 +1,9 @@
 <template>
   <base-layout pageTitle="Statement/Tax Invoice">
     <v-container>
-      <statement :items="items" />
+      <statement :items="statementItems" />
       <v-divider></v-divider>
-      <tax-invoice :items="items" />
+      <tax-invoice :items="taxInvoiceItems" />
     </v-container>
   </base-layout>
 </template>
@@ -14,35 +14,67 @@ import TaxInvoice from '../components/TaxInvoice.vue'
 export default {
   components: { Statement, TaxInvoice },
   data: () => ({
-    items: [
+    statementItems: [
       {
         id: '1',
         statementDate: '2021-02-02',
-        fileName: 'abc_1234_aasdf_1212121.pdf',
+        fileName: 'abc_1234_def.pdf',
         download: true,
       },
       {
         id: '2',
         statementDate: '2021-02-02',
-        fileName: 'abc1_asas_234.pdf',
+        fileName: 'abc1_as_234.pdf',
         download: true,
       },
       {
         id: '3',
         statementDate: '2021-02-02',
-        fileName: 'abc1_aslk_l234.pdf',
+        fileName: 'abc1_234.pdf',
         download: true,
       },
       {
         id: '4',
         statementDate: '2021-02-02',
-        fileName: 'abc1234_as3456.pdf',
+        fileName: 'abc1234_456.pdf',
         download: true,
       },
       {
         id: '5',
         statementDate: '2021-02-02',
-        fileName: 'abc1234_as3456.pdf',
+        fileName: 'abc12_3456.pdf',
+        download: true,
+      },
+    ],
+    taxInvoiceItems: [
+      {
+        id: '70',
+        statementDate: '2020-12',
+        fileName: 'WTD00769202012.PDF',
+        download: true,
+      },
+      {
+        id: '71',
+        statementDate: '2020-13',
+        fileName: 'WTD00769202013.PDF',
+        download: true,
+      },
+      {
+        id: '72',
+        statementDate: '2020-14',
+        fileName: 'WTD00769202014.PDF',
+        download: true,
+      },
+      {
+        id: '73',
+        statementDate: '2020-15',
+        fileName: 'WTD00769202015.PDF',
+        download: true,
+      },
+      {
+        id: '74',
+        statementDate: '2020-16',
+        fileName: 'WTD00769202016.PDF',
         download: true,
       },
     ],
@@ -62,6 +94,7 @@ tr:nth-child(odd) {
 }
 th {
   padding: 0px 4px;
+  font-size: 11px;
   font-weight: bold;
   background-color: hsl(0, 0%, 90%);
 }
