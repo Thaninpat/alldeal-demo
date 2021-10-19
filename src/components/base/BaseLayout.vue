@@ -51,7 +51,9 @@
           </div>
           <v-divider />
           <v-list-item class="mt-4" @click="logOut">
-            <v-list-item-title class="btn_logout">Logout</v-list-item-title>
+            <v-list-item-title class="btn_logout">
+              Logout
+            </v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
