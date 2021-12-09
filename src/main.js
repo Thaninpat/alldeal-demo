@@ -9,13 +9,19 @@ import store from './store'
 import BaseLayout from './components/base/BaseLayout'
 import './registerServiceWorker'
 import './vee-validate'
-// import VueQrcodeReader from 'vue-qrcode-reader'
 
-// Vue.use(VueQrcodeReader)
+import { initializeApp } from 'firebase/app'
+import settings from './settings'
+import './controller'
+
 Vue.config.productionTip = false
+
+initializeApp(settings.firebaseConfig)
+
 Vue.component('base-layout', BaseLayout)
 const base = axios.create({
   baseURL: 'https://alldeal-login.herokuapp.com/api/v1', // replace on production env
+  // baseURL: 'http://localhost:3000/api/v1',
 })
 Vue.prototype.$http = base
 

@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "alldeal-demo",
     "public": "dist",
     "ignore": [
       "firebase.json",

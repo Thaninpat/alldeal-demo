@@ -19,11 +19,6 @@
                   :iconsInput="'mdi-account-outline'"
                 />
 
-                <!-- <VTextFieldWithValidation
-                  rules="required|email"
-                  v-model="email"
-                  label="E-mail"
-                /> -->
                 <VTextFieldWithValidation
                   rules="required|min:6"
                   v-model="login.password"
@@ -55,13 +50,9 @@
               <div class=" text-center">
                 <label
                   class="red--text"
-                  v-text="Error.errMessage === '' ? '' : Error.errMessage"
+                  v-text="Error.errMessage ? Error.errMessage : ''"
                 ></label>
               </div>
-              <!-- <v-card-actions>
-                <v-btn text color="error" @click="clear">Clear</v-btn>
-                <v-btn text color="warning" @click="validate">Validate</v-btn>
-              </v-card-actions> -->
             </form>
           </ValidationObserver>
         </v-col>
@@ -120,7 +111,7 @@ export default {
           this.Error.errPass = true
           this.Error.errMessage = error.response.data.message
         }
-        console.log(error.response.data)
+        console.log(error.response.data.message)
       }
     },
   },

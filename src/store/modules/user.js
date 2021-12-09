@@ -13,12 +13,14 @@ const user = {
   actions: {
     async getUser({ commit }) {
       let token = await localStorage.getItem('user')
+      const errExcept = "Cannot read properties of null (reading 'split')"
       try {
         let decoded = await VueJwtDecode.decode(token)
         const data = decoded
         commit('SET_USER', data)
       } catch (error) {
-        console.log(error.message)
+        if (error.message === errExcept) return
+        else console.log(error.message)
       }
     },
   },

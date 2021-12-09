@@ -1,11 +1,15 @@
 import http from '../http-common'
 
 class userDataService {
-  getAll(params) {
-    return http.get('/users', { params })
+  getOrder(params) {
+    return http.get('/paidorderitems', { params })
   }
-
-  // other CRUD methods
+  getCampaign() {
+    return http.get('/campaigns')
+  }
+  getOrderSummary() {
+    return http.get('/ordersummary')
+  }
 }
 
 export default new userDataService()

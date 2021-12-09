@@ -37,4 +37,23 @@ if (process.env.NODE_ENV === 'production') {
       console.error('Error during service worker registration:', error)
     },
   })
+  const subscription = async () => {
+    // Service Worker
+    const worker = await navigator.serviceWorker.ready
+    const clientId = await worker.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey:
+        'BJsLO8D3n98TCq5bdazXPpETrTWfgT7K7W4ptB0ssuyqeEGitcg-vHQdHVOktV-qD0oZjovL2ax8b3UWJ_djaRs',
+    })
+    await fetch('https://alldeal-login.herokuapp.com/subscription', {
+      method: 'POST',
+      body: JSON.stringify(clientId),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    console.log('Subscribed.')
+  }
+
+  subscription()
 }

@@ -65,14 +65,14 @@
 
     <!-- Error Notification -->
     <div class="pt-5">
-      <dialog-error
+      <dialog-alert
         v-if="haveData"
         @isError="isData"
         :errors="haveData"
         :title="title"
         :text="error"
       />
-      <dialog-error
+      <dialog-alert
         v-if="errors"
         @isError="isError"
         :errors="errors"
@@ -95,13 +95,13 @@ import moment from 'moment'
 import { ImageBarcodeReader, StreamBarcodeReader } from 'vue-barcode-reader'
 
 import CouponDetailList from './CouponDetailList.vue'
-import DialogError from './DialogError.vue'
+import DialogAlert from './DialogAlert.vue'
 export default {
   components: {
     CouponDetailList,
     StreamBarcodeReader,
     ImageBarcodeReader,
-    DialogError,
+    DialogAlert,
   },
   data: () => ({
     error: '',
@@ -113,7 +113,7 @@ export default {
     isShowCamera: false,
     id: null,
     used: true,
-    avaliable: true,
+    available: true,
     haveData: false,
     loading: true,
     errors: false,
@@ -138,9 +138,9 @@ export default {
       console.warn(error.name, error.message)
     },
 
-    matchRedemtion(result) {
+    matchRedemption(result) {
       const value = this.lists.filter((item) =>
-        item.redemtionCode.toLowerCase().match(result.toLowerCase())
+        item.redemptionCode.toLowerCase().match(result.toLowerCase())
       )
       const valueLength = value.length
       if (valueLength > 0) {
@@ -157,11 +157,11 @@ export default {
       try {
         if (result) {
           if (this.lists) {
-            this.values = this.matchRedemtion(result)
+            this.values = this.matchRedemption(result)
           } else {
             const { data } = await axios.get('/data/couponDetail.json/')
             this.lists = data
-            this.values = this.matchRedemtion(result)
+            this.values = this.matchRedemption(result)
           }
         } else {
           this.isData(true)
@@ -171,18 +171,18 @@ export default {
         console.log(error)
       }
     },
-    async isUsed(redemCode, markUsed) {
-      this.avaliable = !this.avaliable
+    async isUsed(redemptionCode, markUsed) {
+      this.available = !this.available
       try {
         let updatedAt = moment(Date.now()).format('DD/M/YYYY HH:mm')
         // Used Coupon
         if (markUsed === true || markUsed === null) {
           let update = await this.lists.map((item) => {
-            if (item.redemtionCode === redemCode) {
+            if (item.redemptionCode === redemptionCode) {
               return {
                 ...item,
                 usedDate: updatedAt,
-                status: 'Avaliable',
+                status: 'Available',
                 markUsed: false,
               }
             } else {
@@ -193,10 +193,10 @@ export default {
           this.result = ''
           this.dataMatched = false
         }
-        // Avaliable Coupon
+        // available Coupon
         else {
           let update = await this.lists.map((item) => {
-            if (item.redemtionCode === redemCode) {
+            if (item.redemptionCode === redemptionCode) {
               return {
                 ...item,
                 usedDate: updatedAt,

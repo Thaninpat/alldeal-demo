@@ -1,11 +1,11 @@
 <template>
   <v-row>
-    <v-dialog v-model="dialog" persistent max-width="290">
+    <v-dialog v-model="dialog" persistent max-width="300">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          v-if="status === 'Avaliable'"
-          v-text="status === 'Avaliable' ? 'use' : 'cancel'"
-          :color="status === 'Avaliable' ? 'success' : 'error'"
+          v-if="status === 'Available'"
+          v-text="status === 'Available' ? 'use' : 'cancel'"
+          :color="status === 'Available' ? 'success' : 'error'"
           class="px-7"
           dark
           x-small

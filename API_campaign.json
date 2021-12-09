@@ -1,0 +1,31 @@
+{
+    "status": {
+        "code": "00000",
+        "message_th": "ทำรายการสำเร็จ",
+        "message_en": "Success"
+    },
+    "campaign": [
+        {
+            "id": 798,
+            "campaign_id": 389,
+            "name_th": "แพ็กเกจ JOOX VIP 7 วัน",
+            "name_en": "แพ็กเกจ JOOX VIP 7 วัน",
+            "price_net": 40,
+            "price_full": 59,
+            "redemption_start_tms": 1633668847000,
+            "redemption_end_tms": 1640926447000,
+            "thumbnail_img": "https://d284c7uxti0fik.cloudfront.net/media/campaign-items/798/3880020210624T12532559230.jpg"
+        },
+        {
+            "id": 799,
+            "campaign_id": 389,
+            "name_th": "แพ็กเกจ JOOX VIP 30 วัน",
+            "name_en": "แพ็กเกจ JOOX VIP 30 วัน",
+            "price_net": 59,
+            "price_full": 40,
+            "redemption_start_tms": 1633668847000,
+            "redemption_end_tms": 1640926447000,
+            "thumbnail_img": "https://d284c7uxti0fik.cloudfront.net/media/campaign-items/798/3880020210624T12532559230.jpg"
+        }
+    ]
+}

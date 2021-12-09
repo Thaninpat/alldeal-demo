@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="errors" persistent max-width="290">
+    <v-dialog v-model="errors" persistent max-width="300">
       <v-card>
         <v-card-title class="justify-center">
           <strong>{{ title }}</strong>
@@ -35,8 +35,8 @@ export default {
   },
 
   methods: {
-    isError(errors) {
-      this.$emit('isError', errors)
+    isError(value) {
+      this.$emit('isError', value)
     },
   },
 }

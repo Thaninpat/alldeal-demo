@@ -8,8 +8,7 @@
       :key="idx"
       :idx="idx"
       :list="list"
-      :amounts="amounts"
-      :customers="customers"
+      :campaigns="campaigns"
     />
     <div class="text-center mt-4">
       <v-pagination
@@ -26,6 +25,7 @@
 import OrderDetailLists from '../components/OrderDetailLists.vue'
 import OrderDetailHeader from '../components/OrderDetailHeader.vue'
 import userDataService from '../service/userDataService'
+import moment from 'moment'
 
 export default {
   components: {
@@ -35,16 +35,14 @@ export default {
   data: () => ({
     date: null,
     items: [
-      { name: 'Id' },
-      { name: 'Name' },
-      { name: 'Email' },
-      { name: 'Phone' },
-      { name: '' },
+      { name: 'OrderId' },
+      { name: 'Paid Date' },
+      { name: 'Amount' },
+      { name: 'Customer' },
+      { name: 'Status' },
     ],
     lists: [],
-    netPrices: [],
-    amounts: [],
-    customers: [],
+    campaigns: [],
     currentPage: 1,
     totalPages: 0,
     pageSize: 4,
@@ -68,29 +66,35 @@ export default {
         this.currentPage,
         this.pageSize
       )
-      await userDataService
-        .getAll(params)
-        .then((res) => {
-          const order = res.data
-          this.lists = order.map(this.getDisplay)
-          const totalItems = parseInt(res.headers['x-total-count'])
-          this.totalPages = Math.ceil(totalItems / this.pageSize)
-        })
-        .then((lists) => lists)
-        .catch((e) => {
-          console.error(e)
-        })
+      try {
+        // Orders
+        const res = await userDataService.getOrder(params)
+        this.lists = res.data.map(this.getDisplay)
+        const totalItems = parseInt(res.headers['x-total-count'])
+        this.totalPages = Math.ceil(totalItems / this.pageSize)
+        // Campaigns
+        const { data } = await userDataService.getCampaign()
+        this.campaigns = data
+      } catch (error) {
+        console.log(error)
+      }
     },
     getDisplay(list) {
-      return {
-        id: list.id,
-        name: list.name.substr(0, 9) + '...',
-        email: list.email.substr(0, 10),
-        phone: list.phone,
-        city: list.address.city,
-        street: list.address.street,
-        // status: list.published ? 'Published' : 'Pending',
-      }
+      if (list) {
+        return {
+          order_no: '...' + list.order_no.toString().substr(-7),
+          paid_tms: moment(list.paid_tms).format('DD/MM/YY hh:mm'),
+          sum_amount: list.sum_amount,
+          customer_id: list.customer_id,
+          status: 'paid',
+          channel_code: list.channel_code,
+          paymen_type_code: list.paymen_type_code,
+          campaign_item_id: list.items.map((i) => i.campaign_item_id),
+          quantity: list.items.map((i) => i.quantity),
+          // name: list.name.substr(0, 9) + '...',
+          // status: list.published ? 'Published' : 'Pending',
+        }
+      } else console.log('No data list')
     },
 
     handlePageChange(value) {

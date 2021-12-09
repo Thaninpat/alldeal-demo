@@ -3,24 +3,25 @@
     "short_name": "AllDeal",
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#ffffff",
-    "background_color": "rgb(0,70,140)",
+    "theme_color": "#00468c",
+    "background_color": "#00468c",
     "icons": [
         {
-            "src": "./img/icons/android-chrome-192x192.png",
+            "src": "/img/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "./img/icons/android-chrome-512x512.png",
+            "src": "/img/icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "./img/icons/maskable.png",
+            "src": "/img/icons/maskable.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable"
         }
-    ]
+    ],
+    "gcm_sender_id": "1079522180516"
 }

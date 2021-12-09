@@ -3,74 +3,81 @@
     <v-expansion-panel>
       <v-expansion-panel-header>
         <v-row no-gutters>
-          <v-col class="item-list d-flex justify-center align-center" cols="2">
-            {{ list.id }}
-          </v-col>
-          <v-col class="item-list d-flex justify-center align-center" cols="3">
-            {{ list.name }}
-          </v-col>
           <v-col
-            class="item-list d-flex justify-sm-center align-center"
-            cols="3"
-          >
-            {{ list.email }}
-          </v-col>
-          <v-col class="item-list d-flex justify-center align-center" cols="3">
-            {{ list.phone }}
-          </v-col>
-          <!-- <v-col
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
+            {{ list.order_no }}
+          </v-col>
+          <v-col class="item-list d-flex justify-center align-center" cols="3">
+            {{ list.paid_tms }}
+          </v-col>
+          <v-col
+            class="item-list d-flex justify-center align-center"
+            cols="2.5"
+          >
+            {{ list.sum_amount }}
+          </v-col>
+          <v-col class="item-list d-flex justify-center align-center" cols="3">
+            {{ list.customer_id }}
+          </v-col>
+          <v-col
+            class="item-list d-flex justify-end justify-sm-center align-center"
+          >
             <v-icon
-              v-if="list.status === 'Order'"
+              v-if="list.status === 'order'"
               dense
               v-text="'$mdiCashCheck'"
             ></v-icon>
             <v-icon
-              v-if="list.status === 'Paid'"
+              v-if="list.status === 'paid'"
               dense
               v-text="'$mdiCart'"
             ></v-icon>
             <v-icon
-              v-if="list.status === 'Refund'"
+              v-if="list.status === 'refund'"
               dense
               v-text="'$mdiCashRefund'"
             ></v-icon>
             <v-icon v-else dense></v-icon>
-          </v-col> -->
+          </v-col>
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            City: {{ list.city }}
+            Channel: {{ list.channel_code }}
           </v-col>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            Street: {{ list.street }}
+            Payment: {{ list.paymen_type_code }}
           </v-col>
         </v-row>
-        <v-row v-for="(order, index) in list.items" :key="index">
-          <v-col class="item-list d-flex justify-start pt-0" cols="1">
-            <v-avatar size="25" tile>
-              <v-img src="/img/thumbnail.jpg/"></v-img>
-            </v-avatar>
-          </v-col>
-          <v-col class="item-list d-flex justify-start pt-0" cols="5">
-            <span> {{ order.itemId }} - {{ order.name }} </span>
-          </v-col>
-          <v-col class="item-list d-flex justify-start pt-0" cols="3">
-            {{ order.netPrice }}฿
-          </v-col>
-          <v-col class="item-list d-flex justify-end pt-0" cols="3">
-            <v-icon
-              v-if="order.coupon.length > 0"
-              dense
-              v-text="'$mdiTicket'"
-            ></v-icon>
-            <v-icon v-else dense></v-icon>
-          </v-col>
-        </v-row>
+        <div v-for="(campaign, index) in campaigns" :key="index">
+          <v-row
+            v-if="list.campaign_item_id[index] === campaign.id"
+            class="pt-1"
+          >
+            <v-col class="item-list d-flex justify-start pt-0" cols="1">
+              <v-avatar size="25" tile>
+                <v-img :src="campaign.thumbnail_img"></v-img>
+              </v-avatar>
+            </v-col>
+            <v-col class="item-list d-flex justify-start pt-0" cols="5">
+              <span> {{ campaign.name_th }}</span>
+            </v-col>
+            <v-col class="item-list d-flex justify-start pt-0" cols="3">
+              {{ campaign.price_net }}฿
+            </v-col>
+            <v-col class="item-list d-flex justify-end pt-0" cols="3">
+              <v-icon
+                v-if="list.quantity[index] > 0"
+                dense
+                v-text="'$mdiTicket'"
+              ></v-icon>
+              <v-icon v-else dense></v-icon>
+            </v-col>
+          </v-row>
+        </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -78,16 +85,16 @@
 
 <script>
 export default {
-  props: ['list', 'amounts', 'customers', 'idx'],
+  props: ['list', 'idx', 'campaigns'],
   // props: {
   //   list: {
   //     type: Object,
   //   },
   //   amounts: {
-  //     typr: Object,
+  //     type: Object,
   //   },
   //   customers: {
-  //     typr: Object,
+  //     type: Object,
   //   },
   //   idx: {
   //     type: Number,

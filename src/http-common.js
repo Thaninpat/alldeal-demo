@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 export default axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
-  //   baseURL: 'data',
+  baseURL: 'https://alldeal-supplier-api.herokuapp.com/seller/v1',
   headers: {
     'Content-type': 'application/json',
     'x-total-count': 'x-total-count',

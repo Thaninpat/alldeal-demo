@@ -8,26 +8,43 @@ self.addEventListener('message', (event) => {
   }
 })
 
-let clickOpenUrl
-// Push Notification
-self.addEventListener('push', (event) => {
-  const payload = event.data ? event.data.text() : 'no payload'
-  clickOpenUrl = 'https://alldeal-demo.netlify.app/'
-  event.waitUntil(
-    self.registration.showNotification('ServiceWorker allDeal', {
-      body: payload,
-      icon: '/img/icons/android-chrome-192x192.png',
-      image: '/img/thumbnail.jpg',
-      vibrate: [200, 100, 200, 100, 200, 100, 200],
-      tag: 'vibration-sample',
-    })
-  )
+self.addEventListener('push', (e) => {
+  const data = e.data.json()
+  self.registration.showNotification(data.title, {
+    body: data.message,
+    icon: '/img/icons/android-chrome-192x192.png',
+    badge:
+      'https://cdn2.iconfinder.com/data/icons/stationary-19/100/Thumb_Tack-128.png',
+    vibrate: [100, 100, 100],
+    actions: [
+      {
+        action: 'close',
+        title: 'close notification',
+        icon:
+          'https://cdn2.iconfinder.com/data/icons/stationary-19/100/Thumb_Tack-128.png',
+      },
+      {
+        action: 'lookMessage',
+        title: 'open notification',
+        icon: 'https://cdn0.iconfinder.com/data/icons/mono2/100/view-128.png',
+      },
+    ],
+  })
+})
+
+self.addEventListener('notificationclick', (event) => {
+  if (event.action === 'lookMessage') {
+    event.notification.close()
+    clients.openWindow('https://alldeal-demo.netlify.app')
+  } else if (event.action === 'close') {
+    event.notification.close()
+  }
 })
 
 workbox.routing.registerRoute(
   new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
   workbox.strategies.cacheFirst({
-    cacheName: 'googleapis',
+    cacheName: 'google_apis',
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 30,
@@ -38,14 +55,16 @@ workbox.routing.registerRoute(
   })
 )
 
-// Clicked Notification
-self.addEventListener('notificationclick', (event) => {
-  const clickedNotification = event.notification
-  clickedNotification.close()
-  if (clickOpenUrl) {
-    // const promiseChain = clients.openWindow(clickOpenUrl)
-    event.waitUntil({
-      promiseChain: clients.openWindow(clickOpenUrl),
-    })
-  }
-})
+workbox.routing.registerRoute(
+  new RegExp('https://alldeal-supplier-api.herokuapp.com/seller/v1/(.*)'),
+  workbox.strategies.cacheFirst({
+    cacheName: 'order_apis',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 30,
+      }),
+    ],
+    method: 'GET',
+    cashableResponse: { statuses: [0, 200] },
+  })
+)

@@ -9,7 +9,7 @@
           <div class="py-4 ml-2">
             <v-row>
               <v-col cols="6">Redemption Code </v-col>
-              <v-col cols="6">{{ value.redemtionCode }}</v-col>
+              <v-col cols="6">{{ value.redemptionCode }}</v-col>
 
               <v-col cols="6">Order ID</v-col>
               <v-col cols="6">{{ value.orderId }}</v-col>
@@ -39,7 +39,7 @@
               <dialog-btn
                 class="justify-center"
                 :status="value.status"
-                @isUsed="isUsed(value.redemtionCode, value.markUsed)"
+                @isUsed="isUsed(value.redemptionCode, value.markUsed)"
               />
             </div>
           </div>
@@ -59,8 +59,8 @@ export default {
     },
   },
   methods: {
-    isUsed(redemCode, markUsed) {
-      this.$emit('isUsed', redemCode, markUsed)
+    isUsed(redemptionCode, markUsed) {
+      this.$emit('isUsed', redemptionCode, markUsed)
     },
   },
 }

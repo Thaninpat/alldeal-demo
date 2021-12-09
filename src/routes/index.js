@@ -8,6 +8,7 @@ import OrderSummary from '../pages/OrderSummary.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
 // import Login from '../pages/Login.vue'
+import NotFoundComponent from '../components/NotFoundComponent.vue'
 
 import { Role } from '../helper/Roles'
 
@@ -66,13 +67,24 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'forgotPassword',
-    component: () => import('../components/ForgetPassword.vue'),
+    component: () => import('../pages/ForgetPassword.vue'),
+  },
+  {
+    path: '/reset-password',
+    name: 'resetPassword',
+    component: () => import('../pages/ResetPassword.vue'),
   },
   { path: '*', redirect: '/' },
+  {
+    path: '/:catchAll(.*)',
+    component: NotFoundComponent,
+    name: 'NotFound',
+  },
 ]
 
 const router = new VueRouter({
   routes,
+  mode: 'history',
 })
 
 router.beforeEach((to, from, next) => {
