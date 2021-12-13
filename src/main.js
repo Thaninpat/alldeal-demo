@@ -24,7 +24,7 @@ const base = axios.create({
 })
 Vue.prototype.$http = base
 
-console.log('env', JSON.stringify(process.env))
+// console.log('env', JSON.stringify(process.env))
 
 new Vue({
   vuetify,

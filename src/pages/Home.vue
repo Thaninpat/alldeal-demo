@@ -60,8 +60,6 @@ export default {
           client_id: process.env.VUE_APP_CLIENT_ID,
           redirect_uri: 'https://alldeal-demo.netlify.app',
         })
-        console.log(process.env.VUE_APP_USER)
-        console.log(process.env.VUE_APP_PASS)
 
         const basicBase64 = btoa(
           `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
@@ -72,9 +70,6 @@ export default {
             Authorization: `Basic ${basicBase64}`,
           },
         }
-        console.log({ url })
-        console.log({ data })
-        console.log({ options })
 
         const response = await axios.post(url, data, options)
         console.log(response)
