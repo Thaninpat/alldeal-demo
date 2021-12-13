@@ -30,6 +30,9 @@
 import update from '../mixins/update'
 import VueChart from '../components/VueChart.vue'
 import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
+import qs from 'qs'
+
 export default {
   name: 'Home',
   components: { VueChart },
@@ -37,6 +40,7 @@ export default {
   data: () => ({
     snackbar: false,
     text: `Hello, I'm a snackbar`,
+    code: null,
   }),
   computed: {
     ...mapGetters({
@@ -47,16 +51,44 @@ export default {
     ...mapActions({
       getUser: 'user/getUser',
     }),
+    async getCode() {
+      try {
+        const data = {
+          grant_type: 'authorization_code',
+          code: this.code,
+          client_id: '6d1763mcs6kle4nmbq1l3ta1h8',
+          redirect_uri: 'https://alldeal-demo.netlify.app',
+        }
+        const basicBase64 = 'VGVzdFVzZXIyQGVtYWlsLmNvbToxMjM0NTZBYSM='
+
+        const options = {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${basicBase64}`,
+          },
+          data: qs.stringify(data),
+          url:
+            'https://csmember-suppliers-qa.auth.ap-southeast-1.amazoncognito.com/oauth2/token',
+        }
+        console.log(options)
+        const response = await axios(options)
+        console.log(response)
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
   },
   created() {
     this.getUser()
+    let url_string = window.location.href
+    let url = new URL(url_string)
+    let code = url.searchParams.get('code')
+    this.code = code
+    console.log('Code :', this.code)
   },
-  // Update() {
-  //   let roles = this.user.data
-  //   this.role = roles
-  //   console.log('Updated roles: ', roles)
-  //   console.log('Updated user.data: ', this.user.data)
-  //   console.log('Updated this.role: ', this.role)
-  // },
+  mounted() {
+    this.getCode()
+  },
 }
 </script>
