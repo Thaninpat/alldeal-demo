@@ -53,26 +53,30 @@ export default {
     }),
     async getCode() {
       try {
-        const data = {
+        const url = process.env.VUE_APP_URL_OAUTH
+        const data = qs.stringify({
           grant_type: 'authorization_code',
           code: this.code,
-          client_id: '6d1763mcs6kle4nmbq1l3ta1h8',
+          client_id: process.env.VUE_APP_CLIENT_ID,
           redirect_uri: 'https://alldeal-demo.netlify.app',
-        }
-        const basicBase64 = 'VGVzdFVzZXIyQGVtYWlsLmNvbToxMjM0NTZBYSM='
+        })
+        console.log(process.env.VUE_APP_USER)
+        console.log(process.env.VUE_APP_PASS)
 
+        const basicBase64 = btoa(
+          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+        )
         const options = {
-          method: 'POST',
           headers: {
-            'content-type': 'application/x-www-form-urlencoded',
+            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
             Authorization: `Basic ${basicBase64}`,
           },
-          data: qs.stringify(data),
-          url:
-            'https://csmember-suppliers-qa.auth.ap-southeast-1.amazoncognito.com/oauth2/token',
         }
-        console.log(options)
-        const response = await axios(options)
+        console.log({ url })
+        console.log({ data })
+        console.log({ options })
+
+        const response = await axios.post(url, data, options)
         console.log(response)
       } catch (error) {
         console.log(error.message)
@@ -85,7 +89,6 @@ export default {
     let url = new URL(url_string)
     let code = url.searchParams.get('code')
     this.code = code
-    console.log('Code :', this.code)
   },
   mounted() {
     this.getCode()
