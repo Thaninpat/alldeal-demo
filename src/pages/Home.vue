@@ -58,16 +58,17 @@ export default {
           grant_type: 'authorization_code',
           code: this.code,
           client_id: process.env.VUE_APP_CLIENT_ID,
-          redirect_uri: 'https://alldeal-demo.netlify.app',
+          redirect_uri: 'https://alldeal-demo.netlify.app/',
+          scope: 'aws.cognito.signin.user.admin+email+openid+phone+profile',
         })
 
-        const basicBase64 = btoa(
-          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
-        )
+        // const basicBase64 = btoa(
+        //   `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+        // )
         const options = {
           headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            Authorization: `Basic ${basicBase64}`,
+            'content-type': 'application/x-www-form-urlencoded',
+            // Authorization: `Basic ${basicBase64}`,
           },
         }
 
