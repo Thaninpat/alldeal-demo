@@ -62,7 +62,7 @@ export default {
         localStorage.setItem('id_token', res.id_token)
         localStorage.setItem('access_token', res.access_token)
         localStorage.setItem('refresh_token', res.refresh_token)
-        console.log('Refresh token success')
+        console.log('success')
       } else console.log('Not response')
     },
     async getCode() {
@@ -115,6 +115,7 @@ export default {
           url: process.env.VUE_APP_URL_OAUTH,
         }
         const response = await axios(options)
+        console.log('Refresh token: ', response.data)
         this.insertToken(response.data)
       } catch (error) {
         console.log(error.message)
