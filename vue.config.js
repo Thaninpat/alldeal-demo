@@ -2,6 +2,8 @@ module.exports = {
   transpileDependencies: ['vuetify'],
   pwa: {
     name: 'AllDeal',
+    themeColor: '#00468c',
+    msTileColor: '#00468c',
     manifestPath: 'manifest.json',
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',
@@ -9,6 +11,7 @@ module.exports = {
       // swSrc is required in InjectManifest mode.
       swSrc: 'src/sw.js',
       swDest: 'service-worker.js',
+      exclude: [/_redirects/],
       // ...other Workbox options...
     },
   },
