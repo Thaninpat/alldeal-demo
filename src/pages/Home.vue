@@ -59,10 +59,10 @@ export default {
     }),
     insertToken(res) {
       if (res) {
-        // console.log(res)
         localStorage.setItem('id_token', res.id_token)
         localStorage.setItem('access_token', res.access_token)
         localStorage.setItem('refresh_token', res.refresh_token)
+        console.log('Refresh token success')
       } else console.log('Not response')
     },
     async getCode() {
@@ -97,7 +97,6 @@ export default {
     async getRefreshToken() {
       try {
         const refreshToken = await localStorage.getItem('refresh_token')
-        console.log(refreshToken)
         const data = qs.stringify({
           grant_type: 'refresh_token',
           client_id: process.env.VUE_APP_CLIENT_ID,
