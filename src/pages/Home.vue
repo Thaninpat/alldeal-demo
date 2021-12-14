@@ -22,6 +22,7 @@
         <div v-text="info === null ? '' : info.roles"></div>
       </div> -->
       <!-- <li>{{ user.data.roles[0] }}</li> -->
+      <v-btn @click="getRefreshToken">refresh token</v-btn>
     </v-container>
   </base-layout>
 </template>
@@ -41,6 +42,11 @@ export default {
     snackbar: false,
     text: `Hello, I'm a snackbar`,
     code: null,
+    token: {
+      id_token: '',
+      access_token: '',
+      refresh_token: '',
+    },
   }),
   computed: {
     ...mapGetters({
@@ -51,29 +57,68 @@ export default {
     ...mapActions({
       getUser: 'user/getUser',
     }),
+    insertToken(res) {
+      if (res) {
+        console.log(res)
+        localStorage.setItem('id_token', res.id_token)
+        localStorage.setItem('access_token', res.access_token)
+        localStorage.setItem('refresh_token', res.refresh_token)
+      } else console.log('Not response')
+    },
     async getCode() {
       try {
-        const url = process.env.VUE_APP_URL_OAUTH
         const data = qs.stringify({
           grant_type: 'authorization_code',
           code: this.code,
           client_id: process.env.VUE_APP_CLIENT_ID,
           redirect_uri: 'https://alldeal-demo.netlify.app/',
-          scope: 'aws.cognito.signin.user.admin+email+openid+phone+profile',
         })
 
-        // const basicBase64 = btoa(
-        //   `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
-        // )
+        const basicBase64 = btoa(
+          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+        )
         const options = {
+          method: 'POST',
           headers: {
             'content-type': 'application/x-www-form-urlencoded',
-            // Authorization: `Basic ${basicBase64}`,
+            Authorization: `Basic ${basicBase64}`,
           },
+          data,
+          url: process.env.VUE_APP_URL_OAUTH,
         }
-
-        const response = await axios.post(url, data, options)
-        console.log(response)
+        console.log(options)
+        const response = await axios(options)
+        console.log(response.data)
+        // console.log(response.data.id_token)
+        this.insertToken(response.data)
+        this.$router.replace('/')
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
+    async getRefreshToken() {
+      try {
+        const refreshToken = await localStorage.getItem('refresh_token')
+        console.log(refreshToken)
+        const data = qs.stringify({
+          grant_type: 'refresh_token',
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          refresh_token: refreshToken,
+        })
+        const basicBase64 = btoa(
+          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+        )
+        const options = {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${basicBase64}`,
+          },
+          data,
+          url: process.env.VUE_APP_URL_OAUTH,
+        }
+        const response = await axios(options)
+        this.insertToken(response.data)
       } catch (error) {
         console.log(error.message)
       }
@@ -87,7 +132,9 @@ export default {
     this.code = code
   },
   mounted() {
-    this.getCode()
+    if (this.code) {
+      this.getCode()
+    }
   },
 }
 </script>
