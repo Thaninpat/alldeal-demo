@@ -59,7 +59,7 @@ export default {
     }),
     insertToken(res) {
       if (res) {
-        console.log(res)
+        // console.log(res)
         localStorage.setItem('id_token', res.id_token)
         localStorage.setItem('access_token', res.access_token)
         localStorage.setItem('refresh_token', res.refresh_token)
@@ -88,8 +88,6 @@ export default {
         }
         console.log(options)
         const response = await axios(options)
-        console.log(response.data)
-        // console.log(response.data.id_token)
         this.insertToken(response.data)
         this.$router.replace('/')
       } catch (error) {
