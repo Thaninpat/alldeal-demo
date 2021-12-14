@@ -58,7 +58,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   new RegExp('https://alldeal-supplier-api.herokuapp.com/seller/v1/(.*)'),
   workbox.strategies.cacheFirst({
-    cacheName: 'order_apis',
+    cacheName: 'orderapis',
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 30,
