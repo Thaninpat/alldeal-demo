@@ -98,11 +98,16 @@ router.beforeEach((to, from, next) => {
   next()
   const { authorize } = to.meta
   const token = localStorage.getItem('id_token')
+  let url_string = window.location.href
+  let url = new URL(url_string)
+  let code = url.searchParams.get('code')
+  console.log('code from routes: ', code)
   if (authorize) {
-    if (!token) {
-      return next({ path: '/redirect' })
+    if (token || code) {
+      return next()
+
       // return next({ path: '/login', query: { returnUrl: to.path } })
-    } else return next({ path: '/' })
+    } else return next({ path: '/redirect' })
     // else {
     //   let user = VueJwtDecode.decode(token)
     //   if (authorize.length && !authorize.includes(user.data.roles[0])) {
