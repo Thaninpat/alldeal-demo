@@ -33,6 +33,18 @@
         <v-list-item class="pb-4">
           <v-img src="/img/alldeal_logo.png"></v-img>
         </v-list-item>
+        <v-list-item link>
+          <v-list-item-content>
+            <v-list-item-title class="text-h6">
+              John Leider
+            </v-list-item-title>
+            <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <v-icon>mdi-menu-down</v-icon>
+          </v-list-item-action>
+        </v-list-item>
         <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
         <v-list-item-group v-model="group">
           <div v-for="(item, index) in items" :key="index">
@@ -79,8 +91,8 @@ export default {
       getUser: 'user/getUser',
     }),
     logOut() {
-      localStorage.removeItem('user')
-      this.$router.push('/login')
+      localStorage.removeItem('id_token')
+      this.$router.replace('/redirect')
     },
   },
   computed: {

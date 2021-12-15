@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueJwtDecode from 'vue-jwt-decode'
+// import VueJwtDecode from 'vue-jwt-decode'
 
 import Home from '../pages/Home.vue'
 import OrderDetail from '../pages/OrderDetail.vue'
 import OrderSummary from '../pages/OrderSummary.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
-// import Login from '../pages/Login.vue'
-import NotFoundComponent from '../components/NotFoundComponent.vue'
+// import NotFoundComponent from '../components/NotFoundComponent.vue'
 
 import { Role } from '../helper/Roles'
 
@@ -60,24 +59,29 @@ const routes = [
     },
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('../pages/Login.vue'),
+    path: '/redirect',
+    name: 'redirect',
+    component: () => import('../pages/Redirect.vue'),
   },
-  {
-    path: '/forgot-password',
-    name: 'forgotPassword',
-    component: () => import('../pages/ForgetPassword.vue'),
-  },
-  {
-    path: '/reset-password',
-    name: 'resetPassword',
-    component: () => import('../pages/ResetPassword.vue'),
-  },
+  // {
+  //   path: '/login',
+  //   name: 'login',
+  //   component: () => import('../pages/Login.vue'),
+  // },
+  // {
+  //   path: '/forgot-password',
+  //   name: 'forgotPassword',
+  //   component: () => import('../pages/ForgetPassword.vue'),
+  // },
+  // {
+  //   path: '/reset-password',
+  //   name: 'resetPassword',
+  //   component: () => import('../pages/ResetPassword.vue'),
+  // },
   { path: '*', redirect: '/' },
   {
     path: '/:catchAll(.*)',
-    component: NotFoundComponent,
+    component: () => import('../components/NotFoundComponent.vue'),
     name: 'NotFound',
   },
 ]
@@ -93,24 +97,25 @@ router.beforeEach((to, from, next) => {
   }
   next()
   const { authorize } = to.meta
-  const token = localStorage.getItem('user')
+  const token = localStorage.getItem('id_token')
   if (authorize) {
     if (!token) {
-      // return next({ path: '/login' })
-      return next({ path: '/login', query: { returnUrl: to.path } })
-    } else {
-      let user = VueJwtDecode.decode(token)
-      if (authorize.length && !authorize.includes(user.data.roles[0])) {
-        if (user.data.roles[0] == 'ROLE_ACCOUNT') {
-          return next({ path: '/' })
-        }
-        if (user.data.roles[0] == 'ROLE_AGENT') {
-          return next({ path: '/order-summary' })
-        }
-      } else {
-        next()
-      }
+      return next({ path: '/redirect' })
+      // return next({ path: '/login', query: { returnUrl: to.path } })
     }
+    // else {
+    //   let user = VueJwtDecode.decode(token)
+    //   if (authorize.length && !authorize.includes(user.data.roles[0])) {
+    //     if (user.data.roles[0] == 'ROLE_ACCOUNT') {
+    //       return next({ path: '/' })
+    //     }
+    //     if (user.data.roles[0] == 'ROLE_AGENT') {
+    //       return next({ path: '/order-summary' })
+    //     }
+    //   } else {
+    //     next()
+    //   }
+    // }
   }
   next()
 })

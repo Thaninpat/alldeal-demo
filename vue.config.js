@@ -1,9 +1,11 @@
 module.exports = {
   transpileDependencies: ['vuetify'],
+  devServer: {
+    port: 8080,
+  },
   pwa: {
     name: 'AllDeal',
     themeColor: '#ffffff',
-    msTileColor: '#00468c',
     manifestPath: 'manifest.json',
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',

@@ -13,6 +13,7 @@ import './vee-validate'
 import { initializeApp } from 'firebase/app'
 import settings from './settings'
 import './controller'
+import VueIframe from 'vue-iframes'
 
 Vue.config.productionTip = false
 
@@ -23,8 +24,7 @@ const base = axios.create({
   baseURL: 'https://alldeal-login.herokuapp.com/api/v1', // replace on production env
 })
 Vue.prototype.$http = base
-
-// console.log('env', JSON.stringify(process.env))
+Vue.use(VueIframe)
 
 new Vue({
   vuetify,
