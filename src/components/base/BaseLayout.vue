@@ -35,10 +35,8 @@
         </v-list-item>
         <v-list-item link>
           <v-list-item-content>
-            <v-list-item-title class="text-h6">
-              John Leider
-            </v-list-item-title>
-            <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+            <v-list-item-title class="text-h6" v-text="user.given_name" />
+            <v-list-item-subtitle v-text="user.email" />
           </v-list-item-content>
 
           <v-list-item-action>
@@ -48,16 +46,7 @@
         <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
         <v-list-item-group v-model="group">
           <div v-for="(item, index) in items" :key="index">
-            <v-list-item
-              v-if="
-                user.data === null
-                  ? ''
-                  : result === item.role[0] ||
-                    result === item.role[1] ||
-                    result === item.role[2]
-              "
-              :to="item.to"
-            >
+            <v-list-item :to="item.to">
               <v-list-item-title> {{ item.name }} </v-list-item-title>
             </v-list-item>
           </div>
@@ -84,7 +73,7 @@ export default {
     drawer: false,
     group: null,
     notify: 52,
-    result: '',
+    // result: '',
   }),
   methods: {
     ...mapActions({
@@ -92,7 +81,7 @@ export default {
     }),
     logOut() {
       localStorage.removeItem('id_token')
-      this.$router.replace('/redirect')
+      this.$router.push('/redirect')
     },
   },
   computed: {
@@ -109,9 +98,9 @@ export default {
   created() {
     this.getUser()
   },
-  updated() {
-    this.result = this.user.data.roles[0]
-  },
+  // updated() {
+  //   this.result = this.user.data.roles[0]
+  // },
 }
 </script>
 

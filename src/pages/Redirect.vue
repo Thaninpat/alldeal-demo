@@ -6,8 +6,14 @@
 
 <script>
 export default {
-  created() {
-    this.redirectAuthorize()
+  async created() {
+    try {
+      if (localStorage.getItem('id_token')) {
+        return this.$router.push('/')
+      } else this.redirectAuthorize()
+    } catch (error) {
+      console.log(error.message)
+    }
   },
   methods: {
     redirectAuthorize() {
