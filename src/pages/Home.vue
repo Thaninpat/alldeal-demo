@@ -97,26 +97,28 @@ export default {
     async getRefreshToken() {
       try {
         const refreshToken = await localStorage.getItem('refresh_token')
-        const data = qs.stringify({
-          grant_type: 'refresh_token',
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          refresh_token: refreshToken,
-        })
-        const basicBase64 = btoa(
-          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
-        )
-        const options = {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${basicBase64}`,
-          },
-          data,
-          url: process.env.VUE_APP_URL_OAUTH,
-        }
-        const response = await axios(options)
-        console.log('Refresh token: ', response.data)
-        this.insertToken(response.data)
+        if (refreshToken) {
+          const data = qs.stringify({
+            grant_type: 'refresh_token',
+            client_id: process.env.VUE_APP_CLIENT_ID,
+            refresh_token: refreshToken,
+          })
+          const basicBase64 = btoa(
+            `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+          )
+          const options = {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              Authorization: `Basic ${basicBase64}`,
+            },
+            data,
+            url: process.env.VUE_APP_URL_OAUTH,
+          }
+          const response = await axios(options)
+          console.log('Refresh token: ', response.data)
+          this.insertToken(response.data)
+        } else alert('Not token')
       } catch (error) {
         console.log(error.message)
       }
