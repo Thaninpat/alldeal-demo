@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
     if (!token) {
       return next({ path: '/redirect' })
       // return next({ path: '/login', query: { returnUrl: to.path } })
-    }
+    } else return next({ path: '/' })
     // else {
     //   let user = VueJwtDecode.decode(token)
     //   if (authorize.length && !authorize.includes(user.data.roles[0])) {

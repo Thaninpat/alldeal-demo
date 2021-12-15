@@ -9,7 +9,7 @@ export default {
   async created() {
     try {
       if (localStorage.getItem('id_token')) {
-        return this.$router.push('/')
+        return this.$router.push('/home')
       } else this.redirectAuthorize()
     } catch (error) {
       console.log(error.message)
