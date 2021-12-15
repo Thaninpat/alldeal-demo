@@ -1,5 +1,5 @@
 <template>
-  <base-layout :pageTitle="user.data ? user.data.username : ''">
+  <base-layout pageTitle="Home">
     <div class="text-center ma-2">
       <v-snackbar
         rounded="pill"
@@ -30,7 +30,6 @@
 <script>
 import update from '../mixins/update'
 import VueChart from '../components/VueChart.vue'
-import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -48,15 +47,8 @@ export default {
       refresh_token: '',
     },
   }),
-  computed: {
-    ...mapGetters({
-      user: 'user/user',
-    }),
-  },
+
   methods: {
-    ...mapActions({
-      getUser: 'user/getUser',
-    }),
     insertToken(res) {
       if (res) {
         localStorage.setItem('id_token', res.id_token)
@@ -89,7 +81,7 @@ export default {
         console.log(options)
         const response = await axios(options)
         this.insertToken(response.data)
-        this.$router.replace('/')
+        // this.$router.replace('/')
       } catch (error) {
         console.log(error.message)
       }
@@ -125,13 +117,10 @@ export default {
     },
   },
   created() {
-    this.getUser()
     let url_string = window.location.href
     let url = new URL(url_string)
     let code = url.searchParams.get('code')
     this.code = code
-  },
-  mounted() {
     if (this.code) {
       this.getCode()
     }
