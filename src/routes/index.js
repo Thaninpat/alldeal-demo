@@ -19,29 +19,41 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home,
-    // meta: {
-    //   authorize: [Role.Admin, Role.Account, Role.Sale],
-    // },
+    meta: {
+      authorize: [],
+    },
   },
   {
     path: '/order-summary',
     name: 'orderSummary',
     component: OrderSummary,
+    meta: {
+      authorize: [],
+    },
   },
   {
     path: '/order-detail',
     name: 'orderDetail',
     component: OrderDetail,
+    meta: {
+      authorize: [],
+    },
   },
   {
     path: '/coupon-redemption',
     name: 'couponRedemption',
     component: CouponRedemption,
+    meta: {
+      authorize: [],
+    },
   },
   {
     path: '/invoice-statement-tax',
     name: 'invoiceStatementTax',
     component: InvoiceStatementTax,
+    meta: {
+      authorize: [],
+    },
   },
   {
     path: '/redirect',
