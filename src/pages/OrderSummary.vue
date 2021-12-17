@@ -9,7 +9,8 @@
 <script>
 import moment from 'moment'
 import OrderSummaryDetail from '../components/OrderSummaryDetail.vue'
-import userDataService from '../service/userDataService'
+import axios from 'axios'
+// import userDataService from '../service/userDataService'
 
 export default {
   components: { OrderSummaryDetail },
