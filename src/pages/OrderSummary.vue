@@ -24,7 +24,18 @@ export default {
   methods: {
     async FetchData() {
       try {
-        const res = await userDataService.getOrderSummary()
+        // const res = await userDataService.getOrderSummary()
+        const url =
+          'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1/ordersummary'
+        const idToken = localStorage.getItem('id_token')
+        console.log({ idToken })
+        const res = await axios.get(url, {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+          },
+        })
+        console.log('Response :', res)
         this.lists = res.data.map(this.getDisplay)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
