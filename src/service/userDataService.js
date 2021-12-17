@@ -1,20 +1,38 @@
-import Api from '../http-common'
+import http from '../http-common'
 import { getCookie } from '../helper/utils'
 
 const token = getCookie('id_token')
 console.log('token :', token)
 class userDataService {
   getOrder(params) {
-    return Api(token).get('/paidorderitems', { params })
+    return http.get('/paidorderitems', {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      params,
+    })
   }
   getCampaign(params) {
-    return Api(token).get('/campaigns', { params })
+    return http.get('/campaigns', {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      params,
+    })
   }
   getOrderSummary() {
-    return Api(token).get('/ordersummary')
+    return http.get('/ordersummary')
   }
   getPaidOrderItems(params) {
-    return Api(token).get('/paidorderitems', { params })
+    return http.get('/paidorderitems', {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      params,
+    })
   }
 }
 
