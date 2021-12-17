@@ -80,7 +80,14 @@ export default {
         }
         console.log(options)
         const response = await axios(options)
-        this.insertToken(response.data)
+        if (response.status == 200) {
+          let d = new Date()
+          d.setTime(d.getTime() + 15 * 1000)
+          let expires = 'expires=' + d.toUTCString()
+          document.cookie =
+            'id_token=' + response.data.id_token + ';' + expires + ';path=/'
+          this.insertToken(response.data)
+        }
         this.$router.replace('/')
       } catch (error) {
         console.log(error.message)

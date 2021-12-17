@@ -1,15 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import VueJwtDecode from 'vue-jwt-decode'
-
 import Home from '../pages/Home.vue'
 import OrderDetail from '../pages/OrderDetail.vue'
 import OrderSummary from '../pages/OrderSummary.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
-// import NotFoundComponent from '../components/NotFoundComponent.vue'
 
-import { Role } from '../helper/Roles'
+// import { Role } from '../helper/Roles'
 
 Vue.use(VueRouter)
 
@@ -22,62 +19,35 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home,
-    meta: {
-      authorize: [Role.Admin, Role.Account, Role.Sale],
-    },
+    // meta: {
+    //   authorize: [Role.Admin, Role.Account, Role.Sale],
+    // },
   },
   {
     path: '/order-summary',
     name: 'orderSummary',
     component: OrderSummary,
-    meta: {
-      authorize: [Role.Admin, Role.Agent, Role.Sale],
-    },
   },
   {
     path: '/order-detail',
     name: 'orderDetail',
     component: OrderDetail,
-    meta: {
-      authorize: [Role.Admin, Role.Agent, Role.Sale],
-    },
   },
   {
     path: '/coupon-redemption',
     name: 'couponRedemption',
     component: CouponRedemption,
-    meta: {
-      authorize: [Role.Admin, Role.Agent, Role.Sale],
-    },
   },
   {
     path: '/invoice-statement-tax',
     name: 'invoiceStatementTax',
     component: InvoiceStatementTax,
-    meta: {
-      authorize: [Role.Admin, Role.Account, Role.Sale],
-    },
   },
   {
     path: '/redirect',
     name: 'redirect',
     component: () => import('../pages/Redirect.vue'),
   },
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   component: () => import('../pages/Login.vue'),
-  // },
-  // {
-  //   path: '/forgot-password',
-  //   name: 'forgotPassword',
-  //   component: () => import('../pages/ForgetPassword.vue'),
-  // },
-  // {
-  //   path: '/reset-password',
-  //   name: 'resetPassword',
-  //   component: () => import('../pages/ResetPassword.vue'),
-  // },
   { path: '*', redirect: '/' },
   {
     path: '/:catchAll(.*)',
@@ -101,11 +71,9 @@ router.beforeEach((to, from, next) => {
   let url_string = window.location.href
   let url = new URL(url_string)
   let code = url.searchParams.get('code')
-  console.log('code from routes: ', code)
   if (authorize) {
     if (token || code) {
       return next()
-
       // return next({ path: '/login', query: { returnUrl: to.path } })
     } else return next({ path: '/redirect' })
     // else {

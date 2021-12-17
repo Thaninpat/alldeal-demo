@@ -26,7 +26,6 @@ export default {
       try {
         const res = await userDataService.getOrderSummary()
         this.lists = res.data.map(this.getDisplay)
-
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
