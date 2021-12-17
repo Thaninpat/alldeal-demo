@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -33,12 +33,11 @@
         <v-list-item class="pb-4">
           <v-img src="/img/alldeal_logo.png"></v-img>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item v-if="!user.length > 0" link>
           <v-list-item-content>
             <v-list-item-title class="text-h6" v-text="user.given_name" />
             <v-list-item-subtitle v-text="user.email" />
           </v-list-item-content>
-
           <v-list-item-action>
             <v-icon>mdi-menu-down</v-icon>
           </v-list-item-action>
