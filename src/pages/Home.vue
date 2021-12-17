@@ -57,6 +57,28 @@ export default {
         console.log('success')
       } else console.log('Not response')
     },
+    setCookie(res) {
+      let d = new Date()
+      d.setTime(d.getTime() + 15 * 1000)
+      let expires = 'expires=' + d.toUTCString()
+      document.cookie = `id_token=${res.id_token};${expires};path=/`
+    },
+    getCookie(cookieName) {
+      let cookieArr = document.cookie
+        .split(';')
+        .map((cookieString) => {
+          cs = cookieString.trim().split('=')
+          if (cs.length === 2) {
+            return { name: cs[0], value: cs[1] }
+          } else {
+            return { name: '', value: '' }
+          }
+        })
+        .filter((cookieObject) => {
+          return cookieObject.name === cookieName
+        })
+      return cookieArr
+    },
     async getCode() {
       try {
         const data = qs.stringify({
@@ -81,11 +103,8 @@ export default {
         console.log(options)
         const response = await axios(options)
         if (response.status == 200) {
-          let d = new Date()
-          d.setTime(d.getTime() + 15 * 1000)
-          let expires = 'expires=' + d.toUTCString()
-          document.cookie =
-            'id_token=' + response.data.id_token + ';' + expires + ';path=/'
+          this.setCookie(response.data)
+          console.log(this.getCookie('id_token'))
           this.insertToken(response.data)
         }
         this.$router.replace('/')
