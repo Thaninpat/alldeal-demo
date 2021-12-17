@@ -37,7 +37,9 @@ export default {
           },
         })
         console.log('Response :', res)
-        this.lists = res.data.map(this.getDisplay)
+        console.log('Response data:', res.data.data)
+
+        this.lists = res.data.data.map(this.getDisplay)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
