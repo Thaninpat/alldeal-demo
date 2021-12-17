@@ -35,6 +35,7 @@ export default {
     },
     async FetchData() {
       const params = await this.getRequestParams(4, 1)
+      console.log(params)
       try {
         // const res = await userDataService.getOrderSummary()
         const url =
@@ -49,7 +50,7 @@ export default {
         })
         console.log('Response :', res)
         console.log('Response data:', res.data.data)
-        const res2 = await axios.get(`${url}/paidorderitems`, params, {
+        const res2 = await axios.get(`${url}/paidorderitems`, {
           headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${idToken}`,
