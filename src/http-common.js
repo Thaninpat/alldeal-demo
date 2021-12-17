@@ -9,7 +9,7 @@
 // })
 import axios from 'axios'
 
-export default Api = (token) => {
+export default function Api(token) {
   axios.create({
     baseURL:
       'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1',
