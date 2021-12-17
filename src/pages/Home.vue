@@ -124,13 +124,13 @@ export default {
     },
   },
   created() {
-    let url_string = window.location.href
-    let url = new URL(url_string)
-    let code = url.searchParams.get('code')
-    this.code = code
-    if (this.code) {
-      this.getCode()
-    }
+    // let url_string = window.location.href
+    // let url = new URL(url_string)
+    // let code = url.searchParams.get('code')
+    // this.code = code
+    // if (this.code) {
+    //   this.getCode()
+    // }
   },
 }
 </script>

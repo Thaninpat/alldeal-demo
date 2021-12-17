@@ -7,7 +7,7 @@ class userDataService {
   getOrder(params) {
     return http.get('/paidorderitems', {
       headers: {
-        'Content-type': 'application/json',
+        'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       params,
@@ -23,7 +23,12 @@ class userDataService {
     })
   }
   getOrderSummary() {
-    return http.get('/ordersummary')
+    return http.get('/ordersummary', {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
   getPaidOrderItems(params) {
     return http.get('/paidorderitems', {
