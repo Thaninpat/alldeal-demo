@@ -67,7 +67,7 @@ export default {
       let cookieArr = document.cookie
         .split(';')
         .map((cookieString) => {
-          cs = cookieString.trim().split('=')
+          let cs = cookieString.trim().split('=')
           if (cs.length === 2) {
             return { name: cs[0], value: cs[1] }
           } else {
