@@ -32,6 +32,7 @@ import update from '../mixins/update'
 import VueChart from '../components/VueChart.vue'
 import axios from 'axios'
 import qs from 'qs'
+import { setCookie } from '../helper/utils'
 
 export default {
   name: 'Home',
@@ -57,27 +58,18 @@ export default {
         console.log('success')
       } else console.log('Not response')
     },
-    setCookie(res) {
-      let d = new Date()
-      d.setTime(d.getTime() + 15 * 1000)
-      let expires = 'expires=' + d.toUTCString()
-      document.cookie = `id_token=${res.id_token};${expires};path=/`
-    },
+    // setCookie(res) {
+    //   let d = new Date()
+    //   d.setTime(d.getTime() + 24 * 60 * 60 * 1000)
+    //   let expires = 'expires=' + d.toUTCString()
+    //   document.cookie = `id_token=${res.id_token};${expires};path=/`
+    // },
     getCookie(cookieName) {
-      let cookieArr = document.cookie
-        .split(';')
-        .map((cookieString) => {
-          let cs = cookieString.trim().split('=')
-          if (cs.length === 2) {
-            return { name: cs[0], value: cs[1] }
-          } else {
-            return { name: '', value: '' }
-          }
-        })
-        .filter((cookieObject) => {
-          return cookieObject.name === cookieName
-        })
-      return cookieArr
+      let cookieArr = document.cookie.match(
+        new RegExp('(^| )' + cookieName + '=([^;]+)')
+      )
+      if (cookieArr) return cookieArr
+      else console.log('--something went wrong---')
     },
     async getCode() {
       try {
@@ -103,7 +95,7 @@ export default {
         console.log(options)
         const response = await axios(options)
         if (response.status == 200) {
-          this.setCookie(response.data)
+          setCookie(response.data)
           console.log(this.getCookie('id_token'))
           this.insertToken(response.data)
         }
@@ -136,7 +128,9 @@ export default {
           const response = await axios(options)
           console.log('Refresh token: ', response.data)
           this.insertToken(response.data)
-        } else alert('Not token')
+        } else {
+          alert('Not token')
+        }
       } catch (error) {
         console.log(error.message)
       }

@@ -41,7 +41,7 @@ export default {
         const resPaidOrder = await userDataService.getPaidOrderItems(params)
         console.log('Response orderS: ', resOrderSum)
         console.log('Response paidO: ', resPaidOrder)
-        this.lists = resOrderSum.data.map(this.getDisplay)
+        this.lists = resOrderSum.data.data.map(this.getDisplay)
         // const url =
         //   'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
         // const idToken = localStorage.getItem('id_token')
