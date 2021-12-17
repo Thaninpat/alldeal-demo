@@ -56,7 +56,9 @@ workbox.routing.registerRoute(
 )
 
 workbox.routing.registerRoute(
-  new RegExp(`${process.env.VUE_APP_API}/(.*)`),
+  new RegExp(
+    'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1/(.*)'
+  ),
   workbox.strategies.cacheFirst({
     cacheName: 'orderapis',
     plugins: [
