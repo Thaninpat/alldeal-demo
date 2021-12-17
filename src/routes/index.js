@@ -6,6 +6,8 @@ import OrderSummary from '../pages/OrderSummary.vue'
 import CouponRedemption from '../pages/CouponRedemption.vue'
 import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
 
+import { getCookie } from '../helper/utils'
+
 // import { Role } from '../helper/Roles'
 
 Vue.use(VueRouter)
@@ -79,7 +81,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
   const { authorize } = to.meta
-  const token = localStorage.getItem('id_token')
+  const token = getCookie('id_token')
   let url_string = window.location.href
   let url = new URL(url_string)
   let code = url.searchParams.get('code')

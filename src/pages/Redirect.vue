@@ -3,11 +3,12 @@
 </template>
 
 <script>
+import { getCookie } from '../helper/utils'
 export default {
   data: () => ({}),
   created() {
     try {
-      if (localStorage.getItem('id_token')) {
+      if (getCookie('id_token')) {
         return this.$router.replace('/')
       } else {
         this.redirectAuthorize()

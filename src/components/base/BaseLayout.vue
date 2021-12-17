@@ -78,7 +78,6 @@ export default {
   methods: {
     ...mapActions({
       getUser: 'user/getUser',
-      getLoginApi: 'loginApi/getLoginApi',
     }),
     logOut() {
       localStorage.removeItem('id_token')
@@ -89,7 +88,6 @@ export default {
     ...mapGetters({
       items: 'menus',
       user: 'user/user',
-      loginApi: 'loginApi/loginApi',
     }),
   },
   watch: {
@@ -98,11 +96,12 @@ export default {
     },
   },
   created() {
-    let url_string = window.location.href
-    let url = new URL(url_string)
-    let code = url.searchParams.get('code')
-    console.log({ code })
-    this.getLoginApi()
+    // let url_string = window.location.href
+    // let url = new URL(url_string)
+    // let code = url.searchParams.get('code')
+    // if (code) console.log(code)
+  },
+  mounted() {
     this.getUser()
   },
   // updated() {

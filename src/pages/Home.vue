@@ -123,6 +123,15 @@ export default {
       }
     },
   },
+  mounted() {
+    let url_string = window.location.href
+    let url = new URL(url_string)
+    let code = url.searchParams.get('code')
+    if (code) {
+      this.$router.push('/home')
+      // this.$router.go(0)
+    }
+  },
   created() {
     // let url_string = window.location.href
     // let url = new URL(url_string)

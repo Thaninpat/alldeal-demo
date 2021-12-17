@@ -99,7 +99,7 @@ export default {
 
     handlePageChange(value) {
       this.currentPage = value
-      this.Fetch()
+      // this.Fetch()
     },
   },
 }

@@ -14,6 +14,7 @@ import { initializeApp } from 'firebase/app'
 import settings from './settings'
 import './controller'
 import VueIframe from 'vue-iframes'
+import { getLoginApi } from './helper/utils'
 
 Vue.config.productionTip = false
 
@@ -25,6 +26,12 @@ const base = axios.create({
 })
 Vue.prototype.$http = base
 Vue.use(VueIframe)
+let url_string = window.location.href
+let url = new URL(url_string)
+let code = url.searchParams.get('code')
+if (code) {
+  Vue.use(getLoginApi)
+}
 
 new Vue({
   vuetify,
