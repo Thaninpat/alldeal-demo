@@ -9,40 +9,40 @@
         height="170"
       >
         <div class="d-flex justify-flex-start">
-          <v-avatar :size="size * 15" tile>
-            <v-img :src="item.thumbnail_img"></v-img>
+          <v-avatar :size="size" tile>
+            <v-img :src="list.thumbnailImg"></v-img>
           </v-avatar>
           <div>
             <v-card-subtitle class="pt-2">
-              {{ item.name_th }}
+              {{ item.nameTh }}
             </v-card-subtitle>
             <v-card-subtitle class="pa-3 pb-0 grey--text">
-              {{ list.effective_status }} : {{ list.effective_tms }} -
-              {{ list.expire_tms }}
+              {{ list.effectiveStatus }} : {{ list.effectiveTms }} -
+              {{ list.expireTms }}
             </v-card-subtitle>
             <div>
               <v-btn class="pa-0" text>
                 <v-icon small v-text="'$mdiCart'"></v-icon>
                 <div class="grey--text">
-                  {{ item.sell_order }}
+                  {{ item.sellOrder }}
                 </div>
               </v-btn>
               <v-btn class="pa-0" text>
                 <v-icon small v-text="'$mdiCashCheck'"></v-icon>
                 <div class="grey--text">
-                  {{ item.sell_paid }}
+                  {{ item.sellPaid }}
                 </div>
               </v-btn>
               <v-btn class="pa-0" text>
                 <v-icon small v-text="'$mdiTicket'"></v-icon>
                 <div class="grey--text">
-                  {{ item.coupon_used }}
+                  {{ item.couponUsed }}
                 </div>
               </v-btn>
             </div>
             <v-btn class="pa-0 pl-3" text>
               <v-icon small>mdi-forum</v-icon>
-              <div class="grey--text">{{ item.review }} Review</div>
+              <div class="grey--text">{{ list.reviewApi }} Review</div>
             </v-btn>
           </div>
         </div>
@@ -53,7 +53,7 @@
 
 <script>
 export default {
-  props: ['lists', 'page', 'size'],
+  props: ['lists', 'size'],
 }
 </script>
 

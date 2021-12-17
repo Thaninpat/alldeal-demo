@@ -81,7 +81,7 @@ export default {
         console.log(options)
         const response = await axios(options)
         this.insertToken(response.data)
-        // this.$router.replace('/')
+        this.$router.replace('/')
       } catch (error) {
         console.log(error.message)
       }
