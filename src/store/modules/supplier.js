@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { getCookie } from '../../helper/utils'
+import { getCookie, removeCookie } from '../../helper/utils'
+import router from '../../routes'
 
 const supplier = {
   namespaced: true,
@@ -24,7 +25,11 @@ const supplier = {
           params,
         })
         console.log(`API ${path} res: `, res)
-        commit('SET_SUPPLIER', res.data)
+
+        if (res.data.code == 'CBE005') {
+          removeCookie('id_token')
+          router.push('/redirect')
+        } else commit('SET_SUPPLIER', res.data)
       } catch (error) {
         console.log(error.message)
       }
@@ -38,10 +43,3 @@ const supplier = {
 }
 
 export default supplier
-
-// const orders = {
-//     supplier = []
-// }
-// const actions = {}
-// const mutation = {}
-// const getters = {}

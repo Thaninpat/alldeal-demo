@@ -66,6 +66,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { removeCookie } from '../../helper/utils'
 export default {
   props: ['pageTitle', 'pageDefaultBackLink'],
   data: () => ({
@@ -79,7 +80,7 @@ export default {
       getUser: 'user/getUser',
     }),
     logOut() {
-      localStorage.removeItem('id_token')
+      removeCookie('id_token')
       this.$router.push('/redirect')
     },
   },
