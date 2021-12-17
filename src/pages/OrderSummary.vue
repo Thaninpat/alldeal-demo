@@ -41,7 +41,7 @@ export default {
           'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
         const idToken = localStorage.getItem('id_token')
         console.log({ idToken })
-        const res = await axios.get(url, '/ordersummary', {
+        const res = await axios.get(`${url}/ordersummary`, {
           headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${idToken}`,
@@ -49,7 +49,7 @@ export default {
         })
         console.log('Response :', res)
         console.log('Response data:', res.data.data)
-        const res2 = await axios.get(url, '/paidorderitems', params, {
+        const res2 = await axios.get(`${url}/paidorderitems`, params, {
           headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${idToken}`,
