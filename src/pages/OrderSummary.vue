@@ -9,8 +9,8 @@
 <script>
 import moment from 'moment'
 import OrderSummaryDetail from '../components/OrderSummaryDetail.vue'
-import axios from 'axios'
-// import userDataService from '../service/userDataService'
+// import axios from 'axios'
+import userDataService from '../service/userDataService'
 
 export default {
   components: { OrderSummaryDetail },
@@ -35,29 +35,24 @@ export default {
     },
     async FetchData() {
       const params = await this.getRequestParams(4, 1)
-      console.log(params)
+      console.log('params: ', params)
       try {
-        // const res = await userDataService.getOrderSummary()
-        const url =
-          'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
-        const idToken = localStorage.getItem('id_token')
-        console.log({ idToken })
-        const res = await axios.get(`${url}/ordersummary`, {
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${idToken}`,
-          },
-        })
-        console.log('Response :', res)
-        console.log('Response data:', res.data.data)
-        const res2 = await axios.get(`${url}/paidorderitems`, {
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${idToken}`,
-          },
-        })
-        console.log('Response data 2: ', res2.data)
-        this.lists = res.data.data.map(this.getDisplay)
+        const resOrderSum = await userDataService.getOrderSummary()
+        const resPaidOrder = await userDataService.getPaidOrderItems(params)
+        console.log('Response orderS: ', resOrderSum)
+        console.log('Response paidO: ', resPaidOrder)
+        this.lists = resOrderSum.data.data.map(this.getDisplay)
+        // const url =
+        //   'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
+        // const idToken = localStorage.getItem('id_token')
+        // console.log({ idToken })
+        // const res = await axios.get(`${url}/ordersummary`, {
+        //   headers: {
+        //     'content-type': 'application/json',
+        //     Authorization: `Bearer ${idToken}`,
+        //   },
+        // })
+
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
