@@ -42,16 +42,6 @@ export default {
         console.log('Response orderS: ', resOrderSum)
         console.log('Response paidO: ', resPaidOrder)
         this.lists = resOrderSum.data.data.map(this.getDisplay)
-        // const url =
-        //   'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
-        // const idToken = localStorage.getItem('id_token')
-        // console.log({ idToken })
-        // const res = await axios.get(`${url}/ordersummary`, {
-        //   headers: {
-        //     'content-type': 'application/json',
-        //     Authorization: `Bearer ${idToken}`,
-        //   },
-        // })
 
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)

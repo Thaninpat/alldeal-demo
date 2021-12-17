@@ -9,7 +9,7 @@ export const getCookie = (cookieName) => {
   let cookieArr = document.cookie.match(
     new RegExp('(^| )' + cookieName + '=([^;]+)')
   )
-  if (cookieArr) return cookieArr
+  if (cookieArr) return cookieArr[2]
   else console.log('--something went wrong---')
 }
 

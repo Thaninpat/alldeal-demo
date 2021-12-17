@@ -32,7 +32,7 @@ import update from '../mixins/update'
 import VueChart from '../components/VueChart.vue'
 import axios from 'axios'
 import qs from 'qs'
-import { setCookie } from '../helper/utils'
+import { setCookie, getCookie } from '../helper/utils'
 
 export default {
   name: 'Home',
@@ -57,19 +57,6 @@ export default {
         localStorage.setItem('refresh_token', res.refresh_token)
         console.log('success')
       } else console.log('Not response')
-    },
-    // setCookie(res) {
-    //   let d = new Date()
-    //   d.setTime(d.getTime() + 24 * 60 * 60 * 1000)
-    //   let expires = 'expires=' + d.toUTCString()
-    //   document.cookie = `id_token=${res.id_token};${expires};path=/`
-    // },
-    getCookie(cookieName) {
-      let cookieArr = document.cookie.match(
-        new RegExp('(^| )' + cookieName + '=([^;]+)')
-      )
-      if (cookieArr) return cookieArr
-      else console.log('--something went wrong---')
     },
     async getCode() {
       try {
@@ -96,7 +83,7 @@ export default {
         const response = await axios(options)
         if (response.status == 200) {
           setCookie(response.data)
-          console.log(this.getCookie('id_token'))
+          console.log(getCookie('id_token'))
           this.insertToken(response.data)
         }
         this.$router.replace('/')
