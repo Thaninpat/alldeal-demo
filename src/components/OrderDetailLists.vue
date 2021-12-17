@@ -7,10 +7,10 @@
             class="item-list d-flex justify-center align-center"
             cols="2.4"
           >
-            {{ list.order_no }}
+            {{ list.orderNumber }}
           </v-col>
           <v-col class="item-list d-flex justify-center align-center" cols="3">
-            {{ list.paid_tms }}
+            {{ list.paidTms }}
           </v-col>
           <v-col
             class="item-list d-flex justify-center align-center"
@@ -19,7 +19,7 @@
             {{ list.sum_amount }}
           </v-col>
           <v-col class="item-list d-flex justify-center align-center" cols="3">
-            {{ list.customer_id }}
+            {{ list.customerId }}
           </v-col>
           <v-col
             class="item-list d-flex justify-end justify-sm-center align-center"
@@ -49,35 +49,36 @@
             Channel: {{ list.channel_code }}
           </v-col>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            Payment: {{ list.paymen_type_code }}
+            Payment: {{ list.paymentTypeCode }}
           </v-col>
         </v-row>
-        <div v-for="(campaign, index) in campaigns" :key="index">
-          <v-row
+        <!-- <div v-for="(campaign, index) in campaigns" :key="index"> -->
+        <!-- <v-row
             v-if="list.campaign_item_id[index] === campaign.id"
             class="pt-1"
-          >
-            <v-col class="item-list d-flex justify-start pt-0" cols="1">
-              <v-avatar size="25" tile>
-                <v-img :src="campaign.thumbnail_img"></v-img>
-              </v-avatar>
-            </v-col>
-            <v-col class="item-list d-flex justify-start pt-0" cols="5">
-              <span> {{ campaign.name_th }}</span>
-            </v-col>
-            <v-col class="item-list d-flex justify-start pt-0" cols="3">
-              {{ campaign.price_net }}฿
-            </v-col>
-            <v-col class="item-list d-flex justify-end pt-0" cols="3">
-              <v-icon
-                v-if="list.quantity[index] > 0"
-                dense
-                v-text="'$mdiTicket'"
-              ></v-icon>
-              <v-icon v-else dense></v-icon>
-            </v-col>
-          </v-row>
-        </div>
+          > -->
+        <v-row class="pt-1">
+          <v-col class="item-list d-flex justify-start pt-0" cols="1">
+            <v-avatar size="25" tile>
+              <v-img :src="list.thumbImageFileUrl"></v-img>
+            </v-avatar>
+          </v-col>
+          <v-col class="item-list d-flex justify-start pt-0" cols="5">
+            <span> {{ list.campaignItemNameTh }}</span>
+          </v-col>
+          <v-col class="item-list d-flex justify-start pt-0" cols="3">
+            {{ list.price_net }}฿
+          </v-col>
+          <v-col class="item-list d-flex justify-end pt-0" cols="3">
+            <v-icon
+              v-if="list.quantity > 0"
+              dense
+              v-text="'$mdiTicket'"
+            ></v-icon>
+            <v-icon v-else dense></v-icon>
+          </v-col>
+        </v-row>
+        <!-- </div> -->
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>

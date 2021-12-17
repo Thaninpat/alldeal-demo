@@ -12,7 +12,7 @@
     />
     <div class="text-center mt-4">
       <v-pagination
-        v-model="currentPage"
+        v-model="pageNo"
         :length="totalPages"
         total-visible="7"
         @input="handlePageChange"
@@ -24,8 +24,9 @@
 <script>
 import OrderDetailLists from '../components/OrderDetailLists.vue'
 import OrderDetailHeader from '../components/OrderDetailHeader.vue'
-import userDataService from '../service/userDataService'
+// import userDataService from '../service/userDataService'
 import moment from 'moment'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -43,38 +44,54 @@ export default {
     ],
     lists: [],
     campaigns: [],
-    currentPage: 1,
+    pageNo: 1,
     totalPages: 0,
     pageSize: 4,
   }),
   mounted() {
     this.Fetch()
   },
+  computed: {
+    ...mapGetters({
+      supplier: 'supplier/supplier',
+    }),
+  },
   methods: {
-    getRequestParams(currentPage, pageSize) {
+    ...mapActions({
+      getSupplier: 'supplier/getSupplier',
+    }),
+    getRequestParams(pageSize, pageNo) {
       let params = {}
-      if (currentPage) {
-        params['_page'] = currentPage
-      }
       if (pageSize) {
-        params['_limit'] = pageSize
+        params['pageSize'] = pageSize
+      }
+      if (pageNo) {
+        params['pageNo'] = pageNo
       }
       return params
     },
     async Fetch() {
-      const params = await this.getRequestParams(
-        this.currentPage,
-        this.pageSize
-      )
+      const params = await this.getRequestParams(this.pageSize, this.pageNo)
       try {
         // Orders
-        const res = await userDataService.getOrder(params)
-        this.lists = res.data.map(this.getDisplay)
-        const totalItems = parseInt(res.headers['x-total-count'])
-        this.totalPages = Math.ceil(totalItems / this.pageSize)
+        await this.getSupplier({
+          path: '/paidorderitems',
+          params,
+        })
+        let paidOrderItems = this.supplier
+        console.log({ paidOrderItems })
+        this.lists = paidOrderItems.data.orders.map(this.getDisplay)
+        console.log('lists', this.lists)
+        this.totalPages = paidOrderItems.data.totalPage
+
+        // const res = await userDataService.getOrder(params)
+        // this.lists = res.data.map(this.getDisplay)
+        // const totalItems = parseInt(res.headers['x-total-count'])
+        // this.totalPages = Math.ceil(totalItems / this.pageSize)
+
         // Campaigns
-        const { data } = await userDataService.getCampaign()
-        this.campaigns = data
+        // const { data } = await userDataService.getCampaign()
+        // this.campaigns = data
       } catch (error) {
         console.log(error)
       }
@@ -82,15 +99,17 @@ export default {
     getDisplay(list) {
       if (list) {
         return {
-          order_no: '...' + list.order_no.toString().substr(-7),
-          paid_tms: moment(list.paid_tms).format('DD/MM/YY hh:mm'),
-          sum_amount: list.sum_amount,
-          customer_id: list.customer_id,
-          status: 'paid',
-          channel_code: list.channel_code,
-          paymen_type_code: list.paymen_type_code,
-          campaign_item_id: list.items.map((i) => i.campaign_item_id),
-          quantity: list.items.map((i) => i.quantity),
+          orderNumber: '...' + list.orderNumber.toString().substr(-7),
+          paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
+          thumbImageFileUrl: list.thumbImageFileUrl,
+          // sum_amount: list.sum_amount,
+          customer_id: list.customerId,
+          // status: 'paid',
+          // channel_code: list.channel_code,
+          paymentTypeCode: list.paymentTypeCode,
+          campaignItemNameTh: list.campaignItemNameTh,
+          // campaign_item_id: list.items.map((i) => i.campaign_item_id),
+          // quantity: list.items.map((i) => i.quantity),
           // name: list.name.substr(0, 9) + '...',
           // status: list.published ? 'Published' : 'Pending',
         }
@@ -98,8 +117,8 @@ export default {
     },
 
     handlePageChange(value) {
-      this.currentPage = value
-      // this.Fetch()
+      this.pageNo = value
+      this.Fetch()
     },
   },
 }

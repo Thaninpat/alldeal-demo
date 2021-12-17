@@ -22,7 +22,7 @@
         <div v-text="info === null ? '' : info.roles"></div>
       </div> -->
       <!-- <li>{{ user.data.roles[0] }}</li> -->
-      <v-btn @click="getRefreshToken">refresh token</v-btn>
+      <!-- <v-btn @click="getRefreshToken">refresh token</v-btn> -->
     </v-container>
   </base-layout>
 </template>
@@ -50,50 +50,9 @@ export default {
   }),
 
   methods: {
-    insertToken(res) {
-      if (res) {
-        localStorage.setItem('id_token', res.id_token)
-        localStorage.setItem('access_token', res.access_token)
-        localStorage.setItem('refresh_token', res.refresh_token)
-        console.log('success')
-      } else console.log('Not response')
-    },
-    async getCode() {
-      try {
-        const data = qs.stringify({
-          grant_type: 'authorization_code',
-          code: this.code,
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          redirect_uri: 'https://alldeal-demo.netlify.app/',
-        })
-
-        const basicBase64 = btoa(
-          `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
-        )
-        const options = {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${basicBase64}`,
-          },
-          data,
-          url: process.env.VUE_APP_URL_OAUTH,
-        }
-        console.log(options)
-        const response = await axios(options)
-        if (response.status == 200) {
-          setCookie(response.data)
-          console.log(getCookie('id_token'))
-          this.insertToken(response.data)
-        }
-        this.$router.replace('/')
-      } catch (error) {
-        console.log(error.message)
-      }
-    },
     async getRefreshToken() {
       try {
-        const refreshToken = await localStorage.getItem('refresh_token')
+        const refreshToken = await getCookie('refresh_token')
         if (refreshToken) {
           const data = qs.stringify({
             grant_type: 'refresh_token',
@@ -114,7 +73,7 @@ export default {
           }
           const response = await axios(options)
           console.log('Refresh token: ', response.data)
-          this.insertToken(response.data)
+          setCookie(response.data)
         } else {
           alert('Not token')
         }
@@ -129,17 +88,16 @@ export default {
     let code = url.searchParams.get('code')
     if (code) {
       this.$router.push('/home')
-      // this.$router.go(0)
     }
   },
-  created() {
-    // let url_string = window.location.href
-    // let url = new URL(url_string)
-    // let code = url.searchParams.get('code')
-    // this.code = code
-    // if (this.code) {
-    //   this.getCode()
-    // }
-  },
+  // created() {
+  // let url_string = window.location.href
+  // let url = new URL(url_string)
+  // let code = url.searchParams.get('code')
+  // this.code = code
+  // if (this.code) {
+  //   this.getCode()
+  // }
+  // },
 }
 </script>

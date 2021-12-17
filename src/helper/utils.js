@@ -6,6 +6,8 @@ export const setCookie = (res) => {
   d.setTime(d.getTime() + 24 * 60 * 60 * 1000)
   let expires = 'expires=' + d.toUTCString()
   document.cookie = `id_token=${res.id_token};${expires};path=/`
+  document.cookie = `access_token=${res.access_token};${expires};path=/`
+  document.cookie = `refresh_token=${res.refresh_token};${expires};path=/`
 }
 
 export const getCookie = (cookieName) => {

@@ -12,18 +12,18 @@ const supplier = {
     },
   },
   actions: {
-    async getSupplier({ commit }, payload, params) {
+    async getSupplier({ commit }, payload) {
       try {
-        const res = await axios.get(`${process.env.VUE_APP_API}/${payload}`, {
+        let path = payload.path
+        let params = payload.params
+        const res = await axios.get(`${process.env.VUE_APP_API}${path}`, {
           headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${getCookie('id_token')}`,
           },
           params,
         })
-        console.log({ payload })
-        console.log({ params })
-        console.log('API res: ', res)
+        console.log(`API ${path} res: `, res)
         commit('SET_SUPPLIER', res.data)
       } catch (error) {
         console.log(error.message)
