@@ -23,14 +23,25 @@ export default {
     this.FetchData()
   },
   methods: {
+    getRequestParams(pageSize, pageNo) {
+      let params = {}
+      if (pageSize) {
+        params['pageSize'] = pageSize
+      }
+      if (pageNo) {
+        params['pageNo'] = pageNo
+      }
+      return params
+    },
     async FetchData() {
+      const params = await this.getRequestParams(4, 1)
       try {
         // const res = await userDataService.getOrderSummary()
         const url =
-          'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1/ordersummary'
+          'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1'
         const idToken = localStorage.getItem('id_token')
         console.log({ idToken })
-        const res = await axios.get(url, {
+        const res = await axios.get(url, '/ordersummary', {
           headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${idToken}`,
@@ -38,7 +49,13 @@ export default {
         })
         console.log('Response :', res)
         console.log('Response data:', res.data.data)
-
+        const res2 = await axios.get(url, '/paidorderitems', params, {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+          },
+        })
+        console.log('Response data 2: ', res2.data)
         this.lists = res.data.data.map(this.getDisplay)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
