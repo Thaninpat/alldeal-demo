@@ -59,7 +59,7 @@ workbox.routing.registerRoute(
   new RegExp(
     'https://ccufsf0ym3.execute-api.ap-southeast-1.amazonaws.com/qa/supplier/v1/(.*)'
   ),
-  workbox.strategies.cacheFirst({
+  workbox.strategies.networkFirst({
     cacheName: 'orderapis',
     plugins: [
       new workbox.expiration.Plugin({
