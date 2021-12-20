@@ -1,6 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar app hide-on-scroll>
+    <v-app-bar
+      app
+      absolute
+      hide-on-scroll
+      scroll-target="scrolling-techniques-4"
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
