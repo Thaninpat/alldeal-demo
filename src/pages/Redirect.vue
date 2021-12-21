@@ -10,7 +10,10 @@ export default {
     try {
       if (getCookie('id_token')) {
         return this.$router.replace('/')
-      } else if (!getCookie('id_token') && getCookie('refresh_token')) {
+      } else if (
+        !getCookie('id_token') &&
+        getCookie('refresh_token') !== undefined
+      ) {
         getRefreshToken()
       } else {
         this.redirectAuthorize()
