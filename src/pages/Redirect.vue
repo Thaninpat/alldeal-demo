@@ -13,10 +13,8 @@ export default {
       console.log({ idToken }, { refreshToken })
       if (idToken) {
         return this.$router.replace('/')
-      } else if (!idToken && refreshToken) {
+      } else if (!idToken && refreshToken !== 'undefined') {
         getRefreshToken()
-      } else if (!idToken && refreshToken === undefined) {
-        this.redirectAuthorize()
       } else {
         this.redirectAuthorize()
       }
