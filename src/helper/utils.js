@@ -58,7 +58,7 @@ export const getLoginApi = async () => {
 
 export const getRefreshToken = async () => {
   try {
-    const refreshToken = await getCookie('refresh_token')
+    const refreshToken = getCookie('refresh_token')
     if (refreshToken) {
       const data = qs.stringify({
         grant_type: 'refresh_token',

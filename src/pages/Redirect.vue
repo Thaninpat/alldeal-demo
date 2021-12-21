@@ -8,14 +8,16 @@ export default {
   data: () => ({}),
   created() {
     try {
-      if (getCookie('id_token')) {
+      let idToken = getCookie('id_token')
+      let refreshToken = getCookie('refresh_token')
+      console.log({ idToken }, { refreshToken })
+      if (idToken) {
         return this.$router.replace('/')
-      } else if (!getCookie('id_token') && getCookie('refresh_token')) {
+      } else if (!idToken && refreshToken) {
         getRefreshToken()
-      } else if (
-        !getCookie('id_token') &&
-        getCookie('refresh_token') == undefined
-      ) {
+      } else if (!idToken && refreshToken === undefined) {
+        this.redirectAuthorize()
+      } else {
         this.redirectAuthorize()
       }
     } catch (error) {
