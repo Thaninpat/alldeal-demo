@@ -81,7 +81,6 @@ export const getRefreshToken = async () => {
       setCookie(response.data)
       router.replace('/')
     } else {
-      alert('Not token')
       const aws = {
         url: process.env.VUE_APP_AWS_AUTHORIZE,
         clientId: process.env.VUE_APP_CLIENT_ID,

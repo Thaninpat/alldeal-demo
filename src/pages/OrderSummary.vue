@@ -32,20 +32,7 @@ export default {
     ...mapActions({
       getOrders: 'supplier/getOrders',
     }),
-    getRequestParams(pageSize, pageNo) {
-      let params = {}
-      if (pageSize) {
-        params['pageSize'] = pageSize
-      }
-      if (pageNo) {
-        params['pageNo'] = pageNo
-      }
-      return params
-    },
     async FetchData() {
-      const params = await this.getRequestParams(4, 1)
-      console.log('params: ', params)
-
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         let orderSummary = this.orders

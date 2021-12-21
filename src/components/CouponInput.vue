@@ -157,7 +157,6 @@ export default {
         this.dataMatched = true
         this.isShowCamera = false
         let couponsItems = [value]
-        console.log('couponsItems: ', couponsItems)
         this.values = couponsItems.map(this.getDisplay)
       }
     },

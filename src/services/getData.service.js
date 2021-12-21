@@ -19,7 +19,6 @@ export const getSupplier = async (payload) => {
         data: data,
         url: `${process.env.VUE_APP_API}${path}`,
       }
-      console.log({ options })
       const res = await axios(options)
       if (res.data.code == 'CBE005') {
         authorizationCode()
