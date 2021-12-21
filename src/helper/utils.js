@@ -28,7 +28,6 @@ export const getLoginApi = async () => {
     let url_string = window.location.href
     let url = new URL(url_string)
     let code = url.searchParams.get('code')
-    console.log({ code })
     const data = qs.stringify({
       grant_type: 'authorization_code',
       code: code,
@@ -48,12 +47,8 @@ export const getLoginApi = async () => {
       data,
       url: process.env.VUE_APP_URL_OAUTH,
     }
-    console.log('options: ', options)
     const response = await axios(options)
-    console.log('response: ', response)
-
     if (response.status == 200) {
-      console.log('response in status: ', response)
       setCookie(response.data)
     }
   } catch (error) {
@@ -83,7 +78,6 @@ export const getRefreshToken = async () => {
         url: process.env.VUE_APP_URL_OAUTH,
       }
       const response = await axios(options)
-      console.log('Refresh token: ', response.data)
       setCookie(response.data)
       router.replace('/')
     } else {

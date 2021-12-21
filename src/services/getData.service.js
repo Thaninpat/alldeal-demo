@@ -4,7 +4,6 @@ import router from '../routes/index'
 
 export const getSupplier = async (payload) => {
   if (payload) {
-    console.log(payload.data)
     try {
       let path = payload.path
       let params = payload.params
