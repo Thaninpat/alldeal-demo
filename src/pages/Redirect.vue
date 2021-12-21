@@ -15,7 +15,9 @@ export default {
         return this.$router.replace('/')
       } else if (!idToken && refreshToken !== 'undefined') {
         getRefreshToken()
-      } else if (!idToken && !refreshToken) {
+      } else if (!idToken && !refreshToken == 'undefined') {
+        this.redirectAuthorize()
+      } else {
         this.redirectAuthorize()
       }
     } catch (error) {
