@@ -82,6 +82,7 @@ export const getRefreshToken = async () => {
       router.replace('/')
     } else {
       alert('Not token')
+      router.replace('/')
     }
   } catch (error) {
     console.log(error.message)
