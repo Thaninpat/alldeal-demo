@@ -82,7 +82,16 @@ export const getRefreshToken = async () => {
       router.replace('/')
     } else {
       alert('Not token')
-      router.replace('/')
+      const aws = {
+        url: process.env.VUE_APP_AWS_AUTHORIZE,
+        clientId: process.env.VUE_APP_CLIENT_ID,
+        responseType: process.env.VUE_APP_AWS_RESPONSE_type,
+        scope: process.env.VUE_APP_AWS_SCOPE,
+        redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
+      }
+      let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+      // console.log(uri)
+      window.location.href = uri
     }
   } catch (error) {
     console.log(error.message)
