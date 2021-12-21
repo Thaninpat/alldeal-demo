@@ -8,7 +8,6 @@
       :key="idx"
       :idx="idx"
       :list="list"
-      :campaigns="campaigns"
     />
     <div class="text-center mt-4">
       <v-pagination
@@ -43,22 +42,22 @@ export default {
       { name: 'Status' },
     ],
     lists: [],
-    campaigns: [],
+    campaignItemId: [],
     pageNo: 1,
     totalPages: 0,
     pageSize: 4,
   }),
   mounted() {
-    this.Fetch()
+    this.FetchPaidOrder()
   },
   computed: {
     ...mapGetters({
-      supplier: 'supplier/supplier',
+      orders: 'supplier/orders',
     }),
   },
   methods: {
     ...mapActions({
-      getSupplier: 'supplier/getSupplier',
+      getOrders: 'supplier/getOrders',
     }),
     getRequestParams(pageSize, pageNo) {
       let params = {}
@@ -70,47 +69,36 @@ export default {
       }
       return params
     },
-    async Fetch() {
+    async FetchPaidOrder() {
       const params = await this.getRequestParams(this.pageSize, this.pageNo)
       try {
-        // Orders
-        await this.getSupplier({
+        // Order Items
+        await this.getOrders({
           path: '/paidorderitems',
+          method: 'GET',
           params,
         })
-        let paidOrderItems = this.supplier
-        console.log({ paidOrderItems })
+        let paidOrderItems = this.orders
         this.lists = paidOrderItems.data.orders.map(this.getDisplay)
-        console.log('lists', this.lists)
         this.totalPages = paidOrderItems.data.totalPage
-
-        // const res = await userDataService.getOrder(params)
-        // this.lists = res.data.map(this.getDisplay)
-        // const totalItems = parseInt(res.headers['x-total-count'])
-        // this.totalPages = Math.ceil(totalItems / this.pageSize)
-
-        // Campaigns
-        // const { data } = await userDataService.getCampaign()
-        // this.campaigns = data
       } catch (error) {
         console.log(error)
       }
     },
+
     getDisplay(list) {
       if (list) {
         return {
+          campaignItemId: list.campaignItemId,
+          customerId: list.customerId,
           orderNumber: '...' + list.orderNumber.toString().substr(-7),
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
           thumbImageFileUrl: list.thumbImageFileUrl,
-          // sum_amount: list.sum_amount,
           customer_id: list.customerId,
-          // status: 'paid',
-          // channel_code: list.channel_code,
+          status: 'paid',
           paymentTypeCode: list.paymentTypeCode,
           campaignItemNameTh: list.campaignItemNameTh,
-          // campaign_item_id: list.items.map((i) => i.campaign_item_id),
-          // quantity: list.items.map((i) => i.quantity),
-          // name: list.name.substr(0, 9) + '...',
+          quantity: list.quantity,
           // status: list.published ? 'Published' : 'Pending',
         }
       } else console.log('No data list')
@@ -118,7 +106,7 @@ export default {
 
     handlePageChange(value) {
       this.pageNo = value
-      this.Fetch()
+      this.FetchPaidOrder()
     },
   },
 }

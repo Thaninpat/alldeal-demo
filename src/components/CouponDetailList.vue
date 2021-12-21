@@ -4,15 +4,15 @@
       <v-card class="pa-2">
         <div class="d-flex justify-start">
           <v-avatar class="ma-3" size="110" tile>
-            <v-img :src="value.src"></v-img>
+            <v-img src="/img/thumbnail.png"></v-img>
           </v-avatar>
           <div class="py-4 ml-2">
             <v-row>
               <v-col cols="6">Redemption Code </v-col>
-              <v-col cols="6">{{ value.redemptionCode }}</v-col>
+              <v-col cols="6">{{ value.couponCode }}</v-col>
 
               <v-col cols="6">Order ID</v-col>
-              <v-col cols="6">{{ value.orderId }}</v-col>
+              <v-col cols="6">{{ value.orderNo }}</v-col>
 
               <v-col cols="6">Item ID </v-col>
               <v-col cols="6">{{ value.itemId }}</v-col>
@@ -27,13 +27,13 @@
               <v-col cols="6">{{ value.status }}</v-col>
 
               <v-col cols="6">Paid Date</v-col>
-              <v-col cols="6">{{ value.paidDate }}</v-col>
+              <v-col cols="6">{{ value.redeemStartTms }}</v-col>
 
               <v-col cols="6">Expire Date</v-col>
-              <v-col cols="6">{{ value.expireDate }}</v-col>
+              <v-col cols="6">{{ value.redeemEndTms }}</v-col>
 
               <v-col cols="6">Used Date</v-col>
-              <v-col cols="6">{{ value.usedDate }}</v-col>
+              <v-col cols="6">{{ value.redeemedTms }}</v-col>
             </v-row>
             <div class="mt-6">
               <dialog-btn

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import router from '../routes'
 
 export const setCookie = (res) => {
   let d = new Date()
@@ -54,6 +55,39 @@ export const getLoginApi = async () => {
     if (response.status == 200) {
       console.log('response in status: ', response)
       setCookie(response.data)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+export const getRefreshToken = async () => {
+  try {
+    const refreshToken = await getCookie('refresh_token')
+    if (refreshToken) {
+      const data = qs.stringify({
+        grant_type: 'refresh_token',
+        client_id: process.env.VUE_APP_CLIENT_ID,
+        refresh_token: refreshToken,
+      })
+      const basicBase64 = btoa(
+        `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+      )
+      const options = {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${basicBase64}`,
+        },
+        data,
+        url: process.env.VUE_APP_URL_OAUTH,
+      }
+      const response = await axios(options)
+      console.log('Refresh token: ', response.data)
+      setCookie(response.data)
+      router.replace('/')
+    } else {
+      alert('Not token')
     }
   } catch (error) {
     console.log(error.message)

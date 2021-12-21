@@ -3,13 +3,15 @@
 </template>
 
 <script>
-import { getCookie } from '../helper/utils'
+import { getCookie, getRefreshToken } from '../helper/utils'
 export default {
   data: () => ({}),
   created() {
     try {
       if (getCookie('id_token')) {
         return this.$router.replace('/')
+      } else if (!getCookie('id_token') && getCookie('refresh_token')) {
+        getRefreshToken()
       } else {
         this.redirectAuthorize()
       }
@@ -29,7 +31,7 @@ export default {
         }
         let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
         console.log(uri)
-        // window.location.href = uri
+        window.location.href = uri
       } catch (error) {
         console.log(error)
       }

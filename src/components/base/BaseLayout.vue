@@ -1,11 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      absolute
-      hide-on-scroll
-      scroll-target="scrolling-techniques-4"
-    >
+    <v-app-bar app absolute hide-on-scroll scroll-target="#scrolling">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -28,44 +23,46 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
-      <v-list nav dense>
-        <div class="text-right">
-          <v-btn icon @click.stop="drawer = !drawer">
-            <v-icon v-text="'$Close'" />
-          </v-btn>
-        </div>
-        <v-list-item class="pb-4">
-          <v-img src="/img/alldeal_logo.png"></v-img>
-        </v-list-item>
-        <v-list-item v-if="!user.length > 0" link>
-          <v-list-item-content>
-            <v-list-item-title class="text-h6" v-text="user.given_name" />
-            <v-list-item-subtitle v-text="user.email" />
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-icon>mdi-menu-down</v-icon>
-          </v-list-item-action>
-        </v-list-item>
-        <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
-        <v-list-item-group v-model="group">
-          <div v-for="(item, index) in items" :key="index">
-            <v-list-item :to="item.to">
-              <v-list-item-title> {{ item.name }} </v-list-item-title>
-            </v-list-item>
+    <v-sheet id="scrolling" class="overflow-y-auto">
+      <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-list nav dense>
+          <div class="text-right">
+            <v-btn icon @click.stop="drawer = !drawer">
+              <v-icon v-text="'$Close'" />
+            </v-btn>
           </div>
-          <v-divider />
-          <v-list-item class="mt-4" @click="logOut">
-            <v-list-item-title class="btn_logout">
-              Logout
-            </v-list-item-title>
+          <v-list-item class="pb-4">
+            <v-img src="/img/alldeal_logo.png"></v-img>
           </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-    <v-main>
-      <slot />
-    </v-main>
+          <v-list-item v-if="!user.length > 0" link>
+            <v-list-item-content>
+              <v-list-item-title class="text-h6" v-text="user.given_name" />
+              <v-list-item-subtitle v-text="user.email" />
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-menu-down</v-icon>
+            </v-list-item-action>
+          </v-list-item>
+          <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
+          <v-list-item-group v-model="group">
+            <div v-for="(item, index) in items" :key="index">
+              <v-list-item :to="item.to">
+                <v-list-item-title> {{ item.name }} </v-list-item-title>
+              </v-list-item>
+            </div>
+            <v-divider />
+            <v-list-item class="mt-4" @click="logOut">
+              <v-list-item-title class="btn_logout">
+                Logout
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-navigation-drawer>
+      <v-main>
+        <slot />
+      </v-main>
+    </v-sheet>
   </v-app>
 </template>
 

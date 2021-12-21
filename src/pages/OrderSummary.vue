@@ -1,35 +1,36 @@
 <template>
   <base-layout pageTitle="Order Summary">
     <v-container>
-      <order-summary-detail :lists="lists" :size="size" />
+      <order-sum-list :lists="lists" :size="size" />
     </v-container>
   </base-layout>
 </template>
 
 <script>
 import moment from 'moment'
-import OrderSummaryDetail from '../components/OrderSummaryDetail.vue'
-// import userDataService from '../service/userDataService'
 import { mapActions, mapGetters } from 'vuex'
+import OrderSumList from '../components/OrderSumList'
 
 export default {
-  components: { OrderSummaryDetail },
+  components: {
+    OrderSumList,
+  },
   data: () => ({
     lists: [],
     reviewApi: null,
-    size: 150,
+    size: 135,
   }),
   mounted() {
     this.FetchData()
   },
   computed: {
     ...mapGetters({
-      supplier: 'supplier/supplier',
+      orders: 'supplier/orders',
     }),
   },
   methods: {
     ...mapActions({
-      getSupplier: 'supplier/getSupplier',
+      getOrders: 'supplier/getOrders',
     }),
     getRequestParams(pageSize, pageNo) {
       let params = {}
@@ -46,18 +47,8 @@ export default {
       console.log('params: ', params)
 
       try {
-        await this.getSupplier({ path: '/ordersummary' })
-        let orderSummary = this.supplier
-
-        await this.getSupplier({
-          path: '/paidorderitems',
-          params,
-        })
-        let paidOrderItems = this.supplier
-        // const resOrderSum = await userDataService.getOrderSummary()
-        // const resPaidOrder = await userDataService.getPaidOrderItems(params)
-        console.log('Response orderS: ', orderSummary)
-        console.log('Response paidO: ', paidOrderItems)
+        await this.getOrders({ path: '/ordersummary', method: 'GET' })
+        let orderSummary = this.orders
         this.lists = orderSummary.data.map(this.getDisplay)
 
         // const reviewApi = this.lists.map((i) => i.reviewApi)

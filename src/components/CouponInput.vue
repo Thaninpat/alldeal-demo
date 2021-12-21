@@ -90,12 +90,12 @@
 </template>
 
 <script>
-import axios from 'axios'
 import moment from 'moment'
 import { ImageBarcodeReader, StreamBarcodeReader } from 'vue-barcode-reader'
 
 import CouponDetailList from './CouponDetailList.vue'
 import DialogAlert from './DialogAlert.vue'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     CouponDetailList,
@@ -118,8 +118,15 @@ export default {
     loading: true,
     errors: false,
   }),
-
+  computed: {
+    ...mapGetters({
+      coupons: 'supplier/coupons',
+    }),
+  },
   methods: {
+    ...mapActions({
+      getCoupons: 'supplier/getCoupons',
+    }),
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
       this.loading = true
@@ -138,37 +145,65 @@ export default {
       console.warn(error.name, error.message)
     },
 
-    matchRedemption(result) {
-      const value = this.lists.filter((item) =>
-        item.redemptionCode.toLowerCase().match(result.toLowerCase())
-      )
-      const valueLength = value.length
-      if (valueLength > 0) {
+    matchRedemption(value) {
+      // if (valueLength > 0) {
+      //   return value
+      // }
+      if (value.errorCode == '999') {
+        this.isData(true)
+        this.dataMatched = false
+      } else {
         this.isData(false)
         this.dataMatched = true
         this.isShowCamera = false
-        return value
-      } else {
-        this.isData(true)
-        this.dataMatched = false
+        let couponsItems = [value]
+        console.log('couponsItems: ', couponsItems)
+        this.values = couponsItems.map(this.getDisplay)
       }
     },
+
     async filterData(result) {
       try {
         if (result) {
-          if (this.lists) {
-            this.values = this.matchRedemption(result)
-          } else {
-            const { data } = await axios.get('/data/couponDetail.json/')
-            this.lists = data
-            this.values = this.matchRedemption(result)
-          }
+          await this.getCoupons({
+            path: '/coupondetail',
+            method: 'POST',
+            data: { couponCode: result },
+          })
+          this.matchRedemption(this.coupons.data)
+
+          // if (this.lists) {
+          //   this.values = this.matchRedemption(result)
+          // } else {
+          //   const { data } = await axios.get('/data/couponDetail.json/')
+          //   this.lists = data
+          //   this.values = this.matchRedemption(result)
+          // }
         } else {
+          console.log('No data list')
           this.isData(true)
           this.dataMatched = false
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+    getDisplay(list) {
+      if (list) {
+        return {
+          couponCode: list.couponCode,
+          orderNo: list.orderNo,
+          orderItemNo: list.orderItemNo,
+          redeemStartTms: moment(list.redeemStartTms).format('DD/MM/YY hh:mm'),
+          redeemEndTms: moment(list.redeemEndTms).format('DD/MM/YY hh:mm'),
+          redeemedTms: list.redeemedTms
+            ? moment(list.redeemedTms).format('DD/MM/YY hh:mm')
+            : null,
+          redeemedBy: list.redeemedBy,
+          status: 'Used',
+        }
+      } else {
+        return null
       }
     },
     async isUsed(redemptionCode, markUsed) {
