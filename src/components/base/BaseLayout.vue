@@ -83,6 +83,7 @@ export default {
     }),
     logOut() {
       removeCookie('id_token')
+      removeCookie('refresh_token')
       this.$router.push('/redirect')
     },
   },
