@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panels>
-    <v-expansion-panel>
+    <v-expansion-panel v-for="(list, idxList) in lists" :key="idxList">
       <v-expansion-panel-header>
         <v-row no-gutters>
           <v-col
@@ -16,7 +16,11 @@
             class="item-list d-flex justify-center align-center"
             cols="2.5"
           >
-            {{ campaigns.priceFull }}
+            <label
+              v-text="
+                list.campaigns.priceFull ? list.campaigns.priceFull + '฿' : ''
+              "
+            ></label>
           </v-col>
           <v-col class="item-list d-flex justify-center align-center" cols="3">
             {{ list.customerId }}
@@ -46,7 +50,9 @@
       <v-expansion-panel-content>
         <v-row>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
-            Channel: -
+            <label
+              v-text="list.channel ? 'Channel: ' + list.channel : 'Channel: -'"
+            ></label>
           </v-col>
           <v-col class="item-list-detail d-flex justify-start" cols="6">
             Payment: {{ list.paymentTypeCode }}
@@ -59,15 +65,25 @@
           > -->
         <v-row class="pt-1">
           <v-col class="item-list d-flex justify-start pt-0" cols="1">
-            <v-avatar size="25" tile>
-              <v-img :src="campaigns.thumbnailImg"></v-img>
+            <v-avatar size="30" tile>
+              <v-img
+                :src="
+                  list.campaigns.thumbnailImg
+                    ? list.campaigns.thumbnailImg
+                    : list.thumbImageFileUrl
+                "
+              ></v-img>
             </v-avatar>
           </v-col>
           <v-col class="item-list d-flex justify-start pt-0" cols="5">
-            <span> {{ campaigns.campaignItemNameTh }}</span>
+            <span> {{ list.campaignItemNameTh }}</span>
           </v-col>
           <v-col class="item-list d-flex justify-start pt-0" cols="3">
-            {{ campaigns.priceNet }}฿
+            <label
+              v-text="
+                list.campaigns.priceNet ? list.campaigns.priceNet + '฿' : ''
+              "
+            ></label>
           </v-col>
           <v-col class="item-list d-flex justify-end pt-0" cols="3">
             <v-icon
@@ -83,53 +99,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-
 export default {
-  props: ['list', 'idx'],
-  data: () => ({
-    campaigns: [],
-  }),
-  mounted() {
-    this.FetchCampaignItems()
-  },
-  computed: {
-    ...mapGetters({
-      campaignItems: 'supplier/campaignItems',
-    }),
-  },
-  methods: {
-    ...mapActions({
-      getCampaignItems: 'supplier/getCampaignItems',
-    }),
-    async FetchCampaignItems() {
-      try {
-        if (this.list && this.list.campaignItemId) {
-          let campaignId = this.list.campaignItemId
-          await this.getCampaignItems({
-            path: `/campaignitems/${campaignId}`,
-          })
-          this.campaigns = this.campaignItems.data
-        } else return
-      } catch (error) {
-        console.log(error.message)
-      }
+  // props: ['lists'],
+  props: {
+    lists: {
+      type: Array,
     },
   },
-  // props: {
-  //   list: {
-  //     type: Object,
-  //   },
-  //   amounts: {
-  //     type: Object,
-  //   },
-  //   customers: {
-  //     type: Object,
-  //   },
-  //   idx: {
-  //     type: Number,
-  //   },
-  // },
 }
 </script>
 

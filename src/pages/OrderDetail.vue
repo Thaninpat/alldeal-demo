@@ -3,12 +3,7 @@
     <v-row class="pa-3" no-gutters>
       <order-detail-header v-for="(item, i) in items" :key="i" :item="item" />
     </v-row>
-    <order-detail-lists
-      v-for="(list, idx) in lists"
-      :key="idx"
-      :idx="idx"
-      :list="list"
-    />
+    <order-detail-lists :lists="lists" />
     <div class="text-center mt-4">
       <v-pagination
         v-model="pageNo"
@@ -23,7 +18,6 @@
 <script>
 import OrderDetailLists from '../components/OrderDetailLists.vue'
 import OrderDetailHeader from '../components/OrderDetailHeader.vue'
-// import userDataService from '../service/userDataService'
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -53,11 +47,13 @@ export default {
   computed: {
     ...mapGetters({
       orders: 'supplier/orders',
+      campaignItems: 'supplier/campaignItems',
     }),
   },
   methods: {
     ...mapActions({
       getOrders: 'supplier/getOrders',
+      getCampaignItems: 'supplier/getCampaignItems',
     }),
     getRequestParams(pageSize, pageNo) {
       let params = {}
@@ -78,9 +74,26 @@ export default {
           method: 'GET',
           params,
         })
-        let paidOrderItems = this.orders
-        this.lists = paidOrderItems.data.orders.map(this.getDisplay)
-        this.totalPages = paidOrderItems.data.totalPage
+        let paidOrderItems = this.orders.data.orders
+        this.totalPages = this.orders.data.totalPage
+
+        const promises = await paidOrderItems.map(async (item) => {
+          if (item) {
+            // Have Array[item.campaignItemId] must 2loop
+            await this.getCampaignItems({
+              path: `/campaignitems/${item.campaignItemId}`,
+            })
+            let campaignItem = { campaigns: this.campaignItems.data }
+            let inputToItem = Object.assign(item, campaignItem)
+            return inputToItem
+          }
+        })
+        const campaigns = await Promise.all(promises)
+        const displayItems = campaigns.map(this.getDisplay)
+        this.lists = displayItems
+        // console.log('Display campaigns: ', campaigns)
+        // console.log('Display displayItems: ', displayItems)
+        // console.log('Display this.lists: ', this.lists)
       } catch (error) {
         console.log(error)
       }
@@ -93,18 +106,18 @@ export default {
           customerId: list.customerId,
           orderNumber: '...' + list.orderNumber.toString().substr(-7),
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
-          thumbImageFileUrl: list.thumbImageFileUrl,
-          customer_id: list.customerId,
           status: 'paid',
           paymentTypeCode: list.paymentTypeCode,
           campaignItemNameTh: list.campaignItemNameTh,
           quantity: list.quantity,
-          // status: list.published ? 'Published' : 'Pending',
+          thumbImageFileUrl: list.thumbImageFileUrl,
+          campaigns: list.campaigns,
         }
       } else console.log('No data list')
     },
 
     handlePageChange(value) {
+      console.log({ value })
       this.pageNo = value
       this.FetchPaidOrder()
     },

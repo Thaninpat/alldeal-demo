@@ -29,6 +29,7 @@ export const getSupplier = async (payload) => {
     }
   }
 }
+
 const authorizationCode = () => {
   removeCookie('id_token')
   router.push('/redirect')
