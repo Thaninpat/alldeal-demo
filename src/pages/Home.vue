@@ -17,22 +17,23 @@
       </v-snackbar>
     </div>
     <v-container>
-      <vue-chart />
+      <Dashboard />
     </v-container>
   </base-layout>
 </template>
 
 <script>
 import update from '../mixins/update'
-import VueChart from '../components/VueChart.vue'
+import Dashboard from '../components/Dashboard.vue'
 
 export default {
   name: 'Home',
-  components: { VueChart },
+  components: {
+    Dashboard,
+  },
   mixins: [update],
   data: () => ({
     snackbar: false,
-    text: `Hello, I'm a snackbar`,
     code: null,
     token: {
       id_token: '',

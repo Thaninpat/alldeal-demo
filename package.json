@@ -20,7 +20,7 @@
     "vue": "^2.6.11",
     "vue-barcode-reader": "0.0.3",
     "vue-chartjs": "^3.5.1",
-    "vue-iframes": "0.0.16",
+    "vue-chartkick": "^0.6.1",
     "vue-jwt-decode": "^0.1.0",
     "vue-qrcode-reader": "^3.0.3",
     "vue-router": "^3.5.2",

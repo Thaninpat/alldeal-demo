@@ -77,7 +77,7 @@ export default {
         let paidOrderItems = this.orders.data.orders
         this.totalPages = this.orders.data.totalPage
 
-        const promises = await paidOrderItems.map(async (item) => {
+        const promises = paidOrderItems.map(async (item) => {
           if (item) {
             // Have Array[item.campaignItemId] must 2loop
             await this.getCampaignItems({

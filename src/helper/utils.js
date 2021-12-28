@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import qs from 'qs'
 import router from '../routes'
 
@@ -95,4 +96,32 @@ export const getRefreshToken = async () => {
   } catch (error) {
     console.log(error.message)
   }
+}
+
+export const getMonth = (date) => {
+  let months = []
+  let i = 0
+  while (i < 6) {
+    months.push(
+      moment(date)
+        .startOf('day')
+        .subtract(i, 'month')
+    )
+    i++
+  }
+  return months.reverse()
+}
+
+export const getDay = (date) => {
+  let days = []
+  let i = 0
+  while (i < 7) {
+    days.push(
+      moment(date)
+        .startOf('day')
+        .subtract(i, 'days')
+    )
+    i++
+  }
+  return days.reverse()
 }

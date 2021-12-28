@@ -13,8 +13,13 @@ import './vee-validate'
 import { initializeApp } from 'firebase/app'
 import settings from './settings'
 import './controller'
-import VueIframe from 'vue-iframes'
 import { getLoginApi } from './helper/utils'
+
+// Chart
+// import Chartkick from 'vue-chartkick'
+// import { Chart } from 'chart.js'
+
+// Vue.use(Chartkick.use(Chart))
 
 Vue.config.productionTip = false
 
@@ -25,7 +30,6 @@ const base = axios.create({
   baseURL: 'https://alldeal-login.herokuapp.com/api/v1', // replace on production env
 })
 Vue.prototype.$http = base
-Vue.use(VueIframe)
 let url_string = window.location.href
 let url = new URL(url_string)
 let code = url.searchParams.get('code')
