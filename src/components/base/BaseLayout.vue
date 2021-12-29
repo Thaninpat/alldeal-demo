@@ -5,7 +5,11 @@
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title class="font-weight-light">
-        <v-btn text><v-icon>mdi-filter</v-icon>Filter</v-btn>
+        <FilterBtn
+          v-if="filterLists"
+          @filter="filterItems"
+          :filterLists="filterLists"
+        />
       </v-toolbar-title>
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -69,8 +73,11 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { removeCookie } from '../../helper/utils'
+import { Filter } from '../../helper/filter'
+import FilterBtn from './FilterBtn.vue'
 export default {
-  props: ['pageTitle', 'pageDefaultBackLink'],
+  props: ['pageTitle', 'pageDefaultBackLink', 'itemsFilter', 'filterLists'],
+  components: { FilterBtn },
   data: () => ({
     drawer: false,
     group: null,
@@ -85,6 +92,9 @@ export default {
       removeCookie('id_token')
       removeCookie('refresh_token')
       this.$router.push('/redirect')
+    },
+    async filterItems(filterBy) {
+      await Filter({ items: this.itemsFilter, filterBy: filterBy })
     },
   },
   computed: {
@@ -106,10 +116,12 @@ export default {
   },
   mounted() {
     this.getUser()
+    // this.filterItems()
   },
-  // updated() {
-  //   this.result = this.user.data.roles[0]
-  // },
+  updated() {
+    // console.log('Items filter: ', this.itemsFilter)
+    // this.result = this.user.data.roles[0]
+  },
 }
 </script>
 

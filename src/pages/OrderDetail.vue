@@ -1,5 +1,9 @@
 <template>
-  <base-layout pageTitle="Order Detail">
+  <base-layout
+    pageTitle="Order Detail"
+    :itemsFilter="lists"
+    :filterLists="filterLists"
+  >
     <v-row class="pa-3" no-gutters>
       <order-detail-header v-for="(item, i) in items" :key="i" :item="item" />
     </v-row>
@@ -40,6 +44,7 @@ export default {
     pageNo: 1,
     totalPages: 0,
     pageSize: 4,
+    filterLists: ['orderId', 'customerId', 'Date', 'Amount'],
   }),
   mounted() {
     this.FetchPaidOrder()
@@ -91,6 +96,7 @@ export default {
         const campaigns = await Promise.all(promises)
         const displayItems = campaigns.map(this.getDisplay)
         this.lists = displayItems
+
         // console.log('Display campaigns: ', campaigns)
         // console.log('Display displayItems: ', displayItems)
         // console.log('Display this.lists: ', this.lists)
@@ -102,9 +108,11 @@ export default {
     getDisplay(list) {
       if (list) {
         return {
+          orderId: list.orderNumber,
           campaignItemId: list.campaignItemId,
           customerId: list.customerId,
           orderNumber: '...' + list.orderNumber.toString().substr(-7),
+          originalTms: moment(list.paidTms).format('DD MMM YY'),
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
           status: 'paid',
           paymentTypeCode: list.paymentTypeCode,
@@ -117,7 +125,7 @@ export default {
     },
 
     handlePageChange(value) {
-      console.log({ value })
+      // console.log({ value })
       this.pageNo = value
       this.FetchPaidOrder()
     },

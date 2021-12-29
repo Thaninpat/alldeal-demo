@@ -15,12 +15,6 @@ import settings from './settings'
 import './controller'
 import { getLoginApi } from './helper/utils'
 
-// Chart
-// import Chartkick from 'vue-chartkick'
-// import { Chart } from 'chart.js'
-
-// Vue.use(Chartkick.use(Chart))
-
 Vue.config.productionTip = false
 
 initializeApp(settings.firebaseConfig)

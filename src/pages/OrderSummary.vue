@@ -1,5 +1,9 @@
 <template>
-  <base-layout pageTitle="Order Summary">
+  <base-layout
+    pageTitle="Order Summary"
+    :itemsFilter="lists"
+    :filterLists="filterLists"
+  >
     <v-container>
       <order-sum-list :lists="lists" :size="size" />
     </v-container>
@@ -19,6 +23,7 @@ export default {
     lists: [],
     reviewApi: null,
     size: 135,
+    filterLists: ['Id', 'Name', 'Date'],
   }),
   mounted() {
     this.FetchData()
