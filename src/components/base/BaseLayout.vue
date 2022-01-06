@@ -11,20 +11,53 @@
           :filterLists="filterLists"
         />
       </v-toolbar-title>
-      <v-menu left bottom>
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-width="220"
+        offset-y
+      >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-badge color="red" overlap :content="notify">
+          <v-btn icon v-bind="attrs" v-on="on" @click="notify = 0">
+            <v-badge color="red" overlap :value="notify" :content="notify">
               <v-icon>mdi-bell</v-icon>
             </v-badge>
           </v-btn>
         </template>
-
-        <v-list>
-          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <v-card>
+          <v-list>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-subtitle
+                  v-text="`VIEW READ (${notify})`"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>mdi-email-outline</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+          <v-card class="overflow-auto" max-height="75vh">
+            <v-list>
+              <v-list-item v-for="n in messages" :key="n" @click="() => {}">
+                <v-list-item-content>
+                  <v-list-item-title
+                    >Notification title {{ n }}</v-list-item-title
+                  >
+                  <v-list-item-subtitle>subtitle {{ n }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+          <!-- <v-list>
+            <v-list-item v-for="n in notify" :key="n" @click="() => {}">
+              <v-list-item-content>
+                <v-list-item-title>Option {{ n }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list> -->
+        </v-card>
       </v-menu>
     </v-app-bar>
     <v-sheet id="scrolling" class="overflow-y-auto">
@@ -48,7 +81,7 @@
             </v-list-item-action>
           </v-list-item>
           <!-- <label v-text="user === null ? '' : user.data.roles[0]"></label> -->
-          <v-list-item-group v-model="group">
+          <v-list-item-group v-model="group" color="primary">
             <div v-for="(item, index) in items" :key="index">
               <v-list-item :to="item.to">
                 <v-list-item-title> {{ item.name }} </v-list-item-title>
@@ -81,7 +114,9 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    notify: 52,
+    notify: 0,
+    messages: 10,
+    menu: false,
     // result: '',
   }),
   methods: {
