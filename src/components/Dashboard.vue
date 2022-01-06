@@ -62,11 +62,11 @@ export default {
   data: () => ({
     loaded: false,
     haveData: false,
-    default: 'dailySum',
+    default: 'monthlySum',
     selectDate: moment(Date.now()).format('YYYY-MM-DD'),
     sDate: '',
     eDate: '',
-    sumName: 'Daily Summary',
+    sumName: 'Monthly Summary',
     chartData: null,
     countOrder: null,
     countLabel: null,
