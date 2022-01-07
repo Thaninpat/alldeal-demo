@@ -1,8 +1,8 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn text color="black" v-bind="attrs" v-on="on">
-        filter
+      <v-btn icon v-bind="attrs" v-on="on">
+        <v-icon v-text="'$Sort'" />
       </v-btn>
     </template>
     <v-list>
