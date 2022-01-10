@@ -352,6 +352,10 @@ export default {
   mounted() {
     this.getOrderSummary()
   },
+  updated() {
+    console.log(this.orders.code)
+    if (this.orders.code === 'CBE003') this.getOrderSummary()
+  },
 }
 </script>
 
