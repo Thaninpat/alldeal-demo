@@ -162,7 +162,7 @@ export default {
           // console.log('orderName: ', this.orderLists.orderName)
           // console.log('orderTms: ', this.orderLists.orderTms)
           // console.log('priceFull: ', this.orderLists.priceFull)
-          await this.clearFile()
+          // await this.clearFile()
           this.haveData = true
           this.loaded = true
         }
@@ -353,7 +353,6 @@ export default {
     this.getOrderSummary()
   },
   updated() {
-    console.log(this.orders.code)
     if (this.orders.code === 'CBE003') this.getOrderSummary()
   },
 }
