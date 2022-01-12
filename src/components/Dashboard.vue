@@ -148,21 +148,10 @@ export default {
           this.sDate,
           this.eDate
         )
-        // console.log('compareDate: ', compareDate)
         if (compareDate) {
           const orderLists = compareDate.map(await this.orderDisplay)
-          // console.log('orderList: ', orderLists)
-
           this.orderLists.orderName = orderLists.map((item) => item.orderName)
-
           this.checkData(orderLists)
-
-          // console.log('chartData: ', this.chartData)
-          // console.log('orderList: ', orderLists)
-          // console.log('orderName: ', this.orderLists.orderName)
-          // console.log('orderTms: ', this.orderLists.orderTms)
-          // console.log('priceFull: ', this.orderLists.priceFull)
-          // await this.clearFile()
           this.haveData = true
           this.loaded = true
         }
@@ -179,8 +168,6 @@ export default {
 
     async handleData(ordersData) {
       console.log({ ordersData })
-
-      // this.renderChart()
     },
 
     // Filter
@@ -352,7 +339,8 @@ export default {
   mounted() {
     this.getOrderSummary()
   },
-  updated() {
+  beforeUpdate() {
+    console.log('Error code: ', this.orders.code)
     if (this.orders.code === 'CBE003') this.getOrderSummary()
   },
 }

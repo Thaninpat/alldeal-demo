@@ -10,7 +10,6 @@ export default {
     try {
       let idToken = getCookie('id_token')
       let refreshToken = getCookie('refresh_token')
-      console.log({ idToken }, { refreshToken })
       if (idToken) {
         return this.$router.replace('/')
       } else if (!idToken && refreshToken !== 'undefined') {
