@@ -141,13 +141,13 @@ export default {
       this.loaded = false
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
-        const orderSummary = this.orders.data
-        // console.log('orderSummary: ', orderSummary)
+        const orderSummary = this.orders
+        console.log('orderSummary: ', orderSummary)
 
         console.log('Code Error: ', this.orders.code)
         if (orderSummary) {
           const compareDate = await this.filterDateOrder(
-            orderSummary,
+            orderSummary.data,
             this.sDate,
             this.eDate
           )
