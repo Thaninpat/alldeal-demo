@@ -40,7 +40,7 @@
           :chartData="chartData"
           :options="options"
         />
-        <h4 v-else-if="!loaded" class="text-center mt-6">loading...</h4>
+        <h4 v-else-if="!loaded" class="text-center mt-6">Loading...</h4>
         <h4 v-else-if="loaded && !haveData" class="text-center mt-6">
           No data.
         </h4>
@@ -154,9 +154,9 @@ export default {
           this.checkData(orderLists)
           this.haveData = true
           this.loaded = true
-        }
-        // No data
-        else {
+        } else if (this.orders.code === 'CBE003') {
+          this.getOrderSummary()
+        } else {
           this.loaded = true
           this.haveData = false
           this.chartData = ''
@@ -338,10 +338,6 @@ export default {
   },
   mounted() {
     this.getOrderSummary()
-  },
-  beforeUpdate() {
-    console.log('Error code: ', this.orders.code)
-    if (this.orders.code === 'CBE003') this.getOrderSummary()
   },
 }
 </script>
