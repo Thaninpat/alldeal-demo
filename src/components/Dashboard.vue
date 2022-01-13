@@ -162,12 +162,11 @@ export default {
           this.chartData = ''
         }
       } catch (error) {
+        setTimeout(() => {
+          this.loaded = true
+        }, 1500)
         console.log(error.message)
       }
-    },
-
-    async handleData(ordersData) {
-      console.log({ ordersData })
     },
 
     // Filter
@@ -341,5 +340,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>
