@@ -148,13 +148,13 @@ export default {
           this.sDate,
           this.eDate
         )
+        console.log('Code Error: ', this.orders.code)
         if (compareDate) {
           const orderLists = compareDate.map(await this.orderDisplay)
           this.orderLists.orderName = orderLists.map((item) => item.orderName)
           this.checkData(orderLists)
           this.haveData = true
           this.loaded = true
-          console.log('Code Error: ', this.orders.code)
         } else if (this.orders.code === 'CBE003') {
           this.getOrderSummary()
         } else {
