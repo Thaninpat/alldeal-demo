@@ -14,7 +14,6 @@ module.exports = {
       swSrc: 'src/sw.js',
       swDest: 'service-worker.js',
       exclude: [/_redirects/],
-      navigateFallback: 'index.html',
       // ...other Workbox options...
     },
   },
