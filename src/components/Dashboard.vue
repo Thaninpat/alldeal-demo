@@ -154,6 +154,7 @@ export default {
           this.checkData(orderLists)
           this.haveData = true
           this.loaded = true
+          console.log('Code Error: ', this.orders.code)
         } else if (this.orders.code === 'CBE003') {
           this.getOrderSummary()
         } else {
