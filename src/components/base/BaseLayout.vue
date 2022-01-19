@@ -43,11 +43,11 @@
                 </v-list-item>
               </div>
               <v-divider />
-              <!-- <v-list-item class="mt-4" @click="logOut">
-              <v-list-item-title class="btn_logout">
-                Logout
-              </v-list-item-title>
-            </v-list-item> -->
+              <v-list-item class="mt-4" @click="logOut">
+                <v-list-item-title class="btn_logout">
+                  Logout
+                </v-list-item-title>
+              </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
@@ -61,7 +61,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { removeCookie } from '../../helper/utils'
+import { getLogoutApi } from '../../helper/utils'
 import { Filter } from '../../helper/filter'
 import ConnectedBar from './ConnectedBar.vue'
 import FilterBtn from './FilterBtn.vue'
@@ -82,9 +82,10 @@ export default {
       getUser: 'user/getUser',
     }),
     logOut() {
-      removeCookie('id_token')
-      removeCookie('refresh_token')
-      this.$router.push('/redirect')
+      getLogoutApi()
+      // removeCookie('id_token')
+      // removeCookie('refresh_token')
+      // this.$router.push('/redirect')
     },
     async filterItems(filterBy) {
       await Filter({ items: this.itemsFilter, filterBy: filterBy })

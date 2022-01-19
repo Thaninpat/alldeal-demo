@@ -199,7 +199,7 @@ export default {
             ? moment(list.redeemedTms).format('DD/MM/YY hh:mm')
             : null,
           redeemedBy: list.redeemedBy,
-          status: 'Used',
+          status: list.redeemedTms ? 'Available' : 'Used',
         }
       } else {
         return null

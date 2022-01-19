@@ -46,8 +46,33 @@ export const getLoginApi = async () => {
         Authorization: `Basic ${basicBase64}`,
       },
       data,
-      url: process.env.VUE_APP_URL_OAUTH,
+      url: process.env.VUE_APP_URL_OAUTH + '/authorize',
     }
+    console.log('options login-> ', options)
+    const response = await axios(options)
+    if (response.status == 200) {
+      setCookie(response.data)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+export const getLogoutApi = async () => {
+  try {
+    const data = qs.stringify({
+      client_id: process.env.VUE_APP_CLIENT_ID,
+      logout_uri: 'https://alldeal-demo.netlify.app/redirect',
+    })
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data,
+      url: process.env.VUE_APP_URL_OAUTH + '/logout',
+    }
+    console.log('options logout -> ', options)
     const response = await axios(options)
     if (response.status == 200) {
       setCookie(response.data)
