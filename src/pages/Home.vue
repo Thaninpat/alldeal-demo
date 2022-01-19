@@ -46,7 +46,7 @@ export default {
     let url = new URL(url_string)
     let code = url.searchParams.get('code')
     if (code) {
-      this.$router.push('/home')
+      this.$router.push('/')
     }
   },
 }

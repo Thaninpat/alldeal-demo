@@ -14,11 +14,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    redirect: '/home',
+    path: '/home',
+    redirect: '/',
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home,
     meta: {
