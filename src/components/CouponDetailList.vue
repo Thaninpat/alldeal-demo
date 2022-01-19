@@ -37,9 +37,10 @@
             </v-row>
             <div class="mt-6">
               <dialog-btn
+                v-if="value.status !== 'Used'"
                 class="justify-center"
                 :status="value.status"
-                @isUsed="isUsed(value.redemptionCode, value.markUsed)"
+                @isUsed="isUsed(value.couponCode)"
               />
             </div>
           </div>
@@ -59,8 +60,8 @@ export default {
     },
   },
   methods: {
-    isUsed(redemptionCode, markUsed) {
-      this.$emit('isUsed', redemptionCode, markUsed)
+    isUsed(couponCode) {
+      this.$emit('isUsed', couponCode)
     },
   },
 }

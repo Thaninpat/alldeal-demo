@@ -79,6 +79,13 @@
         :title="title"
         :text="error"
       />
+      <dialog-alert
+        v-if="couponExpire"
+        @isError="isExpire"
+        :errors="couponExpire"
+        :title="title"
+        :text="error"
+      />
     </div>
     <!-- Main detail -->
     <coupon-detail-list
@@ -115,17 +122,20 @@ export default {
     used: true,
     available: true,
     haveData: false,
+    couponExpire: false,
     loading: true,
     errors: false,
   }),
   computed: {
     ...mapGetters({
       coupons: 'supplier/coupons',
+      markCouponUsed: 'supplier/markCouponUsed',
     }),
   },
   methods: {
     ...mapActions({
       getCoupons: 'supplier/getCoupons',
+      getMarkCouponUsed: 'supplier/getMarkCouponUsed',
     }),
     closeCamera() {
       this.isShowCamera = !this.isShowCamera
@@ -146,9 +156,6 @@ export default {
     },
 
     matchRedemption(value) {
-      // if (valueLength > 0) {
-      //   return value
-      // }
       if (value.errorCode == '999') {
         this.isData(true)
         this.dataMatched = false
@@ -158,6 +165,7 @@ export default {
         this.isShowCamera = false
         let couponsItems = [value]
         this.values = couponsItems.map(this.getDisplay)
+        // console.log('values: ', this.values)
       }
     },
 
@@ -170,14 +178,6 @@ export default {
             data: { couponCode: result },
           })
           this.matchRedemption(this.coupons.data)
-
-          // if (this.lists) {
-          //   this.values = this.matchRedemption(result)
-          // } else {
-          //   const { data } = await axios.get('/data/couponDetail.json/')
-          //   this.lists = data
-          //   this.values = this.matchRedemption(result)
-          // }
         } else {
           console.log('No data list')
           this.isData(true)
@@ -195,70 +195,54 @@ export default {
           orderItemNo: list.orderItemNo,
           redeemStartTms: moment(list.redeemStartTms).format('DD/MM/YY hh:mm'),
           redeemEndTms: moment(list.redeemEndTms).format('DD/MM/YY hh:mm'),
-          redeemedTms: list.redeemedTms
-            ? moment(list.redeemedTms).format('DD/MM/YY hh:mm')
-            : null,
+          redeemedTms:
+            list.redeemedTms == null
+              ? null
+              : moment(list.redeemedTms).format('DD/MM/YY hh:mm'),
           redeemedBy: list.redeemedBy,
-          status: list.redeemedTms ? 'Available' : 'Used',
+          status: list.redeemedTms == null ? 'Available' : 'Used',
         }
       } else {
         return null
       }
     },
-    async isUsed(redemptionCode, markUsed) {
+    async isUsed(couponCode) {
       this.available = !this.available
       try {
-        let updatedAt = moment(Date.now()).format('DD/M/YYYY HH:mm')
-        // Used Coupon
-        if (markUsed === true || markUsed === null) {
-          let update = await this.lists.map((item) => {
-            if (item.redemptionCode === redemptionCode) {
-              return {
-                ...item,
-                usedDate: updatedAt,
-                status: 'Available',
-                markUsed: false,
-              }
-            } else {
-              return item
-            }
-          })
-          this.lists = update
-          this.result = ''
-          this.dataMatched = false
-        }
-        // available Coupon
-        else {
-          let update = await this.lists.map((item) => {
-            if (item.redemptionCode === redemptionCode) {
-              return {
-                ...item,
-                usedDate: updatedAt,
-                status: 'Used',
-                markUsed: true,
-              }
-            } else {
-              return item
-            }
-          })
-          this.lists = update
-          this.result = ''
-          this.dataMatched = false
+        await this.getMarkCouponUsed({
+          path: '/couponredemptions',
+          method: 'POST',
+          data: { couponCode: couponCode },
+        })
+        const markCoupon = this.markCouponUsed
+        // console.log(markCoupon)
+        if (markCoupon.status.code === 'OD999') {
+          const res = {
+            couponExpire: true,
+            errorCode: markCoupon.status.code,
+            messageEn: markCoupon.status.messageEn,
+          }
+          this.isExpire(res)
+        } else {
+          await this.filterData(couponCode)
         }
       } catch (error) {
-        console.log(error)
+        console.log(error.message)
       }
     },
     isData(haveData) {
       this.haveData = haveData
-      this.error = 'No information found'
       this.title = 'Not found'
-      // this.result = ''
+      this.error = 'No information found'
+    },
+    isExpire(res) {
+      this.couponExpire = res.couponExpire
+      this.title = 'Error code: ' + res.errorCode
+      this.error = res.messageEn
     },
     isError(errors) {
       this.errors = errors
       this.title = 'Error'
-      // this.result = ''
     },
     Error(error) {
       if (error.name === 'NotAllowedError') {

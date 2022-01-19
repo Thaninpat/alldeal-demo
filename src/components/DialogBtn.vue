@@ -14,6 +14,14 @@
           v-on="on"
         />
         <v-btn
+          v-else-if="status === 'Refund'"
+          class="px-7"
+          x-small
+          rounded
+          disabled
+          v-text="'Refund'"
+        />
+        <!-- <v-btn
           v-else-if="status === 'Used'"
           v-text="status === 'Used' ? 'cancel' : 'use'"
           :color="status === 'Used' ? 'error' : 'success'"
@@ -23,15 +31,7 @@
           rounded
           v-bind="attrs"
           v-on="on"
-        />
-        <v-btn
-          v-else-if="status === 'Refund'"
-          class="px-7"
-          x-small
-          rounded
-          disabled
-          v-text="'Refund'"
-        />
+        /> -->
       </template>
       <v-card>
         <v-card-title class="justify-center">

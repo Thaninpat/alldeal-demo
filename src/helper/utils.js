@@ -18,7 +18,7 @@ export const getCookie = (cookieName) => {
   )
   if (cookieArr) return cookieArr[2]
   else {
-    console.log('--something went wrong---')
+    // console.log('--something went wrong---')
     return
   }
 }
@@ -51,7 +51,6 @@ export const getLoginApi = async () => {
       data,
       url: process.env.VUE_APP_URL_OAUTH,
     }
-    console.log('options login-> ', options)
     const response = await axios(options)
     if (response.status == 200) {
       setCookie(response.data)

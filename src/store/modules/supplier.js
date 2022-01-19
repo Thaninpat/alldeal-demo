@@ -5,6 +5,7 @@ const supplier = {
     orders: [],
     campaignItems: [],
     coupons: [],
+    markCouponUsed: [],
   },
   mutations: {
     SET_ORDERS(state, data) {
@@ -15,6 +16,9 @@ const supplier = {
     },
     SET_COUPON(state, data) {
       state.coupons = data
+    },
+    SET_MARK_COUPON_USED(state, data) {
+      state.markCouponUsed = data
     },
   },
   actions: {
@@ -42,6 +46,14 @@ const supplier = {
         console.log(error.message)
       }
     },
+    async getMarkCouponUsed({ commit }, payload) {
+      try {
+        const res = await getSupplier(payload)
+        commit('SET_MARK_COUPON_USED', res.data)
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
   },
   getters: {
     orders(state) {
@@ -52,6 +64,9 @@ const supplier = {
     },
     coupons(state) {
       return state.coupons
+    },
+    markCouponUsed(state) {
+      return state.markCouponUsed
     },
   },
 }
