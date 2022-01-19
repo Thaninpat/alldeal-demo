@@ -62,7 +62,7 @@ export const getLogoutApi = async () => {
   try {
     const data = qs.stringify({
       client_id: process.env.VUE_APP_CLIENT_ID,
-      logout_uri: 'https://alldeal-demo.netlify.app/redirect',
+      logout_uri: 'https://alldeal-demo.netlify.app/logout',
     })
     const options = {
       method: 'GET',
