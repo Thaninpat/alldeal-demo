@@ -1,5 +1,5 @@
 <template>
-  Logout Page
+  <h3>Logout Page</h3>
 </template>
 
 <script>

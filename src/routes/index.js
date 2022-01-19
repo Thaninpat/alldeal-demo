@@ -62,6 +62,11 @@ const routes = [
     name: 'redirect',
     component: () => import('../pages/Redirect.vue'),
   },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import('../pages/Logout.vue'),
+  },
   { path: '*', redirect: '/' },
   {
     path: '/:catchAll(.*)',

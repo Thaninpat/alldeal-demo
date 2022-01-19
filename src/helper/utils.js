@@ -46,7 +46,7 @@ export const getLoginApi = async () => {
         Authorization: `Basic ${basicBase64}`,
       },
       data,
-      url: process.env.VUE_APP_URL_OAUTH + '/authorize',
+      url: process.env.VUE_APP_URL_OAUTH,
     }
     console.log('options login-> ', options)
     const response = await axios(options)
@@ -61,22 +61,29 @@ export const getLoginApi = async () => {
 export const getLogoutApi = async () => {
   try {
     const data = qs.stringify({
+      response_type: process.env.VUE_APP_AWS_RESPONSE_type,
       client_id: process.env.VUE_APP_CLIENT_ID,
-      logout_uri: 'https://alldeal-demo.netlify.app/logout',
+      redirect_uri: process.env.VUE_APP_AWS_REDIRECT_URI,
+      state: 'STATE',
+      scope: process.env.VUE_APP_AWS_SCOPE,
     })
+    const basicBase64 = btoa(
+      `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
+    )
     const options = {
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${basicBase64}`,
       },
       data,
-      url: process.env.VUE_APP_URL_OAUTH + '/logout',
+      url: process.env.VUE_APP_AWS_AUTHORIZE + '/logout',
     }
     console.log('options logout -> ', options)
     const response = await axios(options)
     if (response.status == 200) {
-      setCookie(response.data)
-    }
+      console.log(response.data)
+    } else console.log(response)
   } catch (error) {
     console.log(error.message)
   }

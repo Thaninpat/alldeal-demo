@@ -27,7 +27,7 @@ export default {
     redirectAuthorize() {
       try {
         const aws = {
-          url: process.env.VUE_APP_AWS_AUTHORIZE,
+          url: process.env.VUE_APP_AWS_AUTHORIZE + '/oauth2/authorize',
           clientId: process.env.VUE_APP_CLIENT_ID,
           responseType: process.env.VUE_APP_AWS_RESPONSE_type,
           scope: process.env.VUE_APP_AWS_SCOPE,
