@@ -3,37 +3,39 @@
 </template>
 
 <script>
-import { getCookie, getRefreshToken } from '../helper/utils'
+import { getCookie } from '../helper/utils'
 export default {
   data: () => ({}),
-  created() {
+  async created() {
     try {
       let idToken = getCookie('id_token')
       let refreshToken = getCookie('refresh_token')
       if (idToken) {
         return this.$router.replace('/')
-      } else if (!idToken && refreshToken !== 'undefined') {
-        getRefreshToken()
-      } else if (!idToken && !refreshToken == 'undefined') {
-        this.redirectAuthorize()
+      }
+      // else if (!idToken && refreshToken !== 'undefined') {
+      //   getRefreshToken()
+      // }
+      else if (!idToken && !refreshToken == 'undefined') {
+        await this.redirectAuthorize()
       } else {
-        this.redirectAuthorize()
+        await this.redirectAuthorize()
       }
     } catch (error) {
       console.log(error.message)
     }
   },
   methods: {
-    redirectAuthorize() {
+    async redirectAuthorize() {
       try {
         const aws = {
-          url: process.env.VUE_APP_AWS_AUTHORIZE + '/oauth2/authorize',
+          url: process.env.VUE_APP_AWS_AUTHORIZE,
           clientId: process.env.VUE_APP_CLIENT_ID,
           responseType: process.env.VUE_APP_AWS_RESPONSE_type,
           scope: process.env.VUE_APP_AWS_SCOPE,
           redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
         }
-        let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+        let uri = `${aws.url}/oauth2/authorize?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
         // console.log(uri)
         window.location.href = uri
       } catch (error) {

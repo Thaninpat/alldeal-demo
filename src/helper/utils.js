@@ -17,10 +17,13 @@ export const getCookie = (cookieName) => {
     new RegExp('(^| )' + cookieName + '=([^;]+)')
   )
   if (cookieArr) return cookieArr[2]
-  else console.log('--something went wrong---')
+  else {
+    console.log('--something went wrong---')
+    return
+  }
 }
 
-export const removeCookie = (cookieName) => {
+export const removeCookie = async (cookieName) => {
   document.cookie = `${cookieName}=;path=/;max-age=0`
 }
 
@@ -61,7 +64,7 @@ export const getLoginApi = async () => {
 export const getLogoutApi = async () => {
   try {
     const aws = {
-      url: process.env.VUE_APP_AWS_AUTHORIZE + '/logout',
+      url: process.env.VUE_APP_AWS_AUTHORIZE,
       responseType: process.env.VUE_APP_AWS_RESPONSE_type,
       clientId: process.env.VUE_APP_CLIENT_ID,
       redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
@@ -69,9 +72,12 @@ export const getLogoutApi = async () => {
       scope: process.env.VUE_APP_AWS_SCOPE,
     }
     const cookieName = ['id_token', 'refresh_token', 'access_token']
-    console.log(...cookieName)
-    await removeCookie(...cookieName)
-    let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&state=${aws.state}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+    for (let x of cookieName) {
+      await removeCookie(x)
+    }
+
+    let uri = `${aws.url}/logout?client_id=${aws.clientId}&response_type=${aws.responseType}&state=${aws.state}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+    // console.log(uri)
     window.location.href = uri
   } catch (error) {
     console.log(error.message)
@@ -110,7 +116,7 @@ export const getRefreshToken = async () => {
         scope: process.env.VUE_APP_AWS_SCOPE,
         redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
       }
-      let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+      let uri = `${aws.url}/oauth2/authorize?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
       // console.log(uri)
       window.location.href = uri
     }

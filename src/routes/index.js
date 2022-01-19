@@ -8,8 +8,6 @@ import InvoiceStatementTax from '../pages/InvoiceStatementTax.vue'
 
 import { getCookie } from '../helper/utils'
 
-// import { Role } from '../helper/Roles'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -62,11 +60,6 @@ const routes = [
     name: 'redirect',
     component: () => import('../pages/Redirect.vue'),
   },
-  {
-    path: '/logout',
-    name: 'logout',
-    component: () => import('../pages/Logout.vue'),
-  },
   { path: '*', redirect: '/' },
   {
     path: '/:catchAll(.*)',
@@ -95,19 +88,6 @@ router.beforeEach((to, from, next) => {
       return next()
       // return next({ path: '/login', query: { returnUrl: to.path } })
     } else return next({ path: '/redirect' })
-    // else {
-    //   let user = VueJwtDecode.decode(token)
-    //   if (authorize.length && !authorize.includes(user.data.roles[0])) {
-    //     if (user.data.roles[0] == 'ROLE_ACCOUNT') {
-    //       return next({ path: '/' })
-    //     }
-    //     if (user.data.roles[0] == 'ROLE_AGENT') {
-    //       return next({ path: '/order-summary' })
-    //     }
-    //   } else {
-    //     next()
-    //   }
-    // }
   }
   next()
 })
