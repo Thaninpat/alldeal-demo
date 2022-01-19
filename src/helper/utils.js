@@ -60,30 +60,19 @@ export const getLoginApi = async () => {
 
 export const getLogoutApi = async () => {
   try {
-    const data = qs.stringify({
-      response_type: process.env.VUE_APP_AWS_RESPONSE_type,
-      client_id: process.env.VUE_APP_CLIENT_ID,
-      redirect_uri: process.env.VUE_APP_AWS_REDIRECT_URI,
+    const aws = {
+      url: process.env.VUE_APP_AWS_AUTHORIZE + '/logout',
+      responseType: process.env.VUE_APP_AWS_RESPONSE_type,
+      clientId: process.env.VUE_APP_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
       state: 'STATE',
       scope: process.env.VUE_APP_AWS_SCOPE,
-    })
-    const basicBase64 = btoa(
-      `${process.env.VUE_APP_CLIENT_ID}:${process.env.VUE_APP_CLIENT_SECRET}`
-    )
-    const options = {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${basicBase64}`,
-      },
-      data,
-      url: process.env.VUE_APP_AWS_AUTHORIZE + '/logout',
     }
-    console.log('options logout -> ', options)
-    const response = await axios(options)
-    if (response.status == 200) {
-      console.log(response.data)
-    } else console.log(response)
+    const cookieName = ['id_token', 'refresh_token', 'access_token']
+    console.log(...cookieName)
+    await removeCookie(...cookieName)
+    let uri = `${aws.url}?client_id=${aws.clientId}&response_type=${aws.responseType}&state=${aws.state}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
+    window.location.href = uri
   } catch (error) {
     console.log(error.message)
   }
