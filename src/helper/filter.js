@@ -3,9 +3,9 @@ import moment from 'moment'
 export const Filter = async (res) => {
   if (res.filterBy === 'Id') sortById(res.items)
   if (res.filterBy === 'customerId') sortById(res.items)
-  if (res.filterBy === 'orderId') sortByName(res.items)
+  if (res.filterBy === 'OrderId') sortByName(res.items)
   if (res.filterBy === 'Name') sortByName(res.items)
-  if (res.filterBy === 'Date') sortByDate(res.items)
+  if (res.filterBy === 'Paiddate start-end') sortByDate(res.items)
   if (res.filterBy === 'Amount') sortByAmount(res.items)
 }
 

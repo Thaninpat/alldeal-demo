@@ -36,7 +36,6 @@ export default {
       { name: 'OrderId' },
       { name: 'Paid Date' },
       { name: 'Amount' },
-      { name: 'Customer' },
       { name: 'Status' },
     ],
     lists: [],
@@ -44,7 +43,7 @@ export default {
     pageNo: 1,
     totalPages: 0,
     pageSize: 4,
-    filterLists: ['orderId', 'customerId', 'Date', 'Amount'],
+    filterLists: ['OrderId', 'Paiddate start-end'],
   }),
   mounted() {
     this.FetchPaidOrder()
@@ -114,11 +113,12 @@ export default {
           orderNumber: '...' + list.orderNumber.toString().substr(-7),
           originalTms: moment(list.paidTms).format('DD MMM YY'),
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
-          status: 'paid',
+          status: list.paidTms ? 'paid' : 'unpaid',
           paymentTypeCode: list.paymentTypeCode,
           campaignItemNameTh: list.campaignItemNameTh,
           quantity: list.quantity,
           thumbImageFileUrl: list.thumbImageFileUrl,
+          // amount: list.campaigns.priceFull * list.quantity,
           campaigns: list.campaigns,
         }
       } else console.log('No data list')

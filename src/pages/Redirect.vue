@@ -5,7 +5,6 @@
 <script>
 import { getCookie } from '../helper/utils'
 export default {
-  data: () => ({}),
   async created() {
     try {
       let idToken = getCookie('id_token')
