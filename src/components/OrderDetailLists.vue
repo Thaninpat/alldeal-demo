@@ -21,22 +21,7 @@
           <v-col
             class="item-list d-flex justify-end justify-sm-center align-center"
           >
-            <v-icon
-              v-if="list.status === 'order'"
-              dense
-              v-text="'$mdiCashCheck'"
-            ></v-icon>
-            <v-icon
-              v-if="list.status === 'paid'"
-              dense
-              v-text="'$mdiCart'"
-            ></v-icon>
-            <v-icon
-              v-if="list.status === 'refund'"
-              dense
-              v-text="'$mdiCashRefund'"
-            ></v-icon>
-            <v-icon v-else dense></v-icon>
+            <i :class="list.status === 'paid' ? 'ico-paid' : ''"></i>
           </v-col>
         </v-row>
       </v-expansion-panel-header>
@@ -83,10 +68,9 @@
               ></label>
             </v-col>
             <v-col class="item-list d-flex justify-end pt-0" cols="3">
-              <v-icon
-                dense
-                v-text="list.quantity > 0 ? '$mdiTicket' : ''"
-              ></v-icon>
+              <i
+                :class="list.campaigns.redemptionStartTms ? 'ico-coupon' : ''"
+              ></i>
             </v-col>
           </v-row>
         </div>
@@ -97,7 +81,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   // props: ['lists'],
   props: {
@@ -105,15 +88,15 @@ export default {
       type: Array,
     },
   },
-  async updated() {
-    console.log(this.lists)
-    await this.lists.map((x) => {
-      const camP = x.campaigns
-      const start = moment(camP.redemptionStartTms).format('DD/MM/YY')
-      const end = moment(camP.redemptionEndTms).format('DD/MM/YY')
-      console.log(`Start: ${start} - End: ${end}`)
-    })
-  },
+  // async updated() {
+  //   console.log(this.lists)
+  //   await this.lists.map((x) => {
+  //     const camP = x.campaigns
+  //     const start = moment(camP.redemptionStartTms).format('DD/MM/YY')
+  //     const end = moment(camP.redemptionEndTms).format('DD/MM/YY')
+  //     console.log(`Start: ${start} - End: ${end}`)
+  //   })
+  // },
 }
 </script>
 

@@ -2,11 +2,15 @@ import moment from 'moment'
 
 export const Filter = async (res) => {
   if (res.filterBy === 'Id') sortById(res.items)
-  if (res.filterBy === 'customerId') sortById(res.items)
-  if (res.filterBy === 'OrderId') sortByName(res.items)
-  if (res.filterBy === 'Name') sortByName(res.items)
-  if (res.filterBy === 'Paiddate start-end') sortByDate(res.items)
-  if (res.filterBy === 'Amount') sortByAmount(res.items)
+  else if (res.filterBy === 'customerId') sortById(res.items)
+  else if (res.filterBy === 'OrderId') sortByName(res.items)
+  else if (res.filterBy === 'Name') sortByName(res.items)
+  else if (res.filterBy === 'Paiddate start-end') sortByDate(res.items)
+  else if (res.filterBy === 'Amount') sortByAmount(res.items)
+  else if (res.values.sortby === 'amount')
+    sortByAmount({ items: res.items, sort: res.values.sort })
+  else if (res.values.sortby === 'paidDate')
+    sortByPaidDate({ items: res.items, sort: res.values.sort })
 }
 
 export const sortById = async (items) => {
@@ -47,13 +51,38 @@ export const sortByDate = async (items) => {
   return byDate
 }
 
-export const sortByAmount = async (items) => {
-  const byAmount = await items.sort(function(a, b) {
-    let AmountA = a.campaigns.priceFull
-    let AmountB = b.campaigns.priceFull
-    return AmountA - AmountB
+export const sortByUid = async (items) => {
+  const byId = await items.sort(function(a, b) {
+    let IdA = a.uid
+    let IdB = b.uid
+    return IdA - IdB
   })
-  return byAmount
+  return byId
+}
+
+export const sortByAmount = async ({ items, sort }) => {
+  if (sort == null) return sortByUid(items)
+  else {
+    const byAmount = await items.sort(function(a, b) {
+      let AmountA = a.amount
+      let AmountB = b.amount
+      if (sort == true) return AmountA - AmountB
+      else if (sort == false) return AmountB - AmountA
+    })
+    return byAmount
+  }
+}
+export const sortByPaidDate = async ({ items, sort }) => {
+  if (sort == null) return sortByUid(items)
+  else {
+    const byDate = await items.sort(function(a, b) {
+      let DateA = a.originalTms
+      let DateB = b.originalTms
+      if (sort == true) return new Date(DateA) - new Date(DateB)
+      else if (sort == false) return new Date(DateB) - new Date(DateA)
+    })
+    return byDate
+  }
 }
 
 export const setFormatDate = (date) => {

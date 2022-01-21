@@ -29,19 +29,20 @@
             </v-card-text>
             <div>
               <v-btn class="pa-0" text>
-                <v-icon small v-text="'$mdiCart'"></v-icon>
+                <i class="ico-cart"></i>
+
                 <label class="grey--text">
                   {{ item.sellOrder }}
                 </label>
               </v-btn>
               <v-btn class="pa-0" text>
-                <v-icon small v-text="'$mdiCashCheck'"></v-icon>
+                <i class="ico-paid"></i>
                 <label class="grey--text">
                   {{ item.sellPaid }}
                 </label>
               </v-btn>
               <v-btn class="pa-0" text>
-                <v-icon small v-text="'$mdiTicket'"></v-icon>
+                <i class="ico-coupon"></i>
                 <label class="grey--text">
                   {{ item.couponUsed }}
                 </label>

@@ -18,8 +18,8 @@ export const getCookie = (cookieName) => {
   )
   if (cookieArr) return cookieArr[2]
   else {
-    // console.log('--something went wrong---')
-    return
+    console.log('--something went wrong---')
+    stop
   }
 }
 

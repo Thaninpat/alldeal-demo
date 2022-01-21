@@ -5,7 +5,7 @@
     :filterLists="filterLists"
   >
     <v-row class="pa-3" no-gutters>
-      <order-detail-header v-for="(item, i) in items" :key="i" :item="item" />
+      <order-detail-header :itemSorting="lists" />
     </v-row>
     <order-detail-lists :lists="lists" />
     <div class="text-center mt-4">
@@ -42,12 +42,14 @@ export default {
     campaignItemId: [],
     pageNo: 1,
     totalPages: 0,
-    pageSize: 4,
+    pageSize: 10,
     filterLists: ['OrderId', 'Paiddate start-end'],
   }),
+
   mounted() {
     this.FetchPaidOrder()
   },
+
   computed: {
     ...mapGetters({
       orders: 'supplier/orders',
@@ -95,7 +97,6 @@ export default {
         const campaigns = await Promise.all(promises)
         const displayItems = campaigns.map(this.getDisplay)
         this.lists = displayItems
-
         // console.log('Display campaigns: ', campaigns)
         // console.log('Display displayItems: ', displayItems)
         // console.log('Display this.lists: ', this.lists)
@@ -104,21 +105,25 @@ export default {
       }
     },
 
-    getDisplay(list) {
+    getDisplay(list, index) {
       if (list) {
         return {
+          uid: `${index}${Date.now()}`,
           orderId: list.orderNumber,
           campaignItemId: list.campaignItemId,
           customerId: list.customerId,
-          orderNumber: '...' + list.orderNumber.toString().substr(-7),
-          originalTms: moment(list.paidTms).format('DD MMM YY'),
+          orderNumber:
+            window.screen.availWidth > 450
+              ? list.orderNumber
+              : '...' + list.orderNumber.toString().substr(-7),
+          originalTms: list.paidTms,
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
           status: list.paidTms ? 'paid' : 'unpaid',
           paymentTypeCode: list.paymentTypeCode,
           campaignItemNameTh: list.campaignItemNameTh,
           quantity: list.quantity,
           thumbImageFileUrl: list.thumbImageFileUrl,
-          // amount: list.campaigns.priceFull * list.quantity,
+          amount: list.campaigns.priceFull * list.quantity,
           campaigns: list.campaigns,
         }
       } else console.log('No data list')
