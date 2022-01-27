@@ -8,10 +8,13 @@
 
         <v-spacer></v-spacer>
         <v-toolbar-title class="font-weight-light">
+          <!-- <v-btn text @click="handleFilter" v-text="'filter'" /> -->
           <FilterBtn
-            v-if="filterLists"
-            @filter="filterItems"
+            v-if="activated_filter"
+            @filterB="filterItems"
+            @clear_filter="clearFilter"
             :filterLists="filterLists"
+            :pageTitle="pageTitle"
           />
         </v-toolbar-title>
         <NotificationBtn />
@@ -62,12 +65,25 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { getLogoutApi } from '../../helper/utils'
-import { Filter } from '../../helper/filter'
+import { testFilter } from '../../helper/filter'
 import ConnectedBar from './ConnectedBar.vue'
 import FilterBtn from './FilterBtn.vue'
 import NotificationBtn from './NotificationBtn.vue'
 export default {
-  props: ['pageTitle', 'pageDefaultBackLink', 'itemsFilter', 'filterLists'],
+  // props: ['pageTitle', 'itemsFilter', 'filterLists'],
+  props: {
+    pageTitle: {
+      type: String,
+      default: '',
+    },
+    itemsFilter: {
+      type: Array,
+    },
+    activated_filter: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: { FilterBtn, NotificationBtn, ConnectedBar },
   data: () => ({
     drawer: false,
@@ -75,6 +91,7 @@ export default {
     connectionStatus: '',
     onLine: navigator.onLine,
     showBackOnline: false,
+    keyFilter: { name: null, age: 25 },
     // result: '',
   }),
   methods: {
@@ -87,14 +104,27 @@ export default {
       // removeCookie('refresh_token')
       // this.$router.push('/redirect')
     },
-    async filterItems(filterBy) {
-      await Filter({ items: this.itemsFilter, filterBy: filterBy })
+    async filterItems(val) {
+      console.log(val)
+      const response = await testFilter({
+        keyFilter: val,
+        items: this.itemsFilter,
+      })
+      this.$emit('response_filter', response)
+    },
+    clearFilter(val) {
+      this.$emit('clear_filter', val)
     },
     updateOnlineStatus(e) {
       const { type } = e
       this.onLine = type === 'online'
     },
+    async handleFilter() {
+      // console.log(this.keyFilter)
+      testFilter(this.keyFilter)
+    },
   },
+
   computed: {
     ...mapGetters({
       items: 'menus',

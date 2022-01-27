@@ -2,7 +2,9 @@
   <base-layout
     pageTitle="Order Detail"
     :itemsFilter="lists"
-    :filterLists="filterLists"
+    @response_filter="responseFilter"
+    @clear_filter="clearFilter"
+    activated_filter
   >
     <v-row class="pa-3" no-gutters>
       <order-detail-header :itemSorting="lists" />
@@ -10,11 +12,13 @@
     <order-detail-lists :lists="lists" />
     <div class="text-center mt-4">
       <v-pagination
+        v-if="!filtered"
         v-model="pageNo"
         :length="totalPages"
         total-visible="7"
         @input="handlePageChange"
       ></v-pagination>
+      <v-pagination v-else></v-pagination>
     </div>
   </base-layout>
 </template>
@@ -44,6 +48,7 @@ export default {
     totalPages: 0,
     pageSize: 10,
     filterLists: ['OrderId', 'Paiddate start-end'],
+    filtered: false,
   }),
 
   mounted() {
@@ -133,6 +138,17 @@ export default {
       // console.log({ value })
       this.pageNo = value
       this.FetchPaidOrder()
+    },
+    responseFilter(val) {
+      console.log('ORderDetail: ', val)
+      this.lists = val
+      this.filtered = true
+    },
+    clearFilter(val) {
+      if (val == true) {
+        this.FetchPaidOrder()
+        this.filtered = false
+      }
     },
   },
 }

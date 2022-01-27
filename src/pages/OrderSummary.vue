@@ -1,9 +1,5 @@
 <template>
-  <base-layout
-    pageTitle="Order Summary"
-    :itemsFilter="lists"
-    :filterLists="filterLists"
-  >
+  <base-layout pageTitle="Order Summary" :itemsFilter="lists">
     <v-container>
       <order-sum-list :lists="lists" :size="size" />
     </v-container>

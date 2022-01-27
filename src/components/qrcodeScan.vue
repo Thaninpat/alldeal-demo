@@ -15,7 +15,7 @@
         <qrcode-stream v-if="isShowCamera" @decode="onDecode" @init="onInit">
           <div class="pt-4 pl-3">
             <v-btn icon dark @click="openCamera">
-              <v-icon>mdi-close</v-icon>
+              <v-icon v-text="'$Close'" />
             </v-btn>
           </div>
         </qrcode-stream>

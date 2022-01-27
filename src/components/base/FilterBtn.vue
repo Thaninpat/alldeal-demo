@@ -1,32 +1,44 @@
 <template>
-  <v-menu offset-y>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn icon v-bind="attrs" v-on="on">
-        <v-icon v-text="'$Sort'" />
-      </v-btn>
-    </template>
-    <v-list>
-      <div v-for="(list, idx) in filterLists" :key="idx">
-        <v-list-item @click="filter(list)">
-          <v-list-item-title>
-            <a>{{ list }}</a>
-          </v-list-item-title>
-        </v-list-item>
-      </div>
-    </v-list>
-  </v-menu>
+  <v-row justify="space-around">
+    <v-col>
+      <v-dialog
+        v-model="dialog"
+        max-width="650"
+        transition="dialog-top-transition"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon v-text="dialog ? '$FilterClose' : '$Filter'" />
+          </v-btn>
+        </template>
+        <FilterDisplay
+          @closed_dialog="closedDialog"
+          @clear_filter="clearFilter"
+          @filterD="filterB"
+          :pageTitle="pageTitle"
+        />
+      </v-dialog>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
+import FilterDisplay from './FilterDisplay.vue'
 export default {
-  props: ['filterLists'],
-  data: () => ({}),
+  components: { FilterDisplay },
+  props: ['filterLists', 'pageTitle'],
+  data: () => ({ dialog: false, filtered: false }),
   methods: {
-    async filter(filterBy) {
-      this.$emit('filter', filterBy)
+    async filterB(val) {
+      console.log(val)
+      this.$emit('filterB', val)
+    },
+    closedDialog(val) {
+      this.dialog = val
+    },
+    clearFilter(val) {
+      this.$emit('clear_filter', val)
     },
   },
 }
 </script>
-
-<style></style>

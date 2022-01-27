@@ -18,9 +18,12 @@ export default new Vuetify({
       Flashlight: 'mdi-flashlight',
       FlashlightOff: 'mdi-flashlight-off',
       Image: 'mdi-image-area',
-      NotifyBell: 'mdi-bell',
+      NotifyBell: 'mdi-bell-outline',
+      NotifyBellClose: 'mdi-bell',
       Qrcode: 'mdi-qrcode-scan',
       Sort: 'mdi-sort',
+      Filter: 'mdi-filter-menu-outline',
+      FilterClose: 'mdi-filter-minus',
     },
   },
 })

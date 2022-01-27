@@ -65,7 +65,9 @@ export default {
   // },
   methods: {
     async Sorting(values) {
-      await Filter({ values, items: this.itemSorting })
+      const res = await Filter({ values, items: this.itemSorting })
+      console.log(res)
+      return res
     },
     handleClick(val) {
       if (val === 'paidDate') {

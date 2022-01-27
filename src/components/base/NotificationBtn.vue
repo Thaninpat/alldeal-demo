@@ -8,7 +8,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon v-bind="attrs" v-on="on">
         <v-badge color="red" overlap :value="notify" :content="notify">
-          <v-icon v-text="'$NotifyBell'" />
+          <v-icon v-text="menu ? '$NotifyBellClose' : '$NotifyBell'" />
         </v-badge>
       </v-btn>
     </template>

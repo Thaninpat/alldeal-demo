@@ -89,3 +89,48 @@ export const setFormatDate = (date) => {
   let reFormat = moment(date).format('DD MMM YY')
   return reFormat
 }
+
+export const testFilter = async (val) => {
+  let items = val.items
+  let keyArr = val.keyFilter
+  console.log(keyArr, items)
+
+  if (!!keyArr.orderId && !!keyArr.startDate) {
+    const result = { keyArr, items }
+    console.log(1)
+    return await filterItem(result)
+  } else if (
+    keyArr.startDate === null ||
+    keyArr.startDate === undefined ||
+    keyArr.startDate === ''
+  ) {
+    keyArr = { orderId: keyArr.orderId }
+    const result = { keyArr, items }
+    console.log(2)
+    const response = await filterItem(result)
+    // console.log(response)
+    return response
+  } else if (
+    keyArr.orderId === null ||
+    keyArr.orderId === undefined ||
+    keyArr.orderId === ''
+  ) {
+    keyArr = { paidTms: keyArr.startDate }
+    const result = { keyArr, items }
+    console.log(3)
+    return await filterItem(result)
+  }
+}
+
+export const filterItem = async (result) => {
+  var filter = result.keyArr
+  var items = result.items
+  items = items.filter(function(item) {
+    for (var key in filter) {
+      if (item[key] === undefined || item[key] != filter[key]) return false
+    }
+    return true
+  })
+  // console.log(items)
+  return items
+}
