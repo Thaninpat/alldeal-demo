@@ -103,6 +103,6 @@ export default {
   font-size: 13px;
 }
 .item-list-detail {
-  font-size: 10px;
+  font-size: 12px;
 }
 </style>
