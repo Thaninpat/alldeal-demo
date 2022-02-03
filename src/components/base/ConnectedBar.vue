@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-system-bar v-if="!onLine" dark color="red lighten-1">
-      <v-icon>mdi-web-cancel</v-icon>
+      <v-icon v-text="'$Offline'" />
       <span>Offline mode</span>
     </v-system-bar>
     <v-system-bar v-if="showBackOnline" dark color="green lighten-1">
-      <v-icon>mdi-web</v-icon>
+      <v-icon v-text="'$Online'" />
       <span>Online again</span>
     </v-system-bar>
   </div>

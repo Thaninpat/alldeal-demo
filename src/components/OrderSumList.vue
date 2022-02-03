@@ -1,72 +1,71 @@
 <template>
-  <v-row dense>
-    <v-col
-      class="pa-0"
-      v-for="(list, idxList) in lists"
-      :key="idxList"
-      cols="12"
+  <v-col class="pa-0" cols="12">
+    <v-card
+      :to="item.sellPaid != 0 ? `/order-summary/${item.id}` : ''"
+      class="ma-1"
+      v-for="(item, idxItem) in list.items"
+      :key="idxItem"
+      color="#f1f1f1"
     >
-      <v-card
-        class="ma-1"
-        v-for="(item, idxItem) in list.items"
-        :key="idxItem"
-        color="#f1f1f1"
-      >
-        <div class="d-flex flex-no-wrap justify-start">
-          <v-avatar class="ma-3 mx-md-10" :size="size" tile>
-            <v-img :src="list.thumbnailImg"></v-img>
-          </v-avatar>
-          <div class="pl-md-10 ml-md-10">
-            <v-card-title>
-              <label class="order_title" v-text="item.nameTh"></label>
-            </v-card-title>
-            <!-- <v-card-subtitle>{{ idxList + 1 }}</v-card-subtitle> -->
-            <v-card-text class="pb-0 grey--text">
-              <label>
-                {{ list.effectiveStatus }} : {{ list.effectiveTms }} -
-                {{ list.expireTms }}
+      <div class="d-flex flex-no-wrap justify-start">
+        <v-avatar class="ma-3 mx-md-10" :size="size" tile>
+          <v-img
+            :src="item.thumbnailImg ? item.thumbnailImg : list.thumbnailImg"
+            :alt="item.nameTh"
+          ></v-img>
+        </v-avatar>
+        <div class="pl-md-10 ml-md-10">
+          <v-card-title>
+            <label class="order_title" v-text="item.nameTh"></label>
+          </v-card-title>
+          <!-- <v-card-subtitle>{{ idxList + 1 }}</v-card-subtitle> -->
+          <v-card-text class="pb-0 grey--text">
+            <label>
+              {{ list.effectiveStatus }} : {{ list.effectiveTms }} -
+              {{ list.expireTms }}
+            </label>
+          </v-card-text>
+          <v-list-item>
+            <v-list-item class="pa-0" text>
+              <i class="ico-cart"></i>
+              <label class="grey--text pl-1">
+                {{ item.sellOrder }}
               </label>
-            </v-card-text>
-            <div>
-              <v-btn class="pa-0" text>
-                <i class="ico-cart"></i>
+            </v-list-item>
+            <v-list-item class="pa-0" text>
+              <i class="ico-paid"></i>
+              <label class="grey--text pl-1">
+                {{ item.sellPaid }}
+              </label>
+            </v-list-item>
+            <v-list-item class="pa-0" text>
+              <i class="ico-coupon"></i>
+              <label class="grey--text pl-1">
+                {{ item.couponUsed }}
+              </label>
+            </v-list-item>
+          </v-list-item>
 
-                <label class="grey--text">
-                  {{ item.sellOrder }}
-                </label>
-              </v-btn>
-              <v-btn class="pa-0" text>
-                <i class="ico-paid"></i>
-                <label class="grey--text">
-                  {{ item.sellPaid }}
-                </label>
-              </v-btn>
-              <v-btn class="pa-0" text>
-                <i class="ico-coupon"></i>
-                <label class="grey--text">
-                  {{ item.couponUsed }}
-                </label>
-              </v-btn>
-            </div>
-
-            <v-card-actions>
-              <v-btn class="pa-0 pl-3" text>
-                <v-icon small>mdi-forum</v-icon>
-                <div class="grey--text">{{ list.reviewApi }} Review</div>
-              </v-btn>
-            </v-card-actions>
-          </div>
+          <v-card-actions>
+            <v-list-item class="pa-0 pl-3" text>
+              <v-icon small>mdi-forum</v-icon>
+              <div
+                class="grey--text pl-1"
+                v-text="list.reviewApi ? list.reviewApi + 'Review' : '0 Review'"
+              ></div>
+            </v-list-item>
+          </v-card-actions>
         </div>
-      </v-card>
-    </v-col>
-  </v-row>
+      </div>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
 export default {
   props: {
-    lists: {
-      type: Array,
+    list: {
+      type: Object,
       require: true,
     },
     size: {

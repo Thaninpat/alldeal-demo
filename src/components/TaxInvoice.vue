@@ -8,18 +8,22 @@
       </v-col>
     </v-row>
     <table>
-      <tr class="item-list">
+      <tr class="item-list tr_statement">
         <th>No</th>
         <th>Tax Invoice Date</th>
         <th>File Name</th>
         <th>Download</th>
       </tr>
-      <tr class="item-list-detail" v-for="item in items" :key="item.id">
+      <tr
+        class="item-list-detail tr_statement"
+        v-for="item in items"
+        :key="item.id"
+      >
         <td>{{ item.id }}</td>
         <td>{{ item.statementDate }}</td>
         <td>{{ item.fileName }}</td>
         <td>
-          <a href="#">Download</a>
+          <a href="#" class="download_file">Download</a>
         </td>
       </tr>
     </table>

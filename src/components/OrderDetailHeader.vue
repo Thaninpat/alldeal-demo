@@ -1,9 +1,12 @@
 <template>
   <v-row>
-    <v-col class="d-flex justify-center" cols="2.4">
+    <v-col
+      class="d-flex justify-center justify-sm-end justify-md-end"
+      cols="2.5"
+    >
       <label class="title_header">OrderId</label>
     </v-col>
-    <v-col class="d-flex justify-center" cols="2.4">
+    <v-col class="d-flex justify-center" cols="3.5">
       <label
         text
         @click="handleClick('paidDate')"
@@ -17,7 +20,7 @@
         ></v-icon>
       </label>
     </v-col>
-    <v-col class="d-flex justify-center" cols="2.4">
+    <v-col class="d-flex justify-center" cols="3.5">
       <label
         text
         @click="handleClick('amount')"
@@ -31,7 +34,7 @@
         ></v-icon>
       </label>
     </v-col>
-    <v-col class="d-flex justify-center" cols="2.4">
+    <v-col class="d-flex justify-center" cols="2">
       <label class="title_header">Status</label>
     </v-col>
   </v-row>
@@ -41,33 +44,20 @@
 import { Filter } from '../helper/filter'
 
 export default {
-  // props: ['item'],
   props: {
     itemSorting: {
       type: Array,
       default: null,
     },
-    // pageNo: {
-    //   type: Number,
-    //   default: 1,
-    // },
   },
   data: () => ({
     sortPaidDate: null,
     sortAmount: null,
   }),
-  // watch: {
-  //   pageNo() {
-  //     // console.log(prevPageNo, newPageNo)
-  //     this.sortPaidDate = null
-  //     this.sortAmount = null
-  //   },
-  // },
+
   methods: {
     async Sorting(values) {
-      const res = await Filter({ values, items: this.itemSorting })
-      console.log(res)
-      return res
+      await Filter({ values, items: this.itemSorting })
     },
     handleClick(val) {
       if (val === 'paidDate') {

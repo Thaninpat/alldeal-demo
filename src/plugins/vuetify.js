@@ -8,10 +8,6 @@ export default new Vuetify({
   icons: {
     iconfont: 'mdi', // default - only for display purposes
     values: {
-      // mdiCart: 'mdi-cart-check',
-      // mdiCertificate: 'mdi-certificate-outline',
-      // mdiTicket: 'mdi-ticket-percent-outline',
-      // mdiCashCheck: 'mdi-cash-check',
       mdiCashRefund: 'mdi-cash-refund',
       Close: 'mdi-close',
       EmailOpen: 'mdi-email-open-outline',
@@ -20,6 +16,8 @@ export default new Vuetify({
       Image: 'mdi-image-area',
       NotifyBell: 'mdi-bell-outline',
       NotifyBellClose: 'mdi-bell',
+      Offline: 'mdi-web-cancel',
+      Online: 'mdi-web',
       Qrcode: 'mdi-qrcode-scan',
       Sort: 'mdi-sort',
       Filter: 'mdi-filter-menu-outline',

@@ -1,70 +1,22 @@
 <template>
   <v-card>
-    <form @submit.prevent="submit">
-      <v-toolbar dark color="hsl(210, 100%, 27%)">
-        <v-btn icon dark @click="closedDialog">
-          <v-icon v-text="'$Close'" />
-        </v-btn>
-        <v-toolbar-title>Filters</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-subheader>{{ pageTitle }}</v-subheader>
-      </v-toolbar>
-      <v-card-text class="px-3">
-        <v-container>
-          <div class="flex-container">
-            <div class="flex-items1">
-              <v-text-field
-                v-model="orderId"
-                label="Order Id"
-                type="text"
-                height="25"
-                clearable
-                autofocus
-              ></v-text-field>
-            </div>
-            <div class="flex-items2">
-              <v-text-field
-                v-model="startDate"
-                label="From"
-                type="date"
-                height="25"
-                disabled
-              ></v-text-field>
-            </div>
-            <div class="flex-items2">
-              <v-text-field
-                v-model="endDate"
-                label="To"
-                type="date"
-                height="25"
-                disabled
-              ></v-text-field>
-            </div>
-          </div>
-        </v-container>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn icon @click="clearFilter">
-          <v-icon color="error">mdi-trash-can-outline</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="clearField">
-          Clear
-        </v-btn>
-        <v-btn
-          color="primary"
-          type="submit"
-          text
-          :disabled="!orderId && !startDate"
-        >
-          submit
-        </v-btn>
-      </v-card-actions>
-    </form>
+    <FilterOrderDetail
+      v-if="pageTitle === 'Order Detail'"
+      @clear_field="clearField"
+      @clear_filter="clearFilter"
+      @closed_dialog="closedDialog"
+      @filter_order_detail="filterD"
+      :dialog="dialog"
+      :pageTitle="pageTitle"
+    />
   </v-card>
 </template>
 <script>
+import FilterOrderDetail from './FilterOrderDetail.vue'
 export default {
+  components: {
+    FilterOrderDetail,
+  },
   data: () => ({
     orderId: null,
     startDate: null,
@@ -72,16 +24,9 @@ export default {
   }),
   props: ['dialog', 'pageTitle'],
   methods: {
-    async submit() {
-      const val = {
-        orderId: this.orderId,
-        startDate: this.startDate,
-        endDate: this.endDate,
-      }
+    async filterD(val) {
       console.log(val)
       this.$emit('filterD', val)
-      this.clearField()
-      this.closedDialog()
     },
     clearField() {
       this.orderId = null
@@ -99,11 +44,12 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .filter-header {
   background-color: hsl(210, 100%, 27%);
 }
 .flex-container {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
 }

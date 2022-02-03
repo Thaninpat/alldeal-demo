@@ -13,7 +13,6 @@
             v-if="activated_filter"
             @filterB="filterItems"
             @clear_filter="clearFilter"
-            :filterLists="filterLists"
             :pageTitle="pageTitle"
           />
         </v-toolbar-title>
@@ -105,12 +104,12 @@ export default {
       // this.$router.push('/redirect')
     },
     async filterItems(val) {
-      console.log(val)
-      const response = await testFilter({
-        keyFilter: val,
-        items: this.itemsFilter,
-      })
-      this.$emit('response_filter', response)
+      console.log('val', val)
+      // const response = await testFilter({
+      //   keyFilter: val,
+      //   items: this.itemsFilter,
+      // })
+      this.$emit('response_filter', val)
     },
     clearFilter(val) {
       this.$emit('clear_filter', val)

@@ -35,11 +35,7 @@
         </v-form>
       </v-col>
       <v-col class="small">
-        <line-chart
-          v-if="loaded && haveData"
-          :chartData="chartData"
-          :options="options"
-        />
+        <LineChart v-if="loaded && haveData" :chartData="chartData" />
         <h4 v-else-if="!loaded" class="text-center mt-6">Loading...</h4>
         <h4 v-else-if="loaded && !haveData" class="text-center mt-6">
           No data.
@@ -75,36 +71,9 @@ export default {
     orderLists: {
       orderName: [],
       orderTms: [],
-      priceFull: [],
+      priceNet: [],
     },
     dataCollections: [],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-        position: 'bottom',
-        labels: {
-          fontColor: '#000',
-        },
-      },
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-          gridLines: {
-            display: true,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          gridLines: {
-            display: false,
-          },
-        },
-      ],
-    },
     lastMonthThisDay: moment()
       .startOf('day')
       .subtract(6, 'month'),
@@ -112,6 +81,9 @@ export default {
       .startOf('day')
       .subtract(1, 'week'),
   }),
+  mounted() {
+    this.getOrderSummary()
+  },
   computed: {
     ...mapGetters({
       orders: 'supplier/orders',
@@ -142,7 +114,7 @@ export default {
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         const orderSummary = this.orders.data
-        // console.log('orderSummary: ', orderSummary)
+        console.log('orderSummary: ', orderSummary)
         if (orderSummary) {
           const compareDate = await this.filterDateOrder(
             orderSummary,
@@ -150,6 +122,8 @@ export default {
             this.eDate
           )
           const orderLists = compareDate.map(await this.orderDisplay)
+          console.log('orderLists: ', orderLists)
+
           this.orderLists.orderName = orderLists.map((item) => item.orderName)
           this.checkData(orderLists)
           this.haveData = true
@@ -269,8 +243,8 @@ export default {
             if (
               moment(x).format('MMMM') === moment(list.orderTms).format('MMMM')
             ) {
-              let price = list.priceFull.map((y) => y)
-              value.push(price.reduce((prev, cur) => prev + cur, 0))
+              let sell_paid = list.sellPaid.map((y) => y)
+              value.push(sell_paid.reduce((prev, cur) => prev + cur, 0))
             } else value.push(0)
           }
           if (this.default === 'dailySum') {
@@ -278,8 +252,8 @@ export default {
               moment(x).format('DD-MMMM') ===
               moment(list.orderTms).format('DD-MMMM')
             ) {
-              let price = list.priceFull.map((y) => y)
-              value.push(price.reduce((prev, cur) => prev + cur, 0))
+              let sell_paid = list.sellPaid.map((y) => y)
+              value.push(sell_paid.reduce((prev, cur) => prev + cur, 0))
             } else value.push(0)
           }
         })
@@ -309,7 +283,7 @@ export default {
       this.chartData = dataCollection[0]
       // console.log('labels data: ', labels)
       // console.log('datasets: ', datasets)
-      // console.log('chartData: ', this.chartData)
+      console.log('chartData: ', this.chartData)
 
       // return datasetsData
     },
@@ -318,7 +292,7 @@ export default {
       return {
         orderName: list.nameTh,
         orderTms: list.effectiveTms,
-        priceFull: list.items.map((item) => item.priceFull),
+        sellPaid: list.items.map((item) => item.sellPaid),
       }
     },
     randomColor() {
@@ -334,9 +308,6 @@ export default {
       this.colors = colors
       // console.log('color: ', this.colors)
     },
-  },
-  mounted() {
-    this.getOrderSummary()
   },
 }
 </script>

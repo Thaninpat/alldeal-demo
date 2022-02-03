@@ -1,7 +1,14 @@
 <template>
   <base-layout pageTitle="Order Summary" :itemsFilter="lists">
     <v-container>
-      <order-sum-list :lists="lists" :size="size" />
+      <v-row dense>
+        <order-sum-list
+          v-for="(list, idxList) in lists"
+          :key="idxList"
+          :list="list"
+          :size="size"
+        />
+      </v-row>
     </v-container>
   </base-layout>
 </template>
@@ -19,7 +26,6 @@ export default {
     lists: [],
     reviewApi: null,
     size: 135,
-    filterLists: ['Id', 'Name', 'Date'],
   }),
   mounted() {
     this.FetchData()
@@ -38,7 +44,7 @@ export default {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         let orderSummary = this.orders
         this.lists = orderSummary.data.map(this.getDisplay)
-
+        console.log(this.lists)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
@@ -50,6 +56,7 @@ export default {
     getDisplay(list) {
       if (list) {
         return {
+          campaignItemId: list.items.map((x) => x.id),
           campaignId: list.campaignId,
           nameTh: list.nameTh,
           effectiveStatus: list.effectiveStatus === 'Y' ? 'Active' : 'End',

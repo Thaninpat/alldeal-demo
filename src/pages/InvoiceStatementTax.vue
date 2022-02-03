@@ -83,13 +83,14 @@ export default {
 </script>
 
 <style scope>
-table {
+/* table {
+  border-collapse: collapse;
   width: 100%;
 }
-tr {
+.tr_statement {
   background-color: hsl(0, 0%, 98%);
 }
-tr:nth-child(odd) {
+.tr_statement:nth-child(odd) {
   background-color: hsl(108, 100%, 95%);
 }
 th {
@@ -101,7 +102,7 @@ th {
 td {
   text-align: center;
 }
-a {
+.download_file {
   text-decoration-line: none;
-}
+} */
 </style>

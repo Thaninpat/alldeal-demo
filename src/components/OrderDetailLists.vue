@@ -3,13 +3,13 @@
     <v-expansion-panel v-for="(list, idxList) in lists" :key="idxList">
       <v-expansion-panel-header>
         <v-row no-gutters>
-          <v-col class="item-list d-flex justify-center align-center" cols="3">
+          <v-col class="item-list d-flex justify-center" cols="3">
             {{ list.orderNumber }}
           </v-col>
-          <v-col class="item-list d-flex justify-center align-center" cols="3">
+          <v-col class="item-list d-flex justify-center" cols="3">
             {{ list.paidTms }}
           </v-col>
-          <v-col class="item-list d-flex justify-center align-center" cols="3">
+          <v-col class="item-list d-flex justify-end" cols="3">
             <label
               v-text="
                 list.campaigns.priceFull
@@ -18,9 +18,7 @@
               "
             ></label>
           </v-col>
-          <v-col
-            class="item-list d-flex justify-end justify-sm-center align-center"
-          >
+          <v-col class="item-list d-flex justify-end pr-sm-2 pr-md-8">
             <i :class="list.status === 'paid' ? 'ico-paid' : ''"></i>
           </v-col>
         </v-row>

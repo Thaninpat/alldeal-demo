@@ -12,13 +12,11 @@
     <order-detail-lists :lists="lists" />
     <div class="text-center mt-4">
       <v-pagination
-        v-if="!filtered"
         v-model="pageNo"
         :length="totalPages"
         total-visible="7"
         @input="handlePageChange"
       ></v-pagination>
-      <v-pagination v-else></v-pagination>
     </div>
   </base-layout>
 </template>
@@ -47,8 +45,9 @@ export default {
     pageNo: 1,
     totalPages: 0,
     pageSize: 10,
-    filterLists: ['OrderId', 'Paiddate start-end'],
-    filtered: false,
+    orderNo: null,
+    startDate: null,
+    endDate: null,
   }),
 
   mounted() {
@@ -66,7 +65,7 @@ export default {
       getOrders: 'supplier/getOrders',
       getCampaignItems: 'supplier/getCampaignItems',
     }),
-    getRequestParams(pageSize, pageNo) {
+    getRequestParams(pageSize, pageNo, orderNo, startDate, endDate) {
       let params = {}
       if (pageSize) {
         params['pageSize'] = pageSize
@@ -74,10 +73,25 @@ export default {
       if (pageNo) {
         params['pageNo'] = pageNo
       }
+      if (pageNo) {
+        params['orderNo'] = orderNo
+      }
+      if (pageNo) {
+        params['paidTmsFrom'] = startDate
+      }
+      if (pageNo) {
+        params['paidTmsTo'] = endDate
+      }
       return params
     },
     async FetchPaidOrder() {
-      const params = await this.getRequestParams(this.pageSize, this.pageNo)
+      const params = await this.getRequestParams(
+        this.pageSize,
+        this.pageNo,
+        this.orderNo,
+        this.startDate,
+        this.endDate
+      )
       try {
         // Order Items
         await this.getOrders({
@@ -140,14 +154,19 @@ export default {
       this.FetchPaidOrder()
     },
     responseFilter(val) {
-      console.log('ORderDetail: ', val)
-      this.lists = val
-      this.filtered = true
+      this.orderNo = val.orderId
+      this.startDate = val.startDate ? Date.parse(val.startDate) : null
+      this.endDate = val.endDate ? Date.parse(val.endDate) : null
+      this.pageNo = 1
+      this.FetchPaidOrder()
     },
     clearFilter(val) {
       if (val == true) {
+        this.orderNo = null
+        this.startDate = null
+        this.endDate = null
+        this.pageNo = 1
         this.FetchPaidOrder()
-        this.filtered = false
       }
     },
   },

@@ -56,6 +56,10 @@ const routes = [
     },
   },
   {
+    path: '/order-summary/:id',
+    component: () => import('../components/OrderSummaryDetails.vue'),
+  },
+  {
     path: '/redirect',
     name: 'redirect',
     component: () => import('../pages/Redirect.vue'),
@@ -63,8 +67,8 @@ const routes = [
   { path: '*', redirect: '/' },
   {
     path: '/:catchAll(.*)',
+    name: 'notFound',
     component: () => import('../components/NotFoundComponent.vue'),
-    name: 'NotFound',
   },
 ]
 
