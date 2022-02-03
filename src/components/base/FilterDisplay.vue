@@ -61,7 +61,7 @@ export default {
   width: 100%;
   margin: 2px;
 }
-@media only screen and (min-width: 425px) {
+@media only screen and (min-width: 410px) {
   .flex-container {
     justify-content: space-between;
   }

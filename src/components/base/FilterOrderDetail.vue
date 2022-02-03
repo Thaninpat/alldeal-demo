@@ -18,23 +18,13 @@
             clearable
             autofocus
             dense
-          ></v-text-field>
+          />
         </div>
         <div class="flex-items2">
-          <v-text-field
-            v-model="startDate"
-            label="From"
-            type="date"
-            dense
-          ></v-text-field>
+          <v-text-field v-model="startDate" label="From" type="date" />
         </div>
         <div class="flex-items2">
-          <v-text-field
-            v-model="endDate"
-            label="To"
-            type="date"
-            dense
-          ></v-text-field>
+          <v-text-field v-model="endDate" label="To" type="date" />
         </div>
       </div>
     </v-card-text>
