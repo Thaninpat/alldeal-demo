@@ -82,9 +82,8 @@ export default {
 }
 </script>
 
-<style scope>
-/* table {
-  border-collapse: collapse;
+<style>
+table {
   width: 100%;
 }
 .tr_statement {
@@ -104,5 +103,5 @@ td {
 }
 .download_file {
   text-decoration-line: none;
-} */
+}
 </style>

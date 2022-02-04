@@ -98,11 +98,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.item-list {
-  font-size: 13px;
-}
-.item-list-detail {
-  font-size: 12px;
-}
-</style>
+<style lang="scss"></style>

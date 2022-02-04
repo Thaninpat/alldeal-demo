@@ -25,7 +25,6 @@ export default {
   props: ['dialog', 'pageTitle'],
   methods: {
     async filterD(val) {
-      console.log(val)
       this.$emit('filterD', val)
     },
     clearField() {

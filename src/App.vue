@@ -36,4 +36,10 @@ export default {
   width: 18px;
   height: 18px;
 }
+.item-list {
+  font-size: 13px;
+}
+.item-list-detail {
+  font-size: 12px;
+}
 </style>

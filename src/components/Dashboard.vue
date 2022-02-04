@@ -114,7 +114,6 @@ export default {
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         const orderSummary = this.orders.data
-        console.log('orderSummary: ', orderSummary)
         if (orderSummary) {
           const compareDate = await this.filterDateOrder(
             orderSummary,
@@ -122,7 +121,6 @@ export default {
             this.eDate
           )
           const orderLists = compareDate.map(await this.orderDisplay)
-          console.log('orderLists: ', orderLists)
 
           this.orderLists.orderName = orderLists.map((item) => item.orderName)
           this.checkData(orderLists)
@@ -283,7 +281,7 @@ export default {
       this.chartData = dataCollection[0]
       // console.log('labels data: ', labels)
       // console.log('datasets: ', datasets)
-      console.log('chartData: ', this.chartData)
+      // console.log('chartData: ', this.chartData)
 
       // return datasetsData
     },

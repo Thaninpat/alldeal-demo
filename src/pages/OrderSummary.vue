@@ -44,7 +44,6 @@ export default {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         let orderSummary = this.orders
         this.lists = orderSummary.data.map(this.getDisplay)
-        console.log(this.lists)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data

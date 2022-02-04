@@ -99,16 +99,8 @@ export default {
     }),
     logOut() {
       getLogoutApi()
-      // removeCookie('id_token')
-      // removeCookie('refresh_token')
-      // this.$router.push('/redirect')
     },
     async filterItems(val) {
-      console.log('val', val)
-      // const response = await testFilter({
-      //   keyFilter: val,
-      //   items: this.itemsFilter,
-      // })
       this.$emit('response_filter', val)
     },
     clearFilter(val) {
@@ -119,7 +111,6 @@ export default {
       this.onLine = type === 'online'
     },
     async handleFilter() {
-      // console.log(this.keyFilter)
       testFilter(this.keyFilter)
     },
   },

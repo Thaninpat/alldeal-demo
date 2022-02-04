@@ -30,7 +30,6 @@ export default {
   data: () => ({ dialog: false, filtered: false }),
   methods: {
     async filterB(val) {
-      console.log(val)
       this.$emit('filterB', val)
     },
     closedDialog(val) {

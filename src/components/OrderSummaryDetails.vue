@@ -76,7 +76,6 @@ export default {
     },
     async FetchPaidOrder() {
       const params = await this.getRequestParams(parseInt(this.campaignItemId))
-      console.log('params', params)
       try {
         // Order Items
         await this.getOrders({
@@ -85,13 +84,11 @@ export default {
           params,
         })
         const paidOrderItems = this.orders.data.orders
-        console.log(paidOrderItems)
         this.paidOrderItems = paidOrderItems.map(this.getDisplay)
         paidOrderItems.map((t) => {
           if (t) this.titleNameOrder = t.campaignItemNameTh
           else this.titleNameOrder = ''
         })
-        console.log(paidOrderItems)
       } catch (error) {
         console.log(error)
       }
@@ -125,16 +122,13 @@ th,
 td {
   text-align: left;
   padding: 8px;
+  background-color: #fff;
 }
-tr:nth-child(even) {
-  background-color: #ffffff;
-}
+
 th.th_img {
   width: 30px;
 }
-/* th.th_item_name {
-  width: 100px;
-} */
+
 .table_container {
   display: block;
 }

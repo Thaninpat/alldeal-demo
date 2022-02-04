@@ -63,7 +63,6 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
       }
-      console.log(val)
       this.$emit('filter_order_detail', val)
       this.clearField()
       this.closedDialog()
