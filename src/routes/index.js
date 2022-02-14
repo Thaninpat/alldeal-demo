@@ -88,10 +88,12 @@ router.beforeEach((to, from, next) => {
   let url = new URL(url_string)
   let code = url.searchParams.get('code')
   if (authorize) {
-    if (token || code) {
+    if (!!token || !!code) {
       return next()
       // return next({ path: '/login', query: { returnUrl: to.path } })
-    } else return next({ path: '/redirect' })
+    } else {
+      return next({ path: '/redirect' })
+    }
   }
   next()
 })

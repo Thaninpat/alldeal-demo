@@ -25,9 +25,18 @@
         </div>
         <v-form @submit.prevent="getOrderData">
           <v-text-field
+            v-if="defaultSum === 'monthlySum'"
+            v-model="selectMonth"
+            type="month"
+            label="Date"
+            :min="minOfMonth"
+          ></v-text-field>
+          <v-text-field
+            v-else
             v-model="selectDate"
             type="date"
             label="Date"
+            :min="minOfDate"
           ></v-text-field>
           <v-btn :loading="!loaded" block color="primary" type="submit">
             submit
@@ -58,8 +67,15 @@ export default {
   data: () => ({
     loaded: false,
     haveData: false,
-    default: 'monthlySum',
+    defaultSum: 'monthlySum',
     selectDate: moment(Date.now()).format('YYYY-MM-DD'),
+    selectMonth: moment(Date.now()).format('YYYY-MM'),
+    minOfMonth: moment()
+      .subtract(5, 'month')
+      .format('YYYY-MM'),
+    minOfDate: moment()
+      .subtract(5, 'month')
+      .format('YYYY-MM-DD'),
     sDate: '',
     eDate: '',
     sumName: 'Monthly Summary',
@@ -83,6 +99,7 @@ export default {
   }),
   mounted() {
     this.getOrderSummary()
+    console.log(this.selectDate, '|', this.selectMonth, '|', this.minOfMonth)
   },
   computed: {
     ...mapGetters({
@@ -96,13 +113,13 @@ export default {
     getDailySum() {
       this.selectDate = moment(Date.now()).format('YYYY-MM-DD')
       this.sumName = 'Daily Summary'
-      this.default = 'dailySum'
+      this.defaultSum = 'dailySum'
       this.getOrderSummary()
     },
     getMonthlySum() {
-      this.selectDate = moment(Date.now()).format('YYYY-MM-DD')
+      this.selectMonth = moment(Date.now()).format('YYYY-MM')
       this.sumName = 'Monthly Summary'
-      this.default = 'monthlySum'
+      this.defaultSum = 'monthlySum'
       this.getOrderSummary()
     },
     getOrderData() {
@@ -121,8 +138,9 @@ export default {
             this.eDate
           )
           const orderLists = compareDate.map(await this.orderDisplay)
-
-          this.orderLists.orderName = orderLists.map((item) => item.orderName)
+          console.log('orderLists', orderLists)
+          this.orderLists.orderName = orderLists.map((item) => item.itemName)
+          console.log('this.orderLists', this.orderLists)
           this.checkData(orderLists)
           this.haveData = true
           this.loaded = true
@@ -145,11 +163,11 @@ export default {
     async filterDateOrder(orderSummary, start_date, end_date) {
       const startDate = moment(start_date).format('yyyy-MM-DD')
       const endDate = moment(end_date).format('yyyy-MM-DD')
-      if (this.default == 'dailySum') {
+      if (this.defaultSum == 'dailySum') {
         return await this.getLastWeek(orderSummary)
-      } else if (this.default == 'monthlySum') {
+      } else if (this.defaultSum == 'monthlySum') {
         return await this.getLastMonth(orderSummary)
-      } else if (this.default == 'byDate') {
+      } else if (this.defaultSum == 'byDate') {
         return await this.getByDate(orderSummary, startDate, endDate)
       }
     },
@@ -165,7 +183,8 @@ export default {
       })
     },
     async getLastMonth(orderSummary) {
-      const lastMonth = moment(this.selectDate).format('yyyy-MM-DD')
+      const lastMonth = moment(this.selectMonth).format('yyyy-MM')
+      console.log('lastMonth:', lastMonth)
       this.labels = getMonth(lastMonth)
       this.countLabel = this.labels.length
       // console.log({ lastMonth })
@@ -190,24 +209,30 @@ export default {
       let lastMonth = data.lastMonth
       let startDate = data.startDate
       let endDate = data.endDate
+      console.log('orderSummary', orderSummary)
       const compareDate = await orderSummary.filter((a) => {
         const date = moment(a.effectiveTms).format('yyyy-MM-DD')
-        if (startDate !== undefined && endDate !== undefined) {
+        if (
+          startDate !== undefined &&
+          endDate !== undefined &&
+          a.effectiveStatus === 'Y'
+        ) {
           return date >= startDate && date <= endDate
         }
-        if (lastWeek != undefined) {
+        if (lastWeek != undefined && a.effectiveStatus === 'Y') {
           return (
             date >= moment(this.labels[0]).format('yyyy-MM-DD') &&
             date <= lastWeek
           )
         }
-        if (lastMonth != undefined) {
+        if (lastMonth != undefined && a.effectiveStatus === 'Y') {
           return (
             date >= moment(this.labels[0]).format('yyyy-MM-DD') &&
             date <= lastMonth
           )
         }
       })
+      console.log('compareDate', compareDate)
       if (compareDate.length == 0) {
         this.loaded = false
         this.clearFile()
@@ -224,6 +249,7 @@ export default {
       this.sDate = ''
       this.eDate = ''
       this.selectDate = ''
+      this.selectMonth = ''
     },
 
     checkData(orderLists) {
@@ -237,15 +263,16 @@ export default {
       orderLists.map((list) => {
         let value = []
         this.labels.map((x) => {
-          if (this.default === 'monthlySum') {
+          if (this.defaultSum === 'monthlySum') {
             if (
               moment(x).format('MMMM') === moment(list.orderTms).format('MMMM')
             ) {
               let sell_paid = list.sellPaid.map((y) => y)
               value.push(sell_paid.reduce((prev, cur) => prev + cur, 0))
+              console.log('value', value)
             } else value.push(0)
           }
-          if (this.default === 'dailySum') {
+          if (this.defaultSum === 'dailySum') {
             if (
               moment(x).format('DD-MMMM') ===
               moment(list.orderTms).format('DD-MMMM')
@@ -259,7 +286,7 @@ export default {
       })
 
       while (i < this.countLabel) {
-        if (this.default === 'monthlySum') {
+        if (this.defaultSum === 'monthlySum') {
           labels.push(moment(this.labels[i]).format('MMM-YY'))
         } else {
           labels.push(moment(this.labels[i]).format('DD-MMM-YY'))
@@ -281,7 +308,7 @@ export default {
       this.chartData = dataCollection[0]
       // console.log('labels data: ', labels)
       // console.log('datasets: ', datasets)
-      // console.log('chartData: ', this.chartData)
+      console.log('chartData: ', this.chartData)
 
       // return datasetsData
     },
@@ -291,6 +318,7 @@ export default {
         orderName: list.nameTh,
         orderTms: list.effectiveTms,
         sellPaid: list.items.map((item) => item.sellPaid),
+        itemName: list.items.map((item) => item.nameTh),
       }
     },
     randomColor() {
