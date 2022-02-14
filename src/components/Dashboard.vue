@@ -188,7 +188,7 @@ export default {
       this.labels = getMonth(lastMonth)
       this.countLabel = this.labels.length
       // console.log({ lastMonth })
-      // console.log(this.labels)
+      console.log('this.labels', this.labels)
       return await this.getOrder({
         orderSummary: orderSummary,
         lastMonth: lastMonth,
@@ -212,6 +212,7 @@ export default {
       console.log('orderSummary', orderSummary)
       const compareDate = await orderSummary.filter((a) => {
         const date = moment(a.effectiveTms).format('yyyy-MM-DD')
+        const date2 = moment(a.effectiveTms).format('yyyy-MM')
         if (
           startDate !== undefined &&
           endDate !== undefined &&
@@ -227,8 +228,8 @@ export default {
         }
         if (lastMonth != undefined && a.effectiveStatus === 'Y') {
           return (
-            date >= moment(this.labels[0]).format('yyyy-MM-DD') &&
-            date <= lastMonth
+            date2 >= moment(this.labels[0]).format('yyyy-MM') &&
+            date2 <= lastMonth
           )
         }
       })
