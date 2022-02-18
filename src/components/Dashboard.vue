@@ -213,20 +213,16 @@ export default {
       const compareDate = await orderSummary.filter((a) => {
         const date = moment(a.effectiveTms).format('yyyy-MM-DD')
         const date2 = moment(a.effectiveTms).format('yyyy-MM')
-        if (
-          startDate !== undefined &&
-          endDate !== undefined &&
-          a.effectiveStatus === 'Y'
-        ) {
+        if (startDate !== undefined && endDate !== undefined) {
           return date >= startDate && date <= endDate
         }
-        if (lastWeek != undefined && a.effectiveStatus === 'Y') {
+        if (lastWeek != undefined) {
           return (
             date >= moment(this.labels[0]).format('yyyy-MM-DD') &&
             date <= lastWeek
           )
         }
-        if (lastMonth != undefined && a.effectiveStatus === 'Y') {
+        if (lastMonth != undefined) {
           return (
             date2 >= moment(this.labels[0]).format('yyyy-MM') &&
             date2 <= lastMonth
