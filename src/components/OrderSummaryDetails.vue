@@ -1,51 +1,59 @@
 <template>
-  <v-card color="#fff" flat height="100vh">
-    <v-toolbar color="grey lighten-4">
+  <base-layout
+    pageTitle="Order Detail"
+    :itemsFilter="paidOrderItems"
+    @response_filter="responseFilter"
+    @clear_filter="clearFilter"
+    activated_filter
+  >
+    <v-card color="#fff" flat height="100vh">
+      <!-- <v-toolbar color="grey lighten-4">
       <v-btn icon @click="backToDefaultPage">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>{{ titleNameOrder }}</v-toolbar-title>
       <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-container class="d-flex justify-center">
-      <div class="table_container" style="overflow-x:auto;">
-        <table>
-          <tr class="item-list">
-            <th class="th_img"></th>
-            <th class="th_item_name">Item Name</th>
-            <th>Paid Date</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th>Total</th>
-            <th>Order No</th>
-          </tr>
-          <tr
-            class="item-list-detail"
-            v-for="item in paidOrderItems"
-            :key="item.id"
-          >
-            <td>
-              <v-avatar size="30" tile>
-                <v-img :src="item.thumbImageFileUrl" />
-              </v-avatar>
-            </td>
-            <td>{{ item.campaignItemNameTh }}</td>
-            <td>{{ item.paidTms }}</td>
-            <td>{{ item.priceNet }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.priceNet * item.quantity }}฿</td>
-            <td>{{ item.orderNumber }}</td>
-          </tr>
-        </table>
-      </div>
-    </v-container>
-    <v-pagination
-      v-model="pageNo"
-      :length="totalPages"
-      :total-visible="7"
-      @input="handlePageChange"
-    ></v-pagination>
-  </v-card>
+    </v-toolbar> -->
+      <v-container class="d-flex justify-center">
+        <div class="table_container" style="overflow-x:auto;">
+          <table>
+            <tr class="item-list">
+              <th class="th_img"></th>
+              <th class="th_item_name">Item Name</th>
+              <th>Paid Date</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Order No</th>
+            </tr>
+            <tr
+              class="item-list-detail"
+              v-for="item in paidOrderItems"
+              :key="item.id"
+            >
+              <td>
+                <v-avatar size="30" tile>
+                  <v-img :src="item.thumbImageFileUrl" />
+                </v-avatar>
+              </td>
+              <td>{{ item.campaignItemNameTh }}</td>
+              <td>{{ item.paidTms }}</td>
+              <td>{{ item.priceNet }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.priceNet * item.quantity }}฿</td>
+              <td>{{ item.orderNumber }}</td>
+            </tr>
+          </table>
+        </div>
+      </v-container>
+      <v-pagination
+        v-model="pageNo"
+        :length="totalPages"
+        :total-visible="7"
+        @input="handlePageChange"
+      ></v-pagination>
+    </v-card>
+  </base-layout>
 </template>
 
 <script>
@@ -60,6 +68,9 @@ export default {
     pageNo: 1,
     totalPages: 0,
     pageSize: 10,
+    orderNo: null,
+    startDate: null,
+    endDate: null,
   }),
   mounted() {
     this.campaignItemId = this.$route.params.id
@@ -134,6 +145,22 @@ export default {
     handlePageChange(value) {
       this.pageNo = value
       this.FetchPaidOrder()
+    },
+    responseFilter(val) {
+      this.orderNo = val.orderId
+      this.startDate = val.startDate ? Date.parse(val.startDate) : null
+      this.endDate = val.endDate ? Date.parse(val.endDate) : null
+      this.pageNo = 1
+      this.FetchPaidOrder()
+    },
+    clearFilter(val) {
+      if (val == true) {
+        this.orderNo = null
+        this.startDate = null
+        this.endDate = null
+        this.pageNo = 1
+        this.FetchPaidOrder()
+      }
     },
   },
 }

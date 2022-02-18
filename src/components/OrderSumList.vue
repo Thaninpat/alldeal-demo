@@ -1,7 +1,7 @@
 <template>
   <v-col class="pa-0" cols="12">
     <v-card
-      :to="item.sellPaid != 0 ? `/order-summary/${item.id}` : ''"
+      :to="item.sellPaid != 0 ? `/order-detail/${item.id}` : ''"
       class="ma-1"
       v-for="(item, idxItem) in list.items"
       :key="idxItem"

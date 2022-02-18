@@ -4,15 +4,12 @@
       <table>
         <tr class="item-list">
           <th class="th_img"></th>
-          <th class="th_item_name">Order Id</th>
+          <th class="th_item_name">Item Name</th>
           <th>Paid Date</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Payment</th>
-          <th>Customer</th>
-          <th class="th_item_name">Name</th>
-          <th>Price Net</th>
+          <th>Price</th>
           <th>Qty</th>
+          <th>Total</th>
+          <th>Order No</th>
         </tr>
         <tr
           class="item-list-detail"
@@ -30,15 +27,12 @@
               />
             </v-avatar>
           </td>
-          <td>{{ list.orderNumber }}</td>
-          <td>{{ list.paidTms }}</td>
-          <td>{{ list.campaigns.priceNet * list.quantity }}฿</td>
-          <td>{{ list.status }}</td>
-          <td>{{ list.paymentTypeCode }}</td>
-          <td>{{ list.customerId }}</td>
           <td>{{ list.campaignItemNameTh }}</td>
+          <td>{{ list.paidTms }}</td>
           <td>{{ list.campaigns.priceNet }}฿</td>
           <td>{{ list.quantity }}</td>
+          <td>{{ list.campaigns.priceNet * list.quantity }}฿</td>
+          <td>{{ list.orderNumber }}</td>
         </tr>
       </table>
     </div>
@@ -76,7 +70,7 @@ th.th_img {
   width: 30px;
 }
 th.th_item_name {
-  width: 120px;
+  width: 140px;
 }
 
 .table_container {
