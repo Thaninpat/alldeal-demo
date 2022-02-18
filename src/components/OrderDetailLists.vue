@@ -12,8 +12,8 @@
           <v-col class="item-list d-flex justify-end" cols="3">
             <label
               v-text="
-                list.campaigns.priceFull
-                  ? list.campaigns.priceFull * list.quantity + '฿'
+                list.campaigns.priceNet
+                  ? list.campaigns.priceNet * list.quantity + '฿'
                   : ''
               "
             ></label>

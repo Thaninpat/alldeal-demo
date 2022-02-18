@@ -6,15 +6,16 @@
     @clear_filter="clearFilter"
     activated_filter
   >
-    <v-row class="pa-3" no-gutters>
+    <!-- <v-row class="pa-3" no-gutters>
       <order-detail-header :itemSorting="lists" />
     </v-row>
-    <order-detail-lists :lists="lists" />
+    <order-detail-lists :lists="lists" /> -->
+    <OrderDetailListItem :lists="lists" />
     <div class="text-center mt-4">
       <v-pagination
         v-model="pageNo"
         :length="totalPages"
-        total-visible="7"
+        :total-visible="7"
         @input="handlePageChange"
       ></v-pagination>
     </div>
@@ -22,15 +23,17 @@
 </template>
 
 <script>
-import OrderDetailLists from '../components/OrderDetailLists.vue'
-import OrderDetailHeader from '../components/OrderDetailHeader.vue'
+// import OrderDetailLists from '../components/OrderDetailLists.vue'
+// import OrderDetailHeader from '../components/OrderDetailHeader.vue'
+import OrderDetailListItem from '../components/OrderDetailListItem.vue'
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
-    OrderDetailLists,
-    OrderDetailHeader,
+    // OrderDetailLists,
+    // OrderDetailHeader,
+    OrderDetailListItem,
   },
   data: () => ({
     date: null,
@@ -73,13 +76,13 @@ export default {
       if (pageNo) {
         params['pageNo'] = pageNo
       }
-      if (pageNo) {
+      if (orderNo) {
         params['orderNo'] = orderNo
       }
-      if (pageNo) {
+      if (startDate) {
         params['paidTmsFrom'] = startDate
       }
-      if (pageNo) {
+      if (endDate) {
         params['paidTmsTo'] = endDate
       }
       return params
@@ -131,10 +134,10 @@ export default {
           orderId: list.orderNumber,
           campaignItemId: list.campaignItemId,
           customerId: list.customerId,
-          orderNumber:
-            window.screen.availWidth > 450
-              ? list.orderNumber
-              : '...' + list.orderNumber.toString().substr(-7),
+          orderNumber: list.orderNumber,
+          // window.screen.availWidth > 450
+          //   ? list.orderNumber
+          //   : '...' + list.orderNumber.toString().substr(-7),
           originalTms: list.paidTms,
           paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
           status: list.paidTms ? 'paid' : 'unpaid',

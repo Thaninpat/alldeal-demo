@@ -39,6 +39,12 @@
         </table>
       </div>
     </v-container>
+    <v-pagination
+      v-model="pageNo"
+      :length="totalPages"
+      :total-visible="7"
+      @input="handlePageChange"
+    ></v-pagination>
   </v-card>
 </template>
 
@@ -51,6 +57,9 @@ export default {
     campaignItemId: null,
     paidOrderItems: null,
     titleNameOrder: '',
+    pageNo: 1,
+    totalPages: 0,
+    pageSize: 10,
   }),
   mounted() {
     this.campaignItemId = this.$route.params.id
@@ -66,16 +75,26 @@ export default {
     ...mapActions({
       getOrders: 'supplier/getOrders',
     }),
-    getRequestParams(campaignItemId) {
+    getRequestParams(campaignItemId, pageSize, pageNo) {
       let params = {}
       if (campaignItemId) {
         params['campaignItemId'] = campaignItemId
+      }
+      if (pageSize) {
+        params['pageSize'] = pageSize
+      }
+      if (pageNo) {
+        params['pageNo'] = pageNo
       }
 
       return params
     },
     async FetchPaidOrder() {
-      const params = await this.getRequestParams(parseInt(this.campaignItemId))
+      const params = await this.getRequestParams(
+        parseInt(this.campaignItemId),
+        this.pageSize,
+        this.pageNo
+      )
       try {
         // Order Items
         await this.getOrders({
@@ -84,6 +103,10 @@ export default {
           params,
         })
         const paidOrderItems = this.orders.data.orders
+        this.totalPages = this.orders.data.totalPage
+        console.log('paidOrderItems: ', this.orders)
+        console.log('this.totalPages', this.totalPages)
+
         this.paidOrderItems = paidOrderItems.map(this.getDisplay)
         paidOrderItems.map((t) => {
           if (t) this.titleNameOrder = t.campaignItemNameTh
@@ -108,6 +131,10 @@ export default {
         }
       } else console.log('No data list')
     },
+    handlePageChange(value) {
+      this.pageNo = value
+      this.FetchPaidOrder()
+    },
   },
 }
 </script>
@@ -128,8 +155,16 @@ td {
 th.th_img {
   width: 30px;
 }
+th.th_item_name {
+  width: 140px;
+}
 
 .table_container {
   display: block;
+}
+@media only screen and (min-width: 1280px) {
+  th.th_item_name {
+    width: 250px;
+  }
 }
 </style>
