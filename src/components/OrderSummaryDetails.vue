@@ -4,7 +4,6 @@
     :itemsFilter="paidOrderItems"
     @response_filter="responseFilter"
     @clear_filter="clearFilter"
-    activated_filter
   >
     <v-card color="#fff" flat height="100vh">
       <!-- <v-toolbar color="grey lighten-4">
@@ -148,6 +147,7 @@ export default {
     },
     responseFilter(val) {
       this.orderNo = val.orderId
+      console.log('this.orderNo', this.orderNo)
       this.startDate = val.startDate ? Date.parse(val.startDate) : null
       this.endDate = val.endDate ? Date.parse(val.endDate) : null
       this.pageNo = 1

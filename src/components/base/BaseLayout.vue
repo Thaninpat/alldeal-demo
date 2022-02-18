@@ -101,6 +101,7 @@ export default {
       getLogoutApi()
     },
     async filterItems(val) {
+      console.log('val', val)
       this.$emit('response_filter', val)
     },
     clearFilter(val) {
