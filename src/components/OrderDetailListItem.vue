@@ -41,15 +41,7 @@
 
 <script>
 export default {
-  //   props: {
-  //     lists: {
-  //       type: Array,
-  //     },
-  //   },
   props: ['lists'],
-  updated() {
-    console.log('this.lists', this.lists)
-  },
 }
 </script>
 

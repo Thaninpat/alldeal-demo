@@ -4,6 +4,7 @@
     :itemsFilter="lists"
     @response_filter="responseFilter"
     @clear_filter="clearFilter"
+    @clear_all="clearAll"
     activated_filter
   >
     <!-- <v-row class="pa-3" no-gutters>
@@ -48,12 +49,19 @@ export default {
     pageNo: 1,
     totalPages: 0,
     pageSize: 10,
-    orderNo: null,
-    startDate: null,
-    endDate: null,
+    result: {
+      orderNo: null,
+      campaignItemName: null,
+      startDate: null,
+      endDate: null,
+      campaignId: null,
+    },
   }),
 
   mounted() {
+    let url_string = window.location.href
+    let url = new URL(url_string)
+    this.result.campaignId = url.searchParams.get('campaignItemId')
     this.FetchPaidOrder()
   },
 
@@ -68,8 +76,19 @@ export default {
       getOrders: 'supplier/getOrders',
       getCampaignItems: 'supplier/getCampaignItems',
     }),
-    getRequestParams(pageSize, pageNo, orderNo, startDate, endDate) {
+    getRequestParams(
+      campaignId,
+      pageSize,
+      pageNo,
+      orderNo,
+      campaignItemName,
+      startDate,
+      endDate
+    ) {
       let params = {}
+      if (campaignId) {
+        params['campaignItemId'] = campaignId
+      }
       if (pageSize) {
         params['pageSize'] = pageSize
       }
@@ -78,6 +97,9 @@ export default {
       }
       if (orderNo) {
         params['orderNo'] = orderNo
+      }
+      if (campaignItemName) {
+        params['likeCampaignItemName'] = campaignItemName
       }
       if (startDate) {
         params['paidTmsFrom'] = startDate
@@ -89,11 +111,13 @@ export default {
     },
     async FetchPaidOrder() {
       const params = await this.getRequestParams(
+        parseInt(this.result.campaignId),
         this.pageSize,
         this.pageNo,
-        this.orderNo,
-        this.startDate,
-        this.endDate
+        this.result.orderNo,
+        this.result.campaignItemName,
+        this.result.startDate,
+        this.result.endDate
       )
       try {
         // Order Items
@@ -157,18 +181,32 @@ export default {
       this.FetchPaidOrder()
     },
     responseFilter(val) {
-      this.orderNo = val.orderId
-      this.startDate = val.startDate ? Date.parse(val.startDate) : null
-      this.endDate = val.endDate ? Date.parse(val.endDate) : null
+      this.result.orderNo = val.orderId
+      this.result.campaignItemName = val.campaignItemName
+      this.result.startDate = val.startDate ? Date.parse(val.startDate) : null
+      this.result.endDate = val.endDate ? Date.parse(val.endDate) : null
       this.pageNo = 1
       this.FetchPaidOrder()
     },
     clearFilter(val) {
       if (val == true) {
-        this.orderNo = null
-        this.startDate = null
-        this.endDate = null
+        this.result.orderNo = null
+        this.result.campaignItemName = null
+        this.result.startDate = null
+        this.result.endDate = null
         this.pageNo = 1
+        this.FetchPaidOrder()
+      }
+    },
+    clearAll(val) {
+      if (val == true) {
+        this.result.orderNo = null
+        this.result.campaignItemName = null
+        this.result.startDate = null
+        this.result.endDate = null
+        this.result.campaignId = null
+        this.pageNo = 1
+        this.$router.push('/order-detail')
         this.FetchPaidOrder()
       }
     },

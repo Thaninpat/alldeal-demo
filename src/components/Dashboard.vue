@@ -99,7 +99,6 @@ export default {
   }),
   mounted() {
     this.getOrderSummary()
-    console.log(this.selectDate, '|', this.selectMonth, '|', this.minOfMonth)
   },
   computed: {
     ...mapGetters({
@@ -138,9 +137,7 @@ export default {
             this.eDate
           )
           const orderLists = compareDate.map(await this.orderDisplay)
-          console.log('orderLists', orderLists)
           this.orderLists.orderName = orderLists.map((item) => item.itemName)
-          console.log('this.orderLists', this.orderLists)
           this.checkData(orderLists)
           this.haveData = true
           this.loaded = true
@@ -184,11 +181,8 @@ export default {
     },
     async getLastMonth(orderSummary) {
       const lastMonth = moment(this.selectMonth).format('yyyy-MM')
-      console.log('lastMonth:', lastMonth)
       this.labels = getMonth(lastMonth)
       this.countLabel = this.labels.length
-      // console.log({ lastMonth })
-      console.log('this.labels', this.labels)
       return await this.getOrder({
         orderSummary: orderSummary,
         lastMonth: lastMonth,
@@ -209,7 +203,6 @@ export default {
       let lastMonth = data.lastMonth
       let startDate = data.startDate
       let endDate = data.endDate
-      console.log('orderSummary', orderSummary)
       const compareDate = await orderSummary.filter((a) => {
         const date = moment(a.effectiveTms).format('yyyy-MM-DD')
         const date2 = moment(a.effectiveTms).format('yyyy-MM')
@@ -229,13 +222,11 @@ export default {
           )
         }
       })
-      console.log('compareDate', compareDate)
       if (compareDate.length == 0) {
         this.loaded = false
         this.clearFile()
         return
       } else {
-        // console.log('compareDate-> ', compareDate)
         this.countOrder = compareDate.length
         await this.randomColor()
         return compareDate
@@ -266,7 +257,6 @@ export default {
             ) {
               let sell_paid = list.sellPaid.map((y) => y)
               value.push(sell_paid.reduce((prev, cur) => prev + cur, 0))
-              console.log('value', value)
             } else value.push(0)
           }
           if (this.defaultSum === 'dailySum') {
@@ -305,7 +295,7 @@ export default {
       this.chartData = dataCollection[0]
       // console.log('labels data: ', labels)
       // console.log('datasets: ', datasets)
-      console.log('chartData: ', this.chartData)
+      // console.log('chartData: ', this.chartData)
 
       // return datasetsData
     },

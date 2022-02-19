@@ -4,10 +4,12 @@
       v-if="pageTitle === 'Order Detail'"
       @clear_field="clearField"
       @clear_filter="clearFilter"
+      @clear_all="clearAll"
       @closed_dialog="closedDialog"
       @filter_order_detail="filterD"
       :dialog="dialog"
       :pageTitle="pageTitle"
+      :campaignId="campaignId"
     />
   </v-card>
 </template>
@@ -19,26 +21,29 @@ export default {
   },
   data: () => ({
     orderId: null,
+    campaignItemName: null,
     startDate: null,
     endDate: null,
   }),
-  props: ['dialog', 'pageTitle'],
+  props: ['dialog', 'pageTitle', 'campaignId'],
   methods: {
     async filterD(val) {
       this.$emit('filterD', val)
     },
     clearField() {
       this.orderId = null
+      this.campaignItemName = null
       this.startDate = null
       this.endDate = null
     },
-    clearFilter() {
-      this.$emit('clear_filter', true)
-      this.clearField()
-      this.closedDialog()
+    clearFilter(val) {
+      this.$emit('clear_filter', val)
     },
-    closedDialog() {
-      this.$emit('closed_dialog', false)
+    clearAll(val) {
+      this.$emit('clear_all', val)
+    },
+    closedDialog(val) {
+      this.$emit('closed_dialog', val)
     },
   },
 }

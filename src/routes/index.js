@@ -55,10 +55,10 @@ const routes = [
       authorize: [],
     },
   },
-  {
-    path: '/order-detail/:id',
-    component: () => import('../components/OrderSummaryDetails.vue'),
-  },
+  // {
+  //   path: '/order-detail/:id',
+  //   component: () => import('../components/OrderSummaryDetails.vue'),
+  // },
   {
     path: '/redirect',
     name: 'redirect',

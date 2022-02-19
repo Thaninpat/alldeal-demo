@@ -13,6 +13,7 @@
             v-if="activated_filter"
             @filterB="filterItems"
             @clear_filter="clearFilter"
+            @clear_all="clearAll"
             :pageTitle="pageTitle"
           />
         </v-toolbar-title>
@@ -101,11 +102,13 @@ export default {
       getLogoutApi()
     },
     async filterItems(val) {
-      console.log('val', val)
       this.$emit('response_filter', val)
     },
     clearFilter(val) {
       this.$emit('clear_filter', val)
+    },
+    clearAll(val) {
+      this.$emit('clear_all', val)
     },
     updateOnlineStatus(e) {
       const { type } = e
@@ -136,6 +139,7 @@ export default {
       }
     },
   },
+
   mounted() {
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)

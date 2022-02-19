@@ -18,29 +18,55 @@
             clearable
             autofocus
             dense
+            outlined
+          />
+        </div>
+        <div class="flex-items1">
+          <v-text-field
+            v-model="campaignItemName"
+            label="Campaign Name"
+            type="text"
+            clearable
+            outlined
+            dense
           />
         </div>
         <div class="flex-items2">
-          <v-text-field v-model="startDate" label="From" type="date" />
+          <v-text-field
+            v-model="startDate"
+            label="From"
+            type="date"
+            outlined
+            dense
+          />
         </div>
         <div class="flex-items2">
-          <v-text-field v-model="endDate" label="To" type="date" />
+          <v-text-field
+            v-model="endDate"
+            label="To"
+            type="date"
+            outlined
+            dense
+          />
         </div>
       </div>
     </v-card-text>
     <v-card-actions class="pb-4">
-      <v-btn icon @click="clearFilter">
+      <!-- <v-btn icon @click="clearFilter">
         <v-icon color="red darken-3">mdi-trash-can-outline</v-icon>
+      </v-btn> -->
+      <v-btn color="primary" text @click="clearAll" :disabled="!campaignId">
+        Clear all
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="primary" text @click="clearField">
+      <v-btn color="primary" text @click="clearFilter">
         Clear
       </v-btn>
       <v-btn
         color="primary"
         type="submit"
         text
-        :disabled="!orderId && !startDate"
+        :disabled="!orderId && !startDate && !campaignItemName"
       >
         submit
       </v-btn>
@@ -52,14 +78,16 @@
 export default {
   data: () => ({
     orderId: null,
+    campaignItemName: null,
     startDate: null,
     endDate: null,
   }),
-  props: ['dialog', 'pageTitle'],
+  props: ['dialog', 'pageTitle', 'campaignId'],
   methods: {
     async submit() {
       const val = {
         orderId: this.orderId,
+        campaignItemName: this.campaignItemName,
         startDate: this.startDate,
         endDate: this.endDate,
       }
@@ -69,12 +97,18 @@ export default {
     },
     clearField() {
       this.orderId = null
+      this.campaignItemName = null
       this.startDate = null
       this.endDate = null
     },
     clearFilter() {
+      // this.$router.push('/order-detail')
       this.$emit('clear_filter', true)
       this.clearField()
+      this.closedDialog()
+    },
+    clearAll() {
+      this.$emit('clear_all', true)
       this.closedDialog()
     },
     closedDialog() {

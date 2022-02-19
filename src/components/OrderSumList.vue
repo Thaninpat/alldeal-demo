@@ -1,7 +1,7 @@
 <template>
   <v-col class="pa-0" cols="12">
     <v-card
-      :to="item.sellPaid != 0 ? `/order-detail/${item.id}` : ''"
+      :to="item.sellPaid != 0 ? `/order-detail?campaignItemId=${item.id}` : ''"
       class="ma-1"
       v-for="(item, idxItem) in list.items"
       :key="idxItem"
@@ -20,9 +20,13 @@
           </v-card-title>
           <!-- <v-card-subtitle>{{ idxList + 1 }}</v-card-subtitle> -->
           <v-card-text class="pb-0 grey--text">
-            <label>
-              {{ list.effectiveStatus }} : {{ list.effectiveTms }} -
-              {{ list.expireTms }}
+            <label
+              v-text="
+                list.effectiveStatus === 'Y'
+                  ? `Active : ${list.effectiveTms} - ${list.expireTms}`
+                  : `End : ${list.effectiveTms} - ${list.expireTms}`
+              "
+            >
             </label>
           </v-card-text>
           <v-list-item>
