@@ -55,7 +55,7 @@
       <!-- <v-btn icon @click="clearFilter">
         <v-icon color="red darken-3">mdi-trash-can-outline</v-icon>
       </v-btn> -->
-      <v-btn color="primary" text @click="clearAll" :disabled="!campaignId">
+      <v-btn color="primary" text @click="clearAll">
         Clear all
       </v-btn>
       <v-spacer></v-spacer>
@@ -82,7 +82,7 @@ export default {
     startDate: null,
     endDate: null,
   }),
-  props: ['dialog', 'pageTitle', 'campaignId'],
+  props: ['dialog', 'pageTitle'],
   methods: {
     async submit() {
       const val = {
@@ -102,7 +102,6 @@ export default {
       this.endDate = null
     },
     clearFilter() {
-      // this.$router.push('/order-detail')
       this.$emit('clear_filter', true)
       this.clearField()
       this.closedDialog()

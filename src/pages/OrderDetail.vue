@@ -64,6 +64,15 @@ export default {
     this.result.campaignId = url.searchParams.get('campaignItemId')
     this.FetchPaidOrder()
   },
+  // updated() {
+  //   let url_string = window.location.href
+  //   let url = new URL(url_string)
+  //   this.result.campaignId = url.searchParams.get('campaignItemId')
+  //   console.log(this.result.campaignId)
+  //   if (this.result.campaignId == null) {
+  //     this.FetchPaidOrder()
+  //   }
+  // },
 
   computed: {
     ...mapGetters({
@@ -200,13 +209,24 @@ export default {
     },
     clearAll(val) {
       if (val == true) {
+        if (this.result.campaignId != null) {
+          this.$router.push('/order-detail').catch((err) => {
+            if (
+              err.name !== 'NavigationDuplicated' &&
+              !err.message.includes(
+                'Avoided redundant navigation to current location'
+              )
+            ) {
+              console.error(err)
+            }
+          })
+        }
         this.result.orderNo = null
         this.result.campaignItemName = null
         this.result.startDate = null
         this.result.endDate = null
         this.result.campaignId = null
         this.pageNo = 1
-        this.$router.push('/order-detail')
         this.FetchPaidOrder()
       }
     },

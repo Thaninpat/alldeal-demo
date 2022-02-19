@@ -7,7 +7,7 @@
         transition="dialog-top-transition"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" @click="checkParam">
+          <v-btn icon v-bind="attrs" v-on="on">
             <v-icon v-text="dialog ? '$FilterClose' : '$Filter'" />
           </v-btn>
         </template>
@@ -17,7 +17,6 @@
           @clear_all="clearAll"
           @filterD="filterB"
           :pageTitle="pageTitle"
-          :campaignId="campaignId"
         />
       </v-dialog>
     </v-col>
@@ -43,11 +42,11 @@ export default {
     clearAll(val) {
       this.$emit('clear_all', val)
     },
-    checkParam() {
-      let url_string = window.location.href
-      let url = new URL(url_string)
-      this.campaignId = url.searchParams.get('campaignItemId')
-    },
+    // checkParam() {
+    //   let url_string = window.location.href
+    //   let url = new URL(url_string)
+    //   this.campaignId = url.searchParams.get('campaignItemId')
+    // },
   },
 }
 </script>

@@ -9,7 +9,6 @@
       @filter_order_detail="filterD"
       :dialog="dialog"
       :pageTitle="pageTitle"
-      :campaignId="campaignId"
     />
   </v-card>
 </template>
