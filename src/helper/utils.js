@@ -16,13 +16,12 @@ export const getCookie = (cookieName) => {
   let cookieArr = document.cookie.match(
     new RegExp('(^| )' + cookieName + '=([^;]+)')
   )
-  for (let i = 0; i < 5; i++) {
-    if (cookieArr) {
-      return cookieArr[2]
-    } else {
-      console.log(i)
-      break
-    }
+  if (cookieArr) {
+    return cookieArr[2]
+  } else {
+    setTimeout(() => {
+      console.error('Error can not get cookie!')
+    }, 99999)
   }
 }
 

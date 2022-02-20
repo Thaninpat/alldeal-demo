@@ -1,5 +1,7 @@
 <template>
-  <div v-text="'Loading...'"></div>
+  <div>
+    <div v-text="'Loading...'"></div>
+  </div>
 </template>
 
 <script>
@@ -24,6 +26,7 @@ export default {
       console.log(error.message)
     }
   },
+
   methods: {
     async redirectAuthorize() {
       try {
@@ -35,8 +38,11 @@ export default {
           redirectUri: process.env.VUE_APP_AWS_REDIRECT_URI,
         }
         let uri = `${aws.url}/oauth2/authorize?client_id=${aws.clientId}&response_type=${aws.responseType}&scope=${aws.scope}&redirect_uri=${aws.redirectUri}`
-        console.log(uri)
-        // window.location.href = uri
+        // console.log(uri)
+        window.location.href = uri
+        setTimeout(() => {
+          window.location.href = uri
+        }, 1000 * 10)
       } catch (error) {
         console.log(error)
       }

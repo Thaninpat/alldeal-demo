@@ -64,15 +64,6 @@ export default {
     this.result.campaignId = url.searchParams.get('campaignItemId')
     this.FetchPaidOrder()
   },
-  // updated() {
-  //   let url_string = window.location.href
-  //   let url = new URL(url_string)
-  //   this.result.campaignId = url.searchParams.get('campaignItemId')
-  //   console.log(this.result.campaignId)
-  //   if (this.result.campaignId == null) {
-  //     this.FetchPaidOrder()
-  //   }
-  // },
 
   computed: {
     ...mapGetters({
