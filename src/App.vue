@@ -7,11 +7,6 @@
 <script>
 export default {
   name: 'App',
-  data() {
-    return {
-      chartdata: null,
-    }
-  },
 }
 </script>
 <style>
