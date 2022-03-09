@@ -163,7 +163,7 @@ export default {
           //   ? list.orderNumber
           //   : '...' + list.orderNumber.toString().substr(-7),
           originalTms: list.paidTms,
-          paidTms: moment(list.paidTms).format('DD/MM/YY hh:mm'),
+          paidTms: moment(list.paidTms).format('DD/MM/YY HH:mm'),
           status: list.paidTms ? 'paid' : 'unpaid',
           paymentTypeCode: list.paymentTypeCode,
           campaignItemNameTh: list.campaignItemNameTh,

@@ -24,30 +24,47 @@
               v-text="
                 list.effectiveStatus === 'Y'
                   ? `Active : ${list.effectiveTms} - ${list.expireTms}`
-                  : `End : ${list.effectiveTms} - ${list.expireTms}`
+                  : `Period : ${list.effectiveTms} - ${list.expireTms}`
               "
             >
             </label>
           </v-card-text>
           <v-list-item>
-            <v-list-item class="pa-0" text>
-              <i class="ico-cart"></i>
-              <label class="grey--text pl-1">
-                {{ item.sellOrder }}
-              </label>
-            </v-list-item>
-            <v-list-item class="pa-0" text>
-              <i class="ico-paid"></i>
-              <label class="grey--text pl-1">
-                {{ item.sellPaid }}
-              </label>
-            </v-list-item>
-            <v-list-item class="pa-0" text>
-              <i class="ico-coupon"></i>
-              <label class="grey--text pl-1">
-                {{ item.couponUsed }}
-              </label>
-            </v-list-item>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
+                  <i class="ico-cart"></i>
+                  <label class="grey--text pl-1">
+                    {{ item.sellOrder }}
+                  </label>
+                </v-list-item>
+              </template>
+              <span>Ordered</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
+                  <i class="ico-paid"></i>
+                  <label class="grey--text pl-1">
+                    {{ item.sellPaid }}
+                  </label>
+                </v-list-item>
+              </template>
+              <span>Paid</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
+                  <i class="ico-coupon"></i>
+                  <label class="grey--text pl-1">
+                    {{ item.couponUsed }}
+                  </label>
+                </v-list-item>
+              </template>
+              <span>Redeemed</span>
+            </v-tooltip>
           </v-list-item>
 
           <v-card-actions>
@@ -55,7 +72,7 @@
               <v-icon small>mdi-forum</v-icon>
               <div
                 class="grey--text pl-1"
-                v-text="list.reviewApi ? list.reviewApi + 'Review' : '0 Review'"
+                v-text="review ? `${review.items.length} Review` : '0 Review'"
               ></div>
             </v-list-item>
           </v-card-actions>
@@ -66,6 +83,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
     list: {
@@ -75,6 +93,28 @@ export default {
     size: {
       type: Number,
       require: true,
+    },
+  },
+  data: () => ({
+    review: null,
+  }),
+  mounted() {
+    this.getReviewApi()
+  },
+  methods: {
+    async getReviewApi() {
+      try {
+        if (this.list.reviewApi) {
+          const reviewApi = await axios.get(this.list.reviewApi)
+          this.review = reviewApi.data.data
+          console.log('review api:', this.review.items.length)
+        } else {
+          console.log('review api:', this.review)
+          return
+        }
+      } catch (error) {
+        console.log(error.message)
+      }
     },
   },
 }

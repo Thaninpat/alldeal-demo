@@ -1,39 +1,45 @@
 <template>
   <v-row>
-    <v-col v-for="(value, index) in values" :key="index" cols="12" sm="6">
-      <v-card class="pa-2">
-        <div class="d-flex justify-start">
-          <v-avatar class="ma-3" size="110" tile>
+    <v-col
+      v-for="(value, index) in values"
+      :key="index"
+      class="pa-0"
+      cols="12"
+      md="10"
+    >
+      <v-card class="ma-1">
+        <div class="d-flex flex-no-wrap justify-start">
+          <v-avatar class="ma-3 mx-md-10" size="110" tile>
             <v-img src="/img/thumbnail.png"></v-img>
           </v-avatar>
           <div class="py-4 ml-2">
             <v-row>
-              <v-col cols="6">Redemption Code </v-col>
-              <v-col cols="6">{{ value.couponCode }}</v-col>
+              <v-col cols="5" md="3">Redemption Code </v-col>
+              <v-col cols="7">{{ value.couponCode }}</v-col>
 
-              <v-col cols="6">Order ID</v-col>
-              <v-col cols="6">{{ value.orderNo }}</v-col>
+              <v-col cols="5" md="3">Order No</v-col>
+              <v-col cols="7">{{ value.orderNo }}</v-col>
 
-              <v-col cols="6">Item ID </v-col>
-              <v-col cols="6">{{ value.itemId }}</v-col>
+              <v-col cols="5" md="3">Item ID </v-col>
+              <v-col cols="7">{{ value.itemId }}</v-col>
 
-              <v-col cols="6">Name</v-col>
-              <v-col cols="6">{{ value.name }}</v-col>
+              <v-col cols="5" md="3">Name</v-col>
+              <v-col cols="7">{{ value.name }}</v-col>
 
-              <v-col cols="6">Price</v-col>
-              <v-col cols="6">{{ value.price }}</v-col>
+              <v-col cols="5" md="3">Price</v-col>
+              <v-col cols="7">{{ value.price }}</v-col>
 
-              <v-col cols="6">Status</v-col>
-              <v-col cols="6">{{ value.status }}</v-col>
+              <v-col cols="5" md="3">Status</v-col>
+              <v-col cols="7">{{ value.status }}</v-col>
 
-              <v-col cols="6">Paid Date</v-col>
-              <v-col cols="6">{{ value.redeemStartTms }}</v-col>
+              <v-col cols="5" md="3">Paid Date</v-col>
+              <v-col cols="7">{{ value.redeemStartTms }}</v-col>
 
-              <v-col cols="6">Expire Date</v-col>
-              <v-col cols="6">{{ value.redeemEndTms }}</v-col>
+              <v-col cols="5" md="3">Expire Date</v-col>
+              <v-col cols="7">{{ value.redeemEndTms }}</v-col>
 
-              <v-col cols="6">Used Date</v-col>
-              <v-col cols="6">{{ value.redeemedTms }}</v-col>
+              <v-col cols="5" md="3">Used Date</v-col>
+              <v-col cols="7">{{ value.redeemedTms }}</v-col>
             </v-row>
             <div class="mt-6">
               <dialog-btn
@@ -68,7 +74,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.col.col-6 {
+.col-md-3.col-5,
+.col.col-5,
+.col.col-7 {
   padding: 1px 0;
   font-size: 12px;
   font-weight: bold;

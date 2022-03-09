@@ -25,7 +25,8 @@
 <script>
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
-import OrderSumList from '../components/OrderSumList'
+import OrderSumList from '../components/OrderSumList.vue'
+// import axios from 'axios'
 
 export default {
   components: {
@@ -74,6 +75,9 @@ export default {
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
+        // console.log('review api:', reviewApi[0])
+        // console.log('lists api:', this.lists)
+
         // this.pagination.size = data.pagination.size
       } catch (error) {
         console.log(error)

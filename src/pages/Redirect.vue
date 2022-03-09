@@ -42,7 +42,7 @@ export default {
         window.location.href = uri
         setTimeout(() => {
           window.location.href = uri
-        }, 1000 * 10)
+        }, 1000 * 60)
       } catch (error) {
         console.log(error)
       }
