@@ -4,6 +4,7 @@
     <v-row>
       <v-col cols="10">
         <v-text-field
+          enterkeyhint="go"
           label="Coupon"
           placeholder="Input Coupon number"
           v-model="result"
