@@ -26,6 +26,7 @@
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 import OrderSumList from '../components/OrderSumList.vue'
+import { defaultFilter } from '../helper/filter'
 // import axios from 'axios'
 
 export default {
@@ -71,7 +72,8 @@ export default {
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         let orderSummary = this.orders
-        this.lists = orderSummary.data.map(this.getDisplay)
+        const lists = orderSummary.data.map(this.getDisplay)
+        this.lists = await defaultFilter(lists)
         // const reviewApi = this.lists.map((i) => i.reviewApi)
         // const { data } = await axios.get(reviewApi)
         // this.reviewApi = data
@@ -93,6 +95,12 @@ export default {
           effectiveStatus: list.effectiveStatus,
           effectiveTms: moment(list.effectiveTms).format('D MMM YY'),
           expireTms: moment(list.expireTms).format('D MMM YY'),
+          originEffectiveTms: moment(list.effectiveTms).unix(),
+          originExpireTms: moment(list.expireTms).unix(),
+          status:
+            moment(list.expireTms).unix() > moment(Date.now()).unix()
+              ? 'Active'
+              : 'Period',
           thumbnailImg: list.thumbnailImg,
           items: list.items,
           // from items //

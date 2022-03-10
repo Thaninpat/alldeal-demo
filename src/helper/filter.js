@@ -13,6 +13,32 @@ export const Filter = async (res) => {
     sortByPaidDate({ items: res.items, sort: res.values.sort })
 }
 
+export const defaultFilter = async (result) => {
+  let items = result
+  let pastYear = moment()
+    .subtract(1, 'year')
+    .unix()
+  let currentDate = moment(Date.now()).unix()
+  items = items.filter((item) => {
+    if (
+      item.effectiveStatus === 'Y' &&
+      item.originEffectiveTms >= pastYear &&
+      item.originExpireTms >= currentDate
+    ) {
+      return true
+    } else return false
+  })
+  // items = items.filter((item) => {
+  //   console.log('Tms', item.originEffectiveTms > year)
+  //   return item.originEffectiveTms > year
+  // })
+  console.log('Items: ', items)
+
+  return items
+}
+
+// ------------- Example Filter Function ------------- //
+
 export const sortById = async (items) => {
   const byId = await items.sort(function(a, b) {
     let IdA = a.campaignId || a.customerId

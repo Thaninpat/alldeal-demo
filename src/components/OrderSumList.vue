@@ -22,9 +22,7 @@
           <v-card-text class="pb-0 grey--text">
             <label
               v-text="
-                list.effectiveStatus === 'Y'
-                  ? `Active : ${list.effectiveTms} - ${list.expireTms}`
-                  : `Period : ${list.effectiveTms} - ${list.expireTms}`
+                `${list.status} : ${list.effectiveTms} - ${list.expireTms}`
               "
             >
             </label>
