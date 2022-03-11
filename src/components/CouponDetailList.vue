@@ -32,8 +32,8 @@
               <v-col cols="5" md="3">Status</v-col>
               <v-col cols="7">{{ value.status }}</v-col>
 
-              <v-col cols="5" md="3">Paid Date</v-col>
-              <v-col cols="7">{{ value.redeemStartTms }}</v-col>
+              <!-- <v-col cols="5" md="3">Paid Date</v-col>
+              <v-col cols="7">{{ value.redeemStartTms }}</v-col> -->
 
               <v-col cols="5" md="3">Expire Date</v-col>
               <v-col cols="7">{{ value.redeemEndTms }}</v-col>
