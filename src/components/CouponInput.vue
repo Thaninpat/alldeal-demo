@@ -89,11 +89,19 @@
       />
     </div>
     <!-- Main detail -->
-    <coupon-detail-list
+    <v-row v-if="dataMatched === true">
+      <coupon-detail-list
+        v-for="(value, index) in values"
+        :key="index"
+        @isUsed="isUsed"
+        :value="value"
+      />
+    </v-row>
+    <!-- <coupon-detail-list
       v-if="dataMatched === true"
       @isUsed="isUsed"
       :values="values"
-    />
+    /> -->
   </v-container>
 </template>
 
@@ -192,7 +200,7 @@ export default {
       if (list) {
         return {
           couponCode: list.couponCode,
-          orderNo: list.orderNo,
+          orderNo: list.orderNo.slice(0, -2),
           orderItemNo: list.orderItemNo,
           redeemStartTms: moment(list.redeemStartTms).format('DD/MM/YY hh:mm'),
           redeemEndTms: moment(list.redeemEndTms).format('DD/MM/YY hh:mm'),
@@ -208,6 +216,7 @@ export default {
       }
     },
     async isUsed(couponCode) {
+      console.log('couponCode: ', couponCode)
       this.available = !this.available
       try {
         await this.getMarkCouponUsed({
@@ -216,8 +225,11 @@ export default {
           data: { couponCode: couponCode },
         })
         const markCoupon = this.markCouponUsed
-        // console.log(markCoupon)
-        if (markCoupon.status.code === 'OD999') {
+        let errorKey
+        for (let key in markCoupon.data) {
+          errorKey = key
+        }
+        if (errorKey === 'errorMessage') {
           const res = {
             couponExpire: true,
             errorCode: markCoupon.status.code,
@@ -237,8 +249,10 @@ export default {
       this.error = 'No information found'
     },
     isExpire(res) {
+      console.log('res: ', res)
       this.couponExpire = res.couponExpire
-      this.title = 'Error code: ' + res.errorCode
+      this.title = 'Expired'
+      // this.title = 'Error code: ' + res.errorCode
       this.error = res.messageEn
     },
     isError(errors) {

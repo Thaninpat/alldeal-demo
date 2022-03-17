@@ -7,7 +7,6 @@
       @clear_all="clearAll"
       @closed_dialog="closedDialog"
       @filter_order_detail="filterD"
-      :dialog="dialog"
       :pageTitle="pageTitle"
     />
   </v-card>
@@ -24,7 +23,7 @@ export default {
     startDate: null,
     endDate: null,
   }),
-  props: ['dialog', 'pageTitle', 'campaignId'],
+  props: ['pageTitle'],
   methods: {
     async filterD(val) {
       this.$emit('filterD', val)

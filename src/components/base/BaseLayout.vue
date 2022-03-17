@@ -139,7 +139,6 @@ export default {
       }
     },
   },
-
   mounted() {
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)

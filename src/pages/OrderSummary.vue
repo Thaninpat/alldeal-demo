@@ -111,7 +111,10 @@ export default {
           sellStock: list.items.map((x) => x.sellStock),
           couponUsed: list.items.map((x) => x.couponUsed),
           thumbnailImg2: list.items.map((x) => x.thumbnailImg),
-          reviewApi: list.reviewApi,
+          reviewApi:
+            list.reviewApi != null
+              ? list.reviewApi
+              : `https://cs-cms.jenosize.dev/api/v2/deal/review/${list.campaignId}`,
         }
       } else console.log('No data list')
     },

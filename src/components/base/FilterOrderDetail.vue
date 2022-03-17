@@ -81,8 +81,9 @@ export default {
     campaignItemName: null,
     startDate: null,
     endDate: null,
+    retrievedObject: null,
   }),
-  props: ['dialog', 'pageTitle'],
+  props: ['pageTitle'],
   methods: {
     async submit() {
       const val = {
@@ -91,8 +92,8 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
       }
+      this.setLocalStorage(val)
       this.$emit('filter_order_detail', val)
-      this.clearField()
       this.closedDialog()
     },
     clearField() {
@@ -102,16 +103,42 @@ export default {
       this.endDate = null
     },
     clearFilter() {
+      this.removeLocalStorage()
       this.$emit('clear_filter', true)
       this.clearField()
       this.closedDialog()
     },
     clearAll() {
+      this.removeLocalStorage()
       this.$emit('clear_all', true)
+      this.clearField()
       this.closedDialog()
     },
     closedDialog() {
       this.$emit('closed_dialog', false)
+      if (this.retrievedObject) {
+        this.getResult()
+      }
+    },
+    // ------------------- Manage data local storage -------------------------- //
+
+    setLocalStorage(val) {
+      localStorage.setItem('searchListFilter', JSON.stringify(val))
+      // -------------- Retrieve the object from storage ---------------- //
+      const retrievedObject = localStorage.getItem('searchListFilter')
+      this.retrievedObject = JSON.parse(retrievedObject)
+    },
+    removeLocalStorage() {
+      localStorage.removeItem('searchListFilter')
+      this.retrievedObject = null
+    },
+    // ------------------- Manage data local storage -------------------------- //
+
+    getResult() {
+      this.orderId = this.retrievedObject.orderId
+      this.campaignItemName = this.retrievedObject.campaignItemName
+      this.startDate = this.retrievedObject.startDate
+      this.endDate = this.retrievedObject.endDate
     },
   },
 }

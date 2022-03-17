@@ -128,21 +128,24 @@ export default {
         })
         let paidOrderItems = this.orders.data.orders
         this.totalPages = this.orders.data.totalPage
-
-        const promises = paidOrderItems.map(async (item) => {
-          if (item) {
-            // Have Array[item.campaignItemId] must 2loop
-            await this.getCampaignItems({
-              path: `/campaignitems/${item.campaignItemId}`,
-            })
-            let campaignItem = { campaigns: this.campaignItems.data }
-            let inputToItem = Object.assign(item, campaignItem)
-            return inputToItem
-          }
-        })
-        const campaigns = await Promise.all(promises)
-        const displayItems = campaigns.map(this.getDisplay)
-        this.lists = displayItems
+        if (paidOrderItems) {
+          const promises = paidOrderItems.map(async (item) => {
+            if (item) {
+              // Have Array[item.campaignItemId] must 2loop
+              await this.getCampaignItems({
+                path: `/campaignitems/${item.campaignItemId}`,
+              })
+              let campaignItem = { campaigns: this.campaignItems.data }
+              let inputToItem = Object.assign(item, campaignItem)
+              return inputToItem
+            }
+          })
+          const campaigns = await Promise.all(promises)
+          const displayItems = campaigns.map(this.getDisplay)
+          this.lists = displayItems
+        } else {
+          return
+        }
         // console.log('Display campaigns: ', campaigns)
         // console.log('Display displayItems: ', displayItems)
         // console.log('Display this.lists: ', this.lists)
@@ -161,7 +164,7 @@ export default {
           orderNumber: list.orderNumber,
           // window.screen.availWidth > 450
           //   ? list.orderNumber
-          //   : '...' + list.orderNumber.toString().substr(-7),
+          //   : '...' + list.orderNumber.toString().slice(-7),
           originalTms: list.paidTms,
           paidTms: moment(list.paidTms).format('DD/MM/YY HH:mm'),
           status: list.paidTms ? 'paid' : 'unpaid',

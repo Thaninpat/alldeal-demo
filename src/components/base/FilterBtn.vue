@@ -1,11 +1,7 @@
 <template>
   <v-row justify="space-around">
     <v-col>
-      <v-dialog
-        v-model="dialog"
-        max-width="650"
-        transition="dialog-top-transition"
-      >
+      <v-dialog v-model="dialog" max-width="650" persistent>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon v-text="dialog ? '$FilterClose' : '$Filter'" />
@@ -17,6 +13,7 @@
           @clear_all="clearAll"
           @filterD="filterB"
           :pageTitle="pageTitle"
+          :dialog="dialog"
         />
       </v-dialog>
     </v-col>
@@ -28,7 +25,11 @@ import FilterDisplay from './FilterDisplay.vue'
 export default {
   components: { FilterDisplay },
   props: ['filterLists', 'pageTitle'],
-  data: () => ({ dialog: false, filtered: false, campaignId: null }),
+  data: () => ({
+    dialog: false,
+    filtered: false,
+    campaignId: null,
+  }),
   methods: {
     async filterB(val) {
       this.$emit('filterB', val)

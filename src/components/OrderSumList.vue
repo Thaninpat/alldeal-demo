@@ -105,7 +105,8 @@ export default {
         if (this.list.reviewApi) {
           const reviewApi = await axios.get(this.list.reviewApi)
           this.review = reviewApi.data.data
-          console.log('review api:', this.review.items.length)
+          // console.log('review api:', this.review)
+          console.log('review api length:', this.review.items.length)
         } else {
           console.log('review api:', this.review)
           return
