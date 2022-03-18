@@ -15,6 +15,7 @@
             v-model="orderId"
             label="Order Id"
             type="text"
+            enterkeyhint="search"
             clearable
             autofocus
             dense
@@ -26,6 +27,7 @@
             v-model="campaignItemName"
             label="Campaign Name"
             type="text"
+            enterkeyhint="search"
             clearable
             outlined
             dense
@@ -36,6 +38,7 @@
             v-model="startDate"
             label="From"
             type="date"
+            enterkeyhint="search"
             outlined
             dense
           />
@@ -45,6 +48,7 @@
             v-model="endDate"
             label="To"
             type="date"
+            enterkeyhint="search"
             outlined
             dense
           />
