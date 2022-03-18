@@ -130,6 +130,7 @@ export default {
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         const orderSummary = this.orders.data
+        // console.log('orderSummary: ', orderSummary)
         if (orderSummary) {
           const compareDate = await this.filterDateOrder(
             orderSummary,
@@ -233,13 +234,6 @@ export default {
       }
     },
 
-    clearFile() {
-      this.sDate = ''
-      this.eDate = ''
-      this.selectDate = ''
-      this.selectMonth = ''
-    },
-
     checkData(orderLists) {
       // console.log('checkData: ', orderLists)
       let datasetsData = []
@@ -304,9 +298,16 @@ export default {
       return {
         orderName: list.nameTh,
         orderTms: list.effectiveTms,
+        campaignItemId: list.items.map((item) => item.id),
         sellPaid: list.items.map((item) => item.sellPaid),
         itemName: list.items.map((item) => item.nameTh),
       }
+    },
+    clearFile() {
+      this.sDate = ''
+      this.eDate = ''
+      this.selectDate = ''
+      this.selectMonth = ''
     },
     randomColor() {
       let colors = []

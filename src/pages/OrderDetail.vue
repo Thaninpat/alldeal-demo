@@ -119,6 +119,7 @@ export default {
         this.result.startDate,
         this.result.endDate
       )
+      console.log('params: ', params)
       try {
         // Order Items
         await this.getOrders({
@@ -184,6 +185,7 @@ export default {
       this.FetchPaidOrder()
     },
     responseFilter(val) {
+      console.log('val response: ', val)
       this.result.orderNo = val.orderId
       this.result.campaignItemName = val.campaignItemName
       this.result.startDate = val.startDate ? Date.parse(val.startDate) : null
