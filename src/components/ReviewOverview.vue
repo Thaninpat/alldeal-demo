@@ -20,7 +20,7 @@
     <v-list-item-content>
       <!-- ขวา -->
       <div class="rating_container">
-        <div class="text-caption font-weight-bold mr-1">5</div>
+        <div class="text-caption font-weight-bold text--secondary mr-1">5</div>
         <v-progress-linear
           :value="(all.star5 * 100) / all.items.length"
           color="orange"
@@ -30,7 +30,7 @@
         />
       </div>
       <div class="rating_container">
-        <div class="text-caption font-weight-bold mr-1">4</div>
+        <div class="text-caption font-weight-bold text--secondary mr-1">4</div>
         <v-progress-linear
           :value="(all.star4 * 100) / all.items.length"
           color="orange"
@@ -40,7 +40,7 @@
         />
       </div>
       <div class="rating_container">
-        <div class="text-caption font-weight-bold mr-1">3</div>
+        <div class="text-caption font-weight-bold text--secondary mr-1">3</div>
         <v-progress-linear
           :value="(all.star3 * 100) / all.items.length"
           color="orange"
@@ -50,7 +50,7 @@
         />
       </div>
       <div class="rating_container">
-        <div class="text-caption font-weight-bold mr-1">2</div>
+        <div class="text-caption font-weight-bold text--secondary mr-1">2</div>
         <v-progress-linear
           :value="(all.star2 * 100) / all.items.length"
           color="orange"
@@ -60,7 +60,7 @@
         />
       </div>
       <div class="rating_container">
-        <div class="text-caption font-weight-bold mr-1">1</div>
+        <div class="text-caption font-weight-bold text--secondary mr-1">1</div>
         <v-progress-linear
           :value="(all.star1 * 100) / all.items.length"
           color="orange"
