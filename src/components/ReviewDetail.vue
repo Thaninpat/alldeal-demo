@@ -2,13 +2,15 @@
   <div>
     <v-divider></v-divider>
     <v-list-item>
-      <v-list-item-avatar>
+      <v-list-item-avatar size="30">
         <v-img
           v-if="item.user.image_url"
           alt="Avatar"
           :src="item.user.image_url"
         />
-        <v-icon v-else size="30">mdi-account-circle</v-icon>
+        <v-icon v-else size="30" dark color="hsl(210, 100%, 27%)"
+          >mdi-account-circle</v-icon
+        >
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-subtitle>
