@@ -40,7 +40,7 @@ export default {
         this.loading = true
         if (this.campaignId) {
           const url = 'https://cs-uat-cms.jenosize.dev/api/v2/deal/review/'
-          const { data } = await axios.get(`${url}334`)
+          const { data } = await axios.get(`${url}${this.campaignId}`)
           const items = data.data
           this.all = items
           this.items = items.items.map((obj) => {
