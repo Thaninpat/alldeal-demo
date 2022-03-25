@@ -119,7 +119,6 @@ export default {
         this.result.startDate,
         this.result.endDate
       )
-      console.log('params: ', params)
       try {
         // Order Items
         await this.getOrders({

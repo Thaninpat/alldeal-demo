@@ -38,7 +38,6 @@
             v-model="startDate"
             label="From"
             type="date"
-            enterkeyhint="search"
             outlined
             dense
           />
@@ -48,7 +47,6 @@
             v-model="endDate"
             label="To"
             type="date"
-            enterkeyhint="search"
             outlined
             dense
           />

@@ -1,7 +1,6 @@
 <template>
   <v-col class="pa-0" cols="12">
     <v-card
-      :to="item.sellPaid != 0 ? `/order-detail?campaignItemId=${item.id}` : ''"
       class="ma-1"
       v-for="(item, idxItem) in list.items"
       :key="idxItem"
@@ -31,10 +30,12 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
-                  <i class="ico-cart"></i>
-                  <label class="grey--text pl-1">
-                    {{ item.sellOrder }}
-                  </label>
+                  <v-btn text>
+                    <i class="ico-cart"></i>
+                    <label class="grey--text pl-1">
+                      {{ item.sellOrder }}
+                    </label>
+                  </v-btn>
                 </v-list-item>
               </template>
               <span>Ordered</span>
@@ -43,10 +44,19 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
-                  <i class="ico-paid"></i>
-                  <label class="grey--text pl-1">
-                    {{ item.sellPaid }}
-                  </label>
+                  <v-btn
+                    text
+                    :to="
+                      item.sellPaid != 0
+                        ? `/order-detail?campaignItemId=${item.id}`
+                        : ''
+                    "
+                  >
+                    <i class="ico-paid"></i>
+                    <label class="grey--text pl-1">
+                      {{ item.sellPaid }}
+                    </label>
+                  </v-btn>
                 </v-list-item>
               </template>
               <span>Paid</span>
@@ -55,10 +65,12 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
-                  <i class="ico-coupon"></i>
-                  <label class="grey--text pl-1">
-                    {{ item.couponUsed }}
-                  </label>
+                  <v-btn text>
+                    <i class="ico-coupon"></i>
+                    <label class="grey--text pl-1">
+                      {{ item.couponUsed }}
+                    </label>
+                  </v-btn>
                 </v-list-item>
               </template>
               <span>Redeemed</span>
@@ -66,13 +78,33 @@
           </v-list-item>
 
           <v-card-actions>
-            <v-list-item class="pa-0 pl-3" text>
-              <v-icon small>mdi-forum</v-icon>
-              <div
-                class="grey--text pl-1"
-                v-text="review ? `${review.items.length} Review` : '0 Review'"
-              ></div>
-            </v-list-item>
+            <!-- Add detail review -->
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item class="pa-0 pl-3" text>
+                  <v-btn text v-bind="attrs" v-on="on">
+                    <v-icon small>mdi-forum</v-icon>
+                    <div
+                      class="grey--text pl-1"
+                      v-text="
+                        review ? `${review.items.length} Review` : '0 Review'
+                      "
+                    ></div>
+                  </v-btn>
+                </v-list-item>
+              </template>
+              <!-- Dialog review detail -->
+              <ReviewDetail
+                @closed_dialog="closedDialog"
+                :campaignId="list.campaignId"
+              />
+              <!-- Dialog review detail -->
+            </v-dialog>
           </v-card-actions>
         </div>
       </div>
@@ -81,8 +113,12 @@
 </template>
 
 <script>
+import ReviewDetail from './ReviewLists.vue'
 import axios from 'axios'
 export default {
+  components: {
+    ReviewDetail,
+  },
   props: {
     list: {
       type: Object,
@@ -95,6 +131,7 @@ export default {
   },
   data: () => ({
     review: null,
+    dialog: false,
   }),
   mounted() {
     this.getReviewApi()
@@ -105,8 +142,6 @@ export default {
         if (this.list.reviewApi) {
           const reviewApi = await axios.get(this.list.reviewApi)
           this.review = reviewApi.data.data
-          // console.log('review api:', this.review)
-          console.log('review api length:', this.review.items.length)
         } else {
           console.log('review api:', this.review)
           return
@@ -114,6 +149,9 @@ export default {
       } catch (error) {
         console.log(error.message)
       }
+    },
+    closedDialog(val) {
+      this.dialog = val
     },
   },
 }

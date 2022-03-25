@@ -28,12 +28,6 @@ export const defaultFilter = async (result) => {
       return true
     } else return false
   })
-  // items = items.filter((item) => {
-  //   console.log('Tms', item.originEffectiveTms > year)
-  //   return item.originEffectiveTms > year
-  // })
-  console.log('Items: ', items)
-
   return items
 }
 
