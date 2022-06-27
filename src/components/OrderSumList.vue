@@ -14,11 +14,11 @@
           ></v-img>
         </v-avatar>
         <div class="pl-md-10 ml-md-10">
-          <v-card-title>
+          <v-card-title class="pl-1">
             <label class="order_title" v-text="item.nameTh"></label>
           </v-card-title>
           <!-- <v-card-subtitle>{{ idxList + 1 }}</v-card-subtitle> -->
-          <v-card-text class="pb-0 grey--text">
+          <v-card-text class="pb-0 pl-1 grey--text">
             <label
               v-text="
                 `${list.status} : ${list.effectiveTms} - ${list.expireTms}`
@@ -26,11 +26,11 @@
             >
             </label>
           </v-card-text>
-          <v-list-item>
+          <v-list-item class="pl-0">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
-                  <v-btn text>
+                  <v-btn text class="pa-0">
                     <i class="ico-cart"></i>
                     <label class="grey--text pl-1">
                       {{ item.sellOrder }}
@@ -46,6 +46,7 @@
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
                   <v-btn
                     text
+                    class="pa-0"
                     :to="
                       item.sellPaid != 0
                         ? `/order-detail?campaignItemId=${item.id}`
@@ -65,7 +66,7 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item class="pa-0" text v-bind="attrs" v-on="on">
-                  <v-btn text>
+                  <v-btn text class="pa-0">
                     <i class="ico-coupon"></i>
                     <label class="grey--text pl-1">
                       {{ item.couponUsed }}
