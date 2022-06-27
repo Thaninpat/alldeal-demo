@@ -134,6 +134,7 @@ export const getMonth = (date) => {
       moment(date)
         .startOf('day')
         .subtract(i, 'month')
+        .format('yyyy-MM')
     )
     i++
   }
@@ -148,6 +149,7 @@ export const getDay = (date) => {
       moment(date)
         .startOf('day')
         .subtract(i, 'days')
+        .format('yyyy-MM-DD')
     )
     i++
   }

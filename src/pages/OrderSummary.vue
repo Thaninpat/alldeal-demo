@@ -72,6 +72,7 @@ export default {
       try {
         await this.getOrders({ path: '/ordersummary', method: 'GET' })
         let orderSummary = this.orders
+        console.log('orderSummary', orderSummary)
         const lists = orderSummary.data.map(this.getDisplay)
         this.lists = await defaultFilter(lists)
         // const reviewApi = this.lists.map((i) => i.reviewApi)

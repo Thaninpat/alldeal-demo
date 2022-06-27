@@ -24,7 +24,7 @@
 
 <script>
 import update from '../mixins/update'
-import Dashboard from '../components/Dashboard'
+import Dashboard from '../components/Dashboard2.vue'
 
 export default {
   name: 'Home',

@@ -274,6 +274,8 @@ export default {
         }
         i++
       }
+      console.log('datasets: ', datasets)
+
       while (j < this.countOrder) {
         datasets.push({
           label: this.orderLists.orderName[j],
@@ -287,9 +289,9 @@ export default {
 
       dataCollection.push({ labels: labels, datasets: datasets })
       this.chartData = dataCollection[0]
-      // console.log('labels data: ', labels)
-      // console.log('datasets: ', datasets)
-      // console.log('chartData: ', this.chartData)
+      console.log('labels data: ', labels)
+      console.log('datasets: ', datasets)
+      console.log('chartData: ', this.chartData)
 
       // return datasetsData
     },
